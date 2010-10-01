@@ -30,6 +30,5 @@ highlight StatusLine ctermfg=blue       ctermbg=white
 
 " set spelling for mail
 :map <F5> :setlocal spell! spelllang=en_us,bg<CR>
-
-
+:imap <F5> <ESC>:setlocal spell! spelllang=en_us,bg<CR>
 
