@@ -1,6 +1,7 @@
 source ~/.mutt/config/muttrc_personal
 # editor settings
-set editor = 'vim + -c "set textwidth=72" -c "set wrap" -c "set nocp"'
+# my signature is 3 lines. jump just before it when composing mail
+set editor = 'vim + -c "set textwidth=72" -c "set wrap" -c "set nocp" -c "\$-3"'
 
 # caching
 set header_cache = ~/.mutt/cache/headers
