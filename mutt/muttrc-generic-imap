@@ -42,7 +42,7 @@ set pager_index_lines = 10
 
 set postpone = ask-no                     # Ask about postponing.
 set include                               # Include the message in replies.
-set attribution = "On %D, %n wrote :\n"   # Format of replies
+set attribution = "On %{%a, %e %B %Y at %R }, %n wrote :\n"   # Format of replies
 set edit_headers                          # I want to edit the message headers.
 set copy                                  # Keep copies of outgoing mail...
 set fcc_clear                             # Keep fcc's clear of signatues and encryption.
