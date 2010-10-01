@@ -1,21 +1,4 @@
-# IMAP settings
-set imap_user = "username" 
-set imap_pass = "password"
-set folder = "imaps://username@host:993/"
-
-#Mailbox settings
-set spoolfile = "+INBOX"
-set postponed = "+Drafts"
-set record = "+Sent"
-
-#SMTP settings
-set smtp_url = "smtp://smtp_host:25/"
-set smtp_pass = "password"
-
-# Personal settings
-set from = "my@email.address"
-set realname = "My Real Name"
-
+source ~/.mutt/config/muttrc_personal
 # editor settings
 set editor = 'vim + -c "set textwidth=72" -c "set wrap" -c "set nocp"'
 
@@ -29,6 +12,26 @@ set alias_file = ~/.mutt/aliases
 set sort_alias = alias
 set reverse_alias = yes
 source $alias_file
+
+# Folder navigation bindings
+bind editor <space> noop
+macro index gi "<change-folder>=INBOX<enter>" "Go to inbox"
+macro index ga "<change-folder>=Archive<enter>" "Go to Archive"
+macro index gs "<change-folder>=Sent<enter>" "Go to Sent"
+macro index gd "<change-folder>=Drafts<enter>" "Go to Drafts"
+
+#Archive messages
+# It's reverse to mutt's default behaviour for
+# single message and thread operations
+# since I use archive thread more often I bind it to 'e' instead of 'E'
+# I also use gmail's 'e' because 'a' conficts with address book
+macro index E "s=Archive<enter>y" 'archive the current message'
+macro pager E "s=Archive<enter>y" 'archive the current message'
+macro index e "<tag-thread>;s=Archive<Enter>y" 'archive the current thread'
+macro pager e "<exit><tag-thread>;s=Archive<Enter>y<display-message>" 'archive the current thread'
+# I allways group reply
+bind index,pager r group-reply
+bind index,pager R reply
 
 #sorting
 set sort = threads
@@ -53,36 +56,4 @@ unset mark_old                            # do not mark messages as old
 unhdr_order *
 hdr_order From: Subject: Date: To: Message-ID: CC: Date: Organization: X-Mailer: User-Agent:
 
-#Colours
-#Dark blue theme for black background
-#
-#Spam
-color index magenta default '~h "X-Spam-Status:.*score=(4|5)."'
-color index magenta default '~h "X-Spam-Status:.*score=(6|7)."'
-
-# Headers
-color hdrdefault red                   default
-color header     brightmagenta         default        ^Subject:
-color header     brightgreen           default        ^CC:
-color header     brightcyan            default        ^From:
-color header     brightgreen           default        ^To:
-
-# Messages
-color body       cyan            default        ^gpg:.*
-color body       red             default        " [;:]-*[)>(<|]"
-color quoted     brightblue      default
-color signature  cyan            default
-color attachment yellow          default
-color tilde      blue            default
-
-#Index
-color normal     white           default
-color indicator  brightwhite     blue
-color index      red             default        ~D         # Deleted
-color index      red             default        ~N         # New
-color error      red             default
-color message    brightcyan      default
-color status     brightyellow    blue
-color tree       magenta         default
-color bold       brightyellow    default
-color markers    red             default
+source ~/.mutt/config/muttrc_colors
