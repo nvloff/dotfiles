@@ -1,0 +1,8 @@
+Simple muttrc
+
+Work flow:
+All sent mail goes to Inbox to simulate GMail's conversations.
+After a thread is not relevant, it's moved to the Archive. That way
+searching in all the mail is pretty easy and also all the mails I've
+sent are present.
+
