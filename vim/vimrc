@@ -5,14 +5,15 @@ set background=dark
 set hlsearch            "highlight search results
 set expandtab           
 set incsearch
-set wrap                
+set nowrap                
 set showmode
+set wildmenu
+set showcmd
 
 set viminfo='20,\"50    " read/write a .viminfo file, don't store more
                         " than 50 lines of registers
 set history=50          " keep 50 lines of command line history
 set ruler               " show the cursor position all the time
-
 
 filetype on                             " automatic file type detection
 if has('autocmd')
@@ -20,6 +21,15 @@ if has('autocmd')
     autocmd BufEnter *.c,*.h,*.cpp,*.hpp,*.cc source ~/.vim/c.vim
 endif
 
+set laststatus=2 "show statusline
+"Statusline - filename hour:minutes:seconds Day Date Month Year ==== line,row,
+"percent
+set statusline=%F%m%r%h%w\ \%{strftime(\"\%H\:\%M\:\%S\ \%a\ \%d\ \%b\ \%Y\",getftime(expand(\"\%\%\")))}\ %=%=%l,%c\ (%p%%)
+"blue statusline
+highlight StatusLine ctermfg=blue       ctermbg=white 
+
 " set spelling for mail
 :map <F5> :setlocal spell! spelllang=en_us,bg<CR>
+
+
 
