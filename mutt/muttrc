@@ -11,7 +11,10 @@ set certificate_file = ~/.mutt/certificates
 #aliases
 set sort_alias = alias
 set reverse_alias = yes
-source ~/.mutt/config/muttrc_goobook
+# Use local aliases or goobook for adddress book
+set alias_file = ~/.mutt/aliases
+source $alias_file
+# source ~/.mutt/configs/muttrc_goobook
 
 # Folder navigation bindings
 bind editor <space> noop
@@ -57,4 +60,3 @@ unhdr_order *
 hdr_order From: Subject: Date: To: Message-ID: CC: Date: Organization: X-Mailer: User-Agent:
 
 source ~/.mutt/config/muttrc_colors
-

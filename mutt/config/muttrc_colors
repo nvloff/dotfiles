@@ -23,12 +23,13 @@ color tilde      blue            default
 #Index( order matters !!!)
 color normal     white           default
 color indicator  brightwhite     blue
-color index      brightgreen     default     '~p !~c nvladimirov'   # To: myself, but not in cc
+color index      brightgreen     default     '~p !~l'   # To: myself, but not in from maillist
 color index      blue            default     ~Q                     # Done mails(already replied)
 color index      yellow          default     '~P'                   #mail from myself
 color index      brightyellow    default     ~F                     # Important
 color index      blue            default     ~D                     # Deleted
 color index      brightred       default     '~N'                   # New
+color index      red       default     '~l ~N'                   # New from lists
 color error      red             default
 
 color tree       magenta         default
