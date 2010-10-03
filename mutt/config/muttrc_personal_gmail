@@ -5,7 +5,7 @@ set folder = "imaps://imap.gmail.com:993/"
 
 #Mailbox settings
 set spoolfile = "+INBOX"
-set postponed = "+Drafts"
+set postponed = "+[Google Mail]\Drafts"
 set record = "+INBOX"
 
 #SMTP settings
