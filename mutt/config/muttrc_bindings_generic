@@ -1,5 +1,3 @@
-# Google Mail can also be Gmail
-
 #navigation bindings
 macro index gi "<change-folder>=INBOX<enter>" "Go to inbox"
 macro index ge "<change-folder>=Archive<enter>" "Go to Archive"
