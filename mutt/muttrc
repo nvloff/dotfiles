@@ -51,6 +51,9 @@ unset mark_old                            # do not mark messages as old
 # headers
 unhdr_order *
 hdr_order From: Subject: Date: To: Message-ID: CC: Date: Organization: X-Mailer: User-Agent:
+ignore *
+unignore From: Subject: Date: To: Message-ID: CC: Date: Organization: X-Mailer: User-Agent:
+
 
 source ~/.mutt/config/muttrc_colors
 source ~/.mutt/config/muttrc_lists
