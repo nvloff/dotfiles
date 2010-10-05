@@ -23,11 +23,13 @@ bind editor <space> noop
 #source ~/.mutt/config/muttrc_bindings_gmail
 source ~/.mutt/config/muttrc_bindings_generic
 
-set index_format="%4C %Z %{%b %d} %-15.15L %?M?(#%03M)&(%4l)? %?y?{%.20Y} ?%s"
-
 # I allways group reply
 bind index,pager r group-reply
 bind index,pager R reply
+
+#Ctrl-r for refresh 
+macro index,pager \Cr "<imap-fetch-mail><sync-mailbox>"
+
 
 #sorting
 set sort = threads
