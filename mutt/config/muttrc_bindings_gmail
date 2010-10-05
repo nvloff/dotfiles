@@ -19,12 +19,12 @@ macro pager E "s=[Google Mail]/All Mail<enter>y" 'archive the current message'
 macro index e "<tag-thread>;s=[Google Mail]/All Mail<Enter>y" 'archive the current thread'
 macro pager e "<exit><tag-thread>;s=[Google Mail]/All Mail<Enter>y<display-message>" 'archive the current thread'
 
-macro index \Ct  "<tag-thread><tag-prefix><mark-as-new><tag-prefix><save-message>=Action<enter>"  "Mark thread as Action"
-macro pager \Ct  "<exit><tag-entry><tag-prefix><mark-as-new><tag-prefix><save-message>=Action<enter>"  "Mark message as Action"
+#macro index \Ct  "<tag-thread><tag-prefix><mark-as-new><tag-prefix><save-message>=Action<enter>"  "Mark thread as Action"
+#macro pager \Ct  "<exit><tag-entry><tag-prefix><mark-as-new><tag-prefix><save-message>=Action<enter>"  "Mark message as Action"
 
-macro index \Cr  "<tag-thread><tag-prefix><mark-as-new><tag-prefix><save-message>=Respond<enter>" "Mark thread as Respond"
-macro pager \Cr  "<exit><tag-entry><tag-prefix><mark-as-new><tag-prefix><save-message>=Respond<enter>" "Mark message as Respond"
+#macro index \Cr  "<tag-thread><tag-prefix><mark-as-new><tag-prefix><save-message>=Respond<enter>" "Mark thread as Respond"
+#macro pager \Cr  "<exit><tag-entry><tag-prefix><mark-as-new><tag-prefix><save-message>=Respond<enter>" "Mark message as Respond"
 
-macro index \Cw  "<tag-thread><tag-prefix><mark-as-new><tag-prefix><save-message>=Waiting<enter>" "Mark thread as waitfor"
-macro pager \Cw  "<exit><tag-entry><tag-prefix><mark-as-new><tag-prefix><save-message>=Waiting<enter>" "Mark message as waitfor"
+#macro index \Cw  "<tag-thread><tag-prefix><mark-as-new><tag-prefix><save-message>=Waiting<enter>" "Mark thread as waitfor"
+#macro pager \Cw  "<exit><tag-entry><tag-prefix><mark-as-new><tag-prefix><save-message>=Waiting<enter>" "Mark message as waitfor"
 
