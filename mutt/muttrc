@@ -12,16 +12,9 @@ set certificate_file = ~/.mutt/certificates
 set alias_file = ~/.mutt/aliases
 set sort_alias = alias
 set reverse_alias = yes
-source $alias_file
-
-#Goobook address book
-#source ~/.mutt/config/muttrc_goobook
 
 # Folder navigation bindings
 bind editor <space> noop
-
-#source ~/.mutt/config/muttrc_bindings_gmail
-source ~/.mutt/config/muttrc_bindings_generic
 
 # I allways group reply
 bind index,pager r group-reply
@@ -29,7 +22,6 @@ bind index,pager R reply
 
 #Ctrl-r for refresh 
 macro index,pager \Cr "<imap-fetch-mail><sync-mailbox>"
-
 
 #sorting
 set sort = threads
@@ -59,6 +51,7 @@ unignore From: Subject: Date: To: Message-ID: CC: Date: Organization: X-Mailer: 
 
 source ~/.mutt/config/muttrc_colors
 source ~/.mutt/config/muttrc_lists
+source ~/.mutt/config/muttrc_local
 
 auto_view text/html
 
