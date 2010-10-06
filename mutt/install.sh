@@ -1,10 +1,6 @@
 #!/bin/sh
 if  [ ! -d $HOME/.mutt ]; then
-        mkdir ~/.mutt
-fi
-
-if [ ! -d ~/.mutt/config ]; then
-        mkdir $HOME/.mutt/config
+        mkdir $HOME/.mutt
 fi
 
 if [ ! -d ~/.mutt/config ]; then
@@ -12,7 +8,7 @@ if [ ! -d ~/.mutt/config ]; then
 fi
 
 if [ ! -d ~/.mutt/cache ]; then
-        mkdir $HOME/.mutt/config
+        mkdir $HOME/.mutt/cache
 fi
 
 if [ ! -a ~/.mutt/alias ]; then
