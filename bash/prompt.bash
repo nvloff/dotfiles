@@ -36,4 +36,4 @@ BMAGENTA='\e[45m'
 BCYAN='\e[46m'
 BWHITE='\e[47m'
 
-PS1="\n\[$WHITE\][\t]\[$EGREEN\]\u\[$EWHITE\]:\[$EBLUE\]\w \[$ERED\]\[$NO_COLOR\] \n→ "
+PS1="\n\[$WHITE\][\t]\[$ERED\]\[$EGREEN\]\u\[$EWHITE\]:\[$EBLUE\]\w\[$ERED\]"'$(type __git_ps1 &>/dev/null && __git_ps1 " (%s)")'"\[$NO_COLOR\] \n→ "
