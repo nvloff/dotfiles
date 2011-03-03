@@ -1,8 +1,0 @@
-source $alias_file
-#Goobook address book
-##source ~/.mutt/config/muttrc_goobook
-#
-#source ~/.mutt/config/muttrc_bindings_gmail
-source ~/.mutt/config/muttrc_bindings_generic
-
-
