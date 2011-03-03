@@ -105,3 +105,7 @@ au! BufRead,BufNewFile *.haml         setfiletype haml
 " No Help, please
 nmap <F1> <Esc>
 
+" set spelling both Bulgarian and English
+:map <F5> :setlocal spell! spelllang=en_us,bg<CR>
+:imap <F5> <ESC>:setlocal spell! spelllang=en_us,bg<CR>
+
