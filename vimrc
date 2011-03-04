@@ -16,6 +16,17 @@ set hlsearch            " highlight search results
 
 set nowrap              " switch wrap off for everything set nowrap
 
+set wildmenu            " : menu has tab completion, etc
+
+set mousehide           " hide the cursor while writing
+
+set showmatch           " show matching brackets when typing
+
+set ignorecase          " you nearly always want this
+set smartcase           " overrides ignorecase if uppercase used in search string (cool)
+
+
+
 " Softtabs, 2 spaces
 set tabstop=2
 set shiftwidth=2
@@ -29,10 +40,11 @@ set number
 set numberwidth=5
 
 "Display extra whitespace with a character
-"This is awesome in contrast to red highlighting 
+"This is awesome in contrast to red highlighting
 "when browsing some ugly code
 "wihout clear whitespace convention
-set list listchars=tab:»·,trail:·
+set list listchars=tab:»·,trail:·,eol:¶
+:map <F6> :set list!<CR>
 
 syntax on               "Syntax highlighting on
 
