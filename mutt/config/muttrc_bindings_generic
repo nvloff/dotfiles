@@ -1,0 +1,15 @@
+#navigation bindings
+macro index gi "<change-folder>=INBOX<enter>" "Go to inbox"
+macro index ge "<change-folder>=Archive<enter>" "Go to Archive"
+macro index gs "<change-folder>=Sent<enter>" "Go to Sent"
+macro index gd "<change-folder>=Drafts<enter>" "Go to Drafts"
+
+#Archive messages
+# It's reverse to mutt's default behaviour for
+# single message and thread operations
+# since I use archive thread more often I bind it to 'e' instead of 'E'
+# I also use gmail's 'e' because 'a' conficts with address book
+macro index E "s=Archive<enter>y" 'archive the current message'
+macro pager E "s=Archive<enter>y" 'archive the current message'
+macro index e "<tag-thread>;s=Archive<Enter>y" 'archive the current thread'
+macro pager e "<exit><tag-thread>;s=Archive<Enter>y<display-message>" 'archive the current thread'
