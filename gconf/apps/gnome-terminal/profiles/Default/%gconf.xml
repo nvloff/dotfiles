@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="login_shell" mtime="1299191024" type="bool" value="false"/>
+	<entry name="scrollbar_position" mtime="1299238498" type="string">
+		<stringvalue>hidden</stringvalue>
+	</entry>
+	<entry name="default_show_menubar" mtime="1299238498" type="bool" value="false"/>
+	<entry name="use_theme_colors" mtime="1299238498" type="bool" value="false"/>
+	<entry name="use_theme_background" mtime="1299238498" type="bool" value="false"/>
+	<entry name="scrollback_unlimited" mtime="1299238498" type="bool" value="true"/>
+	<entry name="background_type" mtime="1299188734" type="string">
+		<stringvalue>solid</stringvalue>
+	</entry>
+	<entry name="background_darkness" mtime="1299238498" type="float" value="0.94999998807907104"/>
+	<entry name="visible_name" mtime="1299238498" type="string">
+		<stringvalue>Default</stringvalue>
+	</entry>
+	<entry name="alternate_screen_scroll" mtime="1299238498" type="bool" value="true"/>
+	<entry name="palette" mtime="1299268097" type="string">
+		<stringvalue>#3F3F3F3F3F3F:#FFFF00000000:#EFEFEFEFEFEF:#E3E3CECEABAB:#DFDFAFAF8F8F:#CCCC93939393:#7F7F9F9F7F7F:#DCDCDCDCCCCC:#3F3F3F3F3F3F:#FFFFCFCFCFCF:#EFEFEFEFEFEF:#E3E3CECEABAB:#DFDFAFAF8F8F:#CCCC93939393:#7F7F9F9F7F7F:#DCDCDCDCCCCC</stringvalue>
+	</entry>
+	<entry name="background_color" mtime="1299238498" type="string">
+		<stringvalue>#1C1C1C1C1C1C</stringvalue>
+	</entry>
+	<entry name="foreground_color" mtime="1299238498" type="string">
+		<stringvalue>#FFFFFFFFFFFF</stringvalue>
+	</entry>
+	<entry name="bold_color" mtime="1299238498" type="string">
+		<stringvalue>#000000000000</stringvalue>
+	</entry>
+</gconf>
