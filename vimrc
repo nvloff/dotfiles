@@ -11,6 +11,9 @@ set history=50          " keep 50 lines of command line history
 set ruler               " show the cursor position all the time
 set showcmd             " display incomplete commands
 
+set nobackup
+set nowritebackup
+
 set incsearch           " do incremental searching
 set hlsearch            " highlight search results
 
@@ -24,8 +27,6 @@ set showmatch           " show matching brackets when typing
 
 set ignorecase          " you nearly always want this
 set smartcase           " overrides ignorecase if uppercase used in search string (cool)
-
-
 
 " Softtabs, 2 spaces
 set tabstop=2
@@ -43,7 +44,7 @@ set numberwidth=5
 "This is awesome in contrast to red highlighting
 "when browsing some ugly code
 "wihout clear whitespace convention
-set list listchars=tab:»·,trail:·,eol:¶
+set list listchars=tab:»·,trail:·
 :map <F6> :set list!<CR>
 
 syntax on               "Syntax highlighting on
@@ -121,3 +122,9 @@ nmap <F1> <Esc>
 :map <F5> :setlocal spell! spelllang=en_us,bg<CR>
 :imap <F5> <ESC>:setlocal spell! spelllang=en_us,bg<CR>
 
+" Maps autocomplete to tab¶
+imap <Tab> <C-N>
+set showcmd  " display incomplete commands
+set completeopt=longest,menu
+set wildmode=list:longest,list:full
+set complete=.,t
