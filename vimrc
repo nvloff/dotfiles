@@ -43,7 +43,7 @@ set numberwidth=5
 "This is awesome in contrast to red highlighting
 "when browsing some ugly code
 "wihout clear whitespace convention
-set list listchars=tab:»·,trail:·,eol:¶
+set list listchars=tab:»·,trail:·
 :map <F6> :set list!<CR>
 
 syntax on               "Syntax highlighting on
