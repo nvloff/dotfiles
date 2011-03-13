@@ -135,8 +135,6 @@ autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
 :match ExtraWhitespace /\s\+\%#\@<!$/
 " Show tabs that are not at the start of a line:
 :match ExtraWhitespace /[^\t]\zs\t\+/
-" Show trailing whitepace and spaces before a tab:
-:match ExtraWhitespace /\s\+\ze\t/
 
 "different error highlighting
 hi Error ctermfg=210 ctermbg=239 gui=bold
