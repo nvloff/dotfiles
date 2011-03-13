@@ -96,6 +96,8 @@ filetype plugin indent on
 set background=dark
 set t_Co=256
 let g:zenburn_high_Contrast=1
+let g:zenburn_alternate_Visual = 1
+let g:zenburn_alternate_Error = 1
 :colorscheme zenburn
 
 "Handy stuff
@@ -123,3 +125,21 @@ set showcmd  " display incomplete commands
 set completeopt=longest,menu
 set wildmode=list:longest,list:full
 set complete=.,t
+
+
+"highlight space errors
+autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+:highlight ExtraWhitespace ctermbg=239
+"the following pattern will match trailing whitespace, except
+"when typing at the end of a line.
+:match ExtraWhitespace /\s\+\%#\@<!$/
+" Show tabs that are not at the start of a line:
+:match ExtraWhitespace /[^\t]\zs\t\+/
+" Show trailing whitepace and spaces before a tab:
+:match ExtraWhitespace /\s\+\ze\t/
+
+"different error highlighting
+hi Error ctermfg=210 ctermbg=239 gui=bold
+
+
+
