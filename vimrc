@@ -28,6 +28,8 @@ set showmatch           " show matching brackets when typing
 set ignorecase          " you nearly always want this
 set smartcase           " overrides ignorecase if uppercase used in search string (cool)
 
+set cursorline          " highlight the current line
+
 " Softtabs, 2 spaces
 set tabstop=2
 set shiftwidth=2
@@ -39,13 +41,6 @@ set laststatus=2
 " Numbers
 set number
 set numberwidth=5
-
-"Display extra whitespace with a character
-"This is awesome in contrast to red highlighting
-"when browsing some ugly code
-"wihout clear whitespace convention
-set list listchars=tab:»·,trail:·
-:map <F6> :set list!<CR>
 
 syntax on               "Syntax highlighting on
 
