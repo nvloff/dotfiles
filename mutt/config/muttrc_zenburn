@@ -24,10 +24,12 @@ color status     color144 color234
 color indicator  color108 color236
 color tree       color109 color237
 color index      color188 color237 ~A
-color index      color202 color237 '~N'
-color index      color188 color237 ~O
-color index      color174 color237 ~F
-color index      color232 color237 '~D'
+color index      color202 color237 ~N # New mail
+color index      color188 color237 ~O # Old mail
+color index      color174 color237 ~F # Flagged important
+color index      color232 color237 ~D # Deleted
+color index      color142 color237 ~P # From me
+
 
 # header stuff
 color hdrdefault color223 color237
