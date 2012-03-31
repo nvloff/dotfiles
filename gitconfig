@@ -26,9 +26,8 @@
   br = branch
   co = checkout
   df = diff
-  lg = log -p
-  lol = log --graph --decorate --pretty=oneline --abbrev-commit
-  lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+  lp = log -p
+  l = "!source ~/.githelpers && pretty_git_log"
   ls = ls-files
 [user]
   name = Nikolay Vladimirov
@@ -39,5 +38,8 @@
   default = tracking
 [branch]
   autosetuprebase = always
-
+[help]
+  autocorrect = 1
+[merge]
+  tool = vimdiff
 

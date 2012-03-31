@@ -4,15 +4,23 @@
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
+"Load pathogen for managing plugins
+filetype off
+call pathogen#helptags()
+call pathogen#runtime_append_all_bundles()
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
-set history=50          " keep 50 lines of command line history
+set history=10000       " keep 10000 lines of command line history
 set ruler               " show the cursor position all the time
 set showcmd             " display incomplete commands
 
-set nobackup
-set nowritebackup
+set hidden              " allow unsaved background buffers and remember marks/undo for them
+
+"Store temporary files in a central spot
+set backup
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 
 set incsearch           " do incremental searching
 set hlsearch            " highlight search results
@@ -30,6 +38,12 @@ set smartcase           " overrides ignorecase if uppercase used in search strin
 
 set cursorline          " highlight the current line
 
+set showmatch           " when a bracket is inserted, briefly jump to the matching one.
+
+set showtabline=2       " allways show the tab line
+
+set scrolloff=3         " keep 3 lines of context when scrolling
+
 " Softtabs, 2 spaces
 set tabstop=2
 set shiftwidth=2
@@ -37,12 +51,58 @@ set expandtab
 
 " Always display the status line
 set laststatus=2
+set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 
-" Numbers
+"Line Numbers
 set number
 set numberwidth=5
 
-syntax on               "Syntax highlighting on
+set completeopt=longest,menu
+set wildmode=longest,list
+
+set pastetoggle=<F2>
+
+set autoread
+
+"Use zenburn
+set background=dark
+set t_Co=256
+let g:zenburn_high_Contrast=1
+let g:zenburn_alternate_Visual = 1
+let g:zenburn_alternate_Error = 1
+colorscheme zenburn
+
+" No Help, please
+nmap <F1> <Esc>
+
+" set spelling both Bulgarian and English
+:map <F5> :setlocal spell! spelllang=en_us,bg<cr>
+:imap <F5> <ESC>:setlocal spell! spelllang=en_us,bg<cr>
+
+"Handy stuff
+let mapleader = ","
+
+"edit a file as root
+command! -bar -nargs=0 SudoW   :setl nomod|silent exe 'write !sudo tee %>/dev/null'|let &mod = v:shell_error
+
+let &listchars = "tab:\u21e5\u00b7,trail:\u2423,extends:\u21c9,precedes:\u21c7,nbsp:\u26ad"
+map <F3> :set list!<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" MULTIPURPOSE TAB KEY
+" Indent if we're at the beginning of a line. Else, do completion.
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! InsertTabWrapper()
+  let col = col('.') - 1
+  if !col || getline('.')[col - 1] !~ '\k'
+    return "\<tab>"
+  else
+    return "\<c-p>"
+  endif
+endfunction
+inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+inoremap <s-tab> <c-n>
+
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
@@ -84,60 +144,47 @@ else
 
 endif " has("autocmd")
 
-"Load pathogen for managing plugins
-filetype off 
-call pathogen#helptags()
-call pathogen#runtime_append_all_bundles()
 
 "Enable loading of filetype plugins
 filetype plugin indent on
 
-"Use zenburn
-set background=dark
-set t_Co=256
-let g:zenburn_high_Contrast=1
-let g:zenburn_alternate_Visual = 1
-let g:zenburn_alternate_Error = 1
-:colorscheme zenburn
-
-"Handy stuff
-let mapleader = ","
 "inserts ' => ' helpful for Ruby hashes
 imap <C-L> <Space>=><Space>
 "Aligns keys and valies in hashes or python dicts
 "the following means - left align everything before '=>' and leave
 "one space, right align everything after that prefixed with one space
-map <Leader>== :Tabularize /=>/l1r1<CR>
+map <Leader>== :Tabularize /=>/l1r1<cr>
 
 " For Haml
 au! BufRead,BufNewFile *.haml         setfiletype haml
 "
-" No Help, please
-nmap <F1> <Esc>
 
-" set spelling both Bulgarian and English
-:map <F5> :setlocal spell! spelllang=en_us,bg<CR>
-:imap <F5> <ESC>:setlocal spell! spelllang=en_us,bg<CR>
-
-" Maps autocomplete to tab¶
-imap <Tab> <C-N>
-set showcmd  " display incomplete commands
-set completeopt=longest,menu
-set wildmode=list:longest,list:full
-set complete=.,t
-
-
-"highlight space errors
-autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+" highlight space errors
 :highlight ExtraWhitespace ctermbg=239
-"the following pattern will match trailing whitespace, except
-"when typing at the end of a line.
-:match ExtraWhitespace /\s\+\%#\@<!$/
-" Show tabs that are not at the start of a line:
-:match ExtraWhitespace /[^\t]\zs\t\+/
+" the following pattern will match trailing whitespace, except
+" when typing at the end of a line.
+" show tabs that are not at the start of a line:
+:match ExtraWhitespace /\s\+\%#\@<!$\|[^\t]\zs\t\+/
 
-"different error highlighting
+" different error highlighting
 hi Error ctermfg=210 ctermbg=239 gui=bold
+
+" highlight long lines
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+map <Leader>ll :2match OverLength /\%81v.\+/<cr>
+map <Leader>lo :2match<cr>
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ARROW KEYS ARE UNACCEPTABLE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+map <Left> :echo "no!"<cr>
+map <Right> :echo "no!"<cr>
+map <Up> :echo "no!"<cr>
+map <Down> :echo "no!"<cr>
+
+map <Home> :echo "no!"<cr>
+map <End> :echo "no!"<cr>
 
 
 
