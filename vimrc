@@ -64,6 +64,9 @@ set pastetoggle=<F2>
 
 set autoread
 
+"look for ctags almost everywhere
+set tags+=../tags,../../tags,../../../tags,../../../../tags,../../../../../tags
+
 "Use zenburn
 set background=dark
 set t_Co=256
