@@ -29,6 +29,7 @@
   lp = log -p
   l = "!source ~/.githelpers && pretty_git_log"
   ls = ls-files
+  updatesubm = submodule foreach git pull origin master
 [user]
   name = Nikolay Vladimirov
   email = nikolay@vladimiroff.com
