@@ -6,4 +6,5 @@ if [ -f /etc/bashrc ]; then
 fi
 
 export TERM='xterm-256color'
+eval "$(rbenv init -)"
 source ~/.bundle.bash
