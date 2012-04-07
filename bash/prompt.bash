@@ -37,4 +37,11 @@ BMAGENTA='\e[45m'
 BCYAN='\e[46m'
 BWHITE='\e[47m'
 
-PS1="\n\[$WHITE\][\t]\[$EGREEN\]\u\[$EWHITE\]:\[$EBLUE\]\w\[$ERED\]"'$(type __git_ps1 &>/dev/null && __git_ps1 " (%s)")'"\[$NO_COLOR\] \n→ "
+
+source ~/.bash/git_ps1.sh
+
+export GIT_PS1_SHOWDIRTYSTATE=true
+export GIT_PS1_DESCRIBE_STYLE="contains"
+
+export PS1="\n\[$EBLUE\]\w\[$EMAGENTA\] "'$(rbenv version-name)'"\[$EGREEN\]"'$(declare -F __git_ps1_local &>/dev/null && __git_ps1_local " (%s)")'"\[$NO_COLOR\] \n→ "
+
