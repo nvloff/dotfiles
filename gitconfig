@@ -33,12 +33,14 @@
   df = diff
   lp = log -p
   l = "!source ~/.githelpers && pretty_git_log"
+  lol = log --decorate --graph --abbrev-commit --oneline
   sh = "!source ~/.githelpers && show_git_head"
   los = log --stat
   ls = ls-files
   updatesubm = submodule foreach git pull origin master
   ctags = !.git/hooks/ctags
   track = checkout --track
+  brt = "!source ~/.githelpers && git_branch_by_time"
 
 [user]
   name = Nikolai Vladimirov

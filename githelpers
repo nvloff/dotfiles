@@ -4,21 +4,92 @@
 #
 # * 51c333e    (12 days)    <Gary Bernhardt>   add vim-eunuch
 #
+# The time massaging regexes start with ^[^<]* because that ensures that they
+# only operate before the first "<". That "<" will be the beginning of the
+# author name, ensuring that we don't destroy anything in the commit message
+# that looks like time.
+#
+# The log format uses } characters between each field, and `column` is later
+# used to split on them. A } in the commit subject or any other field will
+# break this.
 
 HASH="%C(yellow)%h%Creset"
-RELATIVE_TIME="%Cgreen(%ar)%Creset"
+HASH_WHITE="%C(white)%h%Creset"
+
+AUTHOR_RELATIVE_TIME="%Cgreen(%ar)%Creset"
+COMMIT_RELATIVE_TIME="%Cgreen(%cr)%Creset"
+
 AUTHOR="%C(bold blue)<%an>%Creset"
 REFS="%C(red)%d%Creset"
-SUBJECT="%s"
+UNIX_TIME="%ct"
 
-FORMAT="$HASH $REFS $RELATIVE_TIME $AUTHOR $SUBJECT"
+SUBJECT="%C(magenta)%s%Creset"
+SUBJECT_WHITE="%C(white)%s%Creset"
+
+
+FORMAT="$HASH $AUTHOR_RELATIVE_TIME $AUTHOR $REFS $SUBJECT_WHITE"
+
+BRANCH_FORMAT="$UNIX_TIME||$COMMIT_RELATIVE_TIME||$REFS|| ||$HASH_WHITE||# $SUBJECT"
+BRANCH_FORMAT_NOT_MERGED="$UNIX_TIME||$COMMIT_RELATIVE_TIME||$REFS||+||$HASH||# $SUBJECT"
 
 show_git_head() {
     pretty_git_log -1
     git show -p --pretty="tformat:${FORMAT}"
 }
 
-pretty_git_log() {
-    git log --decorate --graph --abbrev-commit --date=relative --pretty="tformat:${FORMAT}" $* 
+simplify_relative_date() {
+  # Repalce (2 years ago) with (2 years)
+  sed -Ee 's/(^[^<]*) ago\)/\1)/' |
+  # Replace (2 years, 5 months) with (2 years)
+  sed -Ee 's/(^[^<]*), [[:digit:]]+ .*months?\)/\1)/'
 }
 
+pager() {
+  # Page only if we need to
+  less -FXRS
+}
+
+pretty_git_log() {
+    git log --graph --abbrev-commit --date=relative --pretty="tformat:${FORMAT}" $* |
+    simplify_relative_date |
+    pager
+}
+
+all_refs() {
+  git show-ref $* |
+  # don't show tags
+  grep -v tags |
+  # get only the commit-id
+  cut -d ' ' -f 1-1
+}
+
+show_refs() {
+  for ref in $(all_refs $*)
+  do
+    if [ "$(git merge-base HEAD $ref)"  == $ref ]; then
+      git log --no-walk --pretty=format:"${BRANCH_FORMAT}\n" $ref
+    else
+      git log --no-walk --pretty=format:"${BRANCH_FORMAT_NOT_MERGED}\n" $ref
+    fi
+  done
+}
+
+
+git_branch_by_time() {
+  echo -e "$(show_refs $*)" |
+  # sort refs by unix timestamp
+  sort -nr |
+  # git log --decorate groups all the refs that point to the same thing
+  uniq |
+  # simplify the relative date
+  simplify_relative_date |
+  # remove the unix timestamp |
+  cut -d '|' -f2- |
+  # escape special symbols so that column can work
+  cat -v - |
+  # format the output in columns
+  column -t -s "|" |
+  # replace the escaped symbols with real ones
+  sed -Ee $'s/\^\[/\e/g' |
+  pager
+}
