@@ -25,7 +25,6 @@
 [alias]
   ds = diff --staged
   ri = rebase -i
-  st = status
   s = status --short
   ci = commit -v
   br = branch
