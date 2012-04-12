@@ -43,7 +43,8 @@
   ctags      = !.git/hooks/ctags
   track      = checkout --track
   brt        = "!source ~/.githelpers && git_branch_by_time"
-  p          = push
+  p          = pull
+  ph         = push
   a          = add
 
 [user]
