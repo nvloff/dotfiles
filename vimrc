@@ -157,6 +157,7 @@ imap <C-L> <Space>=><Space>
 "the following means - left align everything before '=>' and leave
 "one space, right align everything after that prefixed with one space
 map <Leader>== :Tabularize /=>/l1r1<cr>
+map <Leader>\| :Tabularize /\|<cr>
 
 " For Haml
 au! BufRead,BufNewFile *.haml         setfiletype haml
