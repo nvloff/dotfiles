@@ -23,23 +23,24 @@
   editor=vim
 
 [alias]
-  ds = diff --staged
-  ri = rebase -i
-  s = status --short
-  ci = commit -v
-  br = branch
-  co = checkout
-  df = diff
-  lp = log -p
-  l = "!source ~/.githelpers && pretty_git_log"
-  lol = log --decorate --graph --abbrev-commit --oneline
-  sh = "!source ~/.githelpers && show_git_head"
-  los = log --stat
-  ls = ls-files
+  ds         = diff --staged
+  ri         = rebase -i
+  s          = status --short
+  ci         = commit -v
+  br         = branch
+  bra        = branc -1
+  co         = checkout
+  df         = diff
+  lp         = log -p
+  l          = "!source ~/.githelpers && pretty_git_log"
+  lol        = log --decorate --graph --abbrev-commit --oneline
+  sh         = "!source ~/.githelpers && show_git_head"
+  los        = log --stat
+  ls         = ls-files
   updatesubm = submodule foreach git pull origin master
-  ctags = !.git/hooks/ctags
-  track = checkout --track
-  brt = "!source ~/.githelpers && git_branch_by_time"
+  ctags      = !.git/hooks/ctags
+  track      = checkout --track
+  brt        = "!source ~/.githelpers && git_branch_by_time"
 
 [user]
   name = Nikolai Vladimirov
