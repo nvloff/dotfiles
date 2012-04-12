@@ -28,10 +28,12 @@
   s          = status --short
   ci         = commit -v
   br         = branch
-  bra        = branc -1
+  bra        = branch -a
   co         = checkout
   df         = diff
   lp         = log -p
+  unstage    = reset HEAD
+  uns        = reset HEAD
   l          = "!source ~/.githelpers && pretty_git_log"
   lol        = log --decorate --graph --abbrev-commit --oneline
   sh         = "!source ~/.githelpers && show_git_head"
