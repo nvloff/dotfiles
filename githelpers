@@ -33,7 +33,6 @@ BRANCH_FORMAT="$UNIX_TIME||$COMMIT_RELATIVE_TIME||$REFS|| ||$HASH_WHITE||# $SUBJ
 BRANCH_FORMAT_NOT_MERGED="$UNIX_TIME||$COMMIT_RELATIVE_TIME||$REFS||+||$HASH||# $SUBJECT"
 
 show_git_head() {
-    pretty_git_log -1
     git show -p --pretty="tformat:${FORMAT}"
 }
 
