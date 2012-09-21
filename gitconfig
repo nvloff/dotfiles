@@ -65,3 +65,9 @@
 
 [merge]
   tool = vimdiff
+
+[sendemail]
+  smtpencryption = tls
+  smtpserver = smtp.gmail.com
+  smtpserverport = 587
+  chainreplyto = false
