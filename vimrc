@@ -168,7 +168,7 @@ au! BufRead,BufNewFile *.haml         setfiletype haml
 " the following pattern will match trailing whitespace, except
 " when typing at the end of a line.
 " show tabs that are not at the start of a line:
-:match ExtraWhitespace /\s\+\%#\@<!$\|[^\t]\zs\t\+/
+:autocmd BufWinEnter * match ExtraWhitespace /\s\+\%#\@<!$\|[^\t]\zs\t\+/
 
 " different error highlighting
 hi Error ctermfg=210 ctermbg=239 gui=bold
