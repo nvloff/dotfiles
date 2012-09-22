@@ -65,6 +65,7 @@
 
 [merge]
   tool = vimdiff
+	ff = false
 
 [sendemail]
   smtpencryption = tls
