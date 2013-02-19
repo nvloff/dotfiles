@@ -23,29 +23,17 @@
   editor=vim
 
 [alias]
-  ds         = diff --staged
-  ri         = rebase -i
-  s          = status --short
+  a          = add
+  brt        = "!source ~/.githelpers && git_branch_by_time"
   ci         = commit -v
-  br         = branch
-  bra        = branch -a
   co         = checkout
   df         = diff
-  lp         = log -p
-  unstage    = reset HEAD
-  uns        = reset HEAD
   l          = "!source ~/.githelpers && pretty_git_log"
   lol        = log --decorate --graph --abbrev-commit --oneline
+  lp         = log -p
+  s          = status --short
   sh         = "!source ~/.githelpers && show_git_head"
-  los        = log --stat
-  ls         = ls-files
   updatesubm = submodule foreach git pull origin master
-  ctags      = !.git/hooks/ctags
-  track      = checkout --track
-  brt        = "!source ~/.githelpers && git_branch_by_time"
-  p          = pull
-  ph         = push
-  a          = add
 
 [user]
   name = Nikolai Vladimirov
