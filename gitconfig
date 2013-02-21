@@ -27,12 +27,10 @@
   brt        = "!source ~/.githelpers && git_branch_by_time"
   ci         = commit -v
   co         = checkout
-  df         = diff
   l          = "!source ~/.githelpers && pretty_git_log"
   lol        = log --decorate --graph --abbrev-commit --oneline
-  lp         = log -p
   s          = status --short
-  sh         = "!source ~/.githelpers && show_git_head"
+  shead      = "!source ~/.githelpers && show_git_head"
   updatesubm = submodule foreach git pull origin master
 
 [user]
