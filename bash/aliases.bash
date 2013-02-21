@@ -1,6 +1,5 @@
-alias spec='rspec -f d --color'
-alias gmutt='mutt -F ~/.muttrc'
-alias wmutt='mutt -F ~/.muttrc_work'
 alias g='git'
+__git_complete g __git_main
 alias ll='ls -lsh'
 alias test_env='export CUCUMBER_SUFFIX=_cucumber && export RAILS_ENV="test" && export RACK_ENV="test"'
+alias be='bundle exec'
