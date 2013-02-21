@@ -15,6 +15,14 @@
   changed = green
   untracked = cyan
 
+[color "grep"]
+  context = white bold
+  function = green bold
+  linenumber = white bold
+  match = red bold
+  selected = magenta bold
+  separator = white
+
 [color]
   ui = true
 
@@ -31,6 +39,7 @@
   s          = status --short
   shead      = "!source ~/.githelpers && show_git_head"
   updatesubm = submodule foreach git pull origin master
+  gre        = grep -C 2 -p --line-number
 
 [user]
   name = Nikolai Vladimirov
