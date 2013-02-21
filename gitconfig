@@ -46,9 +46,6 @@
 [branch]
   autosetuprebase = always
 
-[help]
-  autocorrect = 1
-
 [merge]
   tool = vimdiff
 	ff = false
