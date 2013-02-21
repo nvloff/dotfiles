@@ -56,7 +56,15 @@
 
 [merge]
   tool = vimdiff
-	ff = false
+  ff = false
+  log = true
+
+[rebase]
+  stat = true
+
+[log]
+  abbrevCommit = true
+  decorate = short
 
 [sendemail]
   smtpencryption = tls
