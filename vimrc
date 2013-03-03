@@ -33,8 +33,6 @@ set wildmenu            " : menu has tab completion, etc
 
 set mousehide           " hide the cursor while writing
 
-set showmatch           " show matching brackets when typing
-
 set ignorecase          " you nearly always want this
 set smartcase           " overrides ignorecase if uppercase used in search string (cool)
 
