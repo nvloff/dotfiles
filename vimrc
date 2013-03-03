@@ -9,6 +9,8 @@ filetype off
 call pathogen#helptags()
 call pathogen#runtime_append_all_bundles()
 
+syntax on               " mac os vim has this off by default
+
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 set history=10000       " keep 10000 lines of command line history
