@@ -51,6 +51,8 @@ set tabstop=2
 set shiftwidth=2
 set expandtab
 
+set colorcolumn=80
+
 " Always display the status line
 set laststatus=2
 set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
