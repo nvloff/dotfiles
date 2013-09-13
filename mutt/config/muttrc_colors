@@ -1,0 +1,41 @@
+#Colours
+#Dark blue theme for black background
+#
+#Spam
+color index magenta default '~h "X-Spam-Status:.*score=(4|5)."'
+color index magenta default '~h "X-Spam-Status:.*score=(6|7)."'
+
+# Headers
+color hdrdefault red                   default
+color header     brightmagenta         default        ^Subject:
+color header     brightgreen           default        ^CC:
+color header     brightcyan            default        ^From:
+color header     brightgreen           default        ^To:
+
+# Messages
+color body       cyan            default        ^gpg:.*
+color body       red             default        " [;:]-*[)>(<|]"
+color quoted     brightblue      default
+color signature  cyan            default
+color attachment yellow          default
+color tilde      blue            default
+
+#Index( order matters !!!)
+color normal     white           default
+color indicator  brightwhite     blue
+color index      brightgreen     default     '~p !~l'   # To: myself, but not in from maillist
+color index      blue            default     ~Q         # Done mails(already replied)
+color index      yellow          default     '~P'       # mail from myself
+color index      brightyellow    default     ~F         # Important
+color index      brightred       default     '~N'       # New
+color index      red             default     '~l ~N'    # New from lists
+color index      blue            default     ~D         # Deleted
+color error      red             default
+
+color tree       magenta         default
+
+color message    brightcyan      default
+color status     brightyellow    blue
+color bold       brightyellow    default
+color markers    red             default
+
