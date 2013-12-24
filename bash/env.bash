@@ -1,4 +1,4 @@
 export PATH=$PATH:$HOME/local/bin:$HOME/bin
 export PATH=$PATH:$HOME/.gems/bin
 export PATH="$HOME/.rbenv/bin:$PATH"
-export export JRUBY_OPTS="-J-Xmx2048m -J-XX:MaxPermSize=512m"
+export JRUBY_OPTS="--server -Xcompile.invokedynamic=false -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-noverify -J-Xms512m -J-Xmx1024m"
