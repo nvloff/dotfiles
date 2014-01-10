@@ -19,6 +19,10 @@ FORMAT="$HASH $AUTHOR_RELATIVE_TIME $AUTHOR $REFS $SUBJECT_WHITE"
 BRANCH_FORMAT="$UNIX_TIME||$COMMIT_RELATIVE_TIME||$REFS|| ||$HASH_WHITE||# $SUBJECT"
 BRANCH_FORMAT_NOT_MERGED="$UNIX_TIME||$COMMIT_RELATIVE_TIME||$REFS||+||$HASH||# $SUBJECT"
 
+govnokod() {
+  git log --author="$(git config user.email)" --oneline $*
+}
+
 simplify_relative_date() {
   # Repalce (2 years ago) with (2 years)
   sed -Ee 's/(^[^<]*) ago\)/\1)/' |

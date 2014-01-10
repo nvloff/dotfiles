@@ -37,9 +37,13 @@
   l          = "!source ~/.githelpers && pretty_git_log"
   lol        = log --decorate --graph --abbrev-commit --oneline
   s          = status --short
-  shead      = "!source ~/.githelpers && show_git_head"
   updatesubm = submodule foreach git pull origin master
   gre        = grep -C 2 -p --line-number
+
+  # I ocasionally lol when using those, bringing some light in my empty existance
+  omgwtf     = blame
+  iddqd      = rebase -i
+  govnokod   = "!source ~/.githelpers && govnokod"
 
 [user]
   name = Nikolai Vladimirov
