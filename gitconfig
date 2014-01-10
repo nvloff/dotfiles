@@ -43,6 +43,8 @@
   # I ocasionally lol when using those, bringing some light in my empty existance
   omgwtf     = blame
   iddqd      = rebase -i
+  shipit     = push
+  isuck      = push -f
   govnokod   = "!source ~/.githelpers && govnokod"
 
 [user]
