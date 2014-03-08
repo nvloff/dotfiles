@@ -150,17 +150,8 @@ else
 
 endif " has("autocmd")
 
-
 "Enable loading of filetype plugins
 filetype plugin indent on
-
-"inserts ' => ' helpful for Ruby hashes
-imap <C-L> <Space>=><Space>
-"Aligns keys and valies in hashes or python dicts
-"the following means - left align everything before '=>' and leave
-"one space, right align everything after that prefixed with one space
-map <Leader>== :Tabularize /=>/l1r1<cr>
-map <Leader>\| :Tabularize /\|<cr>
 
 " For Haml
 au! BufRead,BufNewFile *.haml         setfiletype haml
