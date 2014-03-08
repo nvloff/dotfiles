@@ -3,7 +3,6 @@
 " Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
 set nocompatible
-set colorcolumn=80
 
 "Load pathogen for managing plugins
 filetype off
@@ -63,12 +62,7 @@ set numberwidth=5
 set completeopt=longest,menu
 set wildmode=longest,list
 
-set pastetoggle=<F2>
-
 set autoread
-
-"look for ctags almost everywhere
-set tags+=../tags,../../tags,../../../tags,../../../../tags,../../../../../tags
 
 "Use zenburn
 set background=dark
@@ -77,9 +71,6 @@ let g:zenburn_high_Contrast=1
 let g:zenburn_alternate_Visual = 1
 let g:zenburn_alternate_Error = 1
 colorscheme zenburn
-
-" No Help, please
-nmap <F1> <Esc>
 
 " set spelling both Bulgarian and English
 :map <F5> :setlocal spell! spelllang=en_us,bg<cr>
@@ -92,7 +83,6 @@ let mapleader = ","
 command! -bar -nargs=0 SudoW   :setl nomod|silent exe 'write !sudo tee %>/dev/null'|let &mod = v:shell_error
 
 let &listchars = "tab:\u21e5\u00b7,trail:\u2423,extends:\u21c9,precedes:\u21c7,nbsp:\u26ad"
-map <F3> :set list!<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
@@ -108,7 +98,6 @@ function! InsertTabWrapper()
 endfunction
 inoremap <tab> <c-r>=InsertTabWrapper()<cr>
 inoremap <s-tab> <c-n>
-
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
@@ -150,13 +139,6 @@ else
 
 endif " has("autocmd")
 
-"Enable loading of filetype plugins
-filetype plugin indent on
-
-" For Haml
-au! BufRead,BufNewFile *.haml         setfiletype haml
-"
-
 " highlight space errors
 :highlight ExtraWhitespace ctermbg=239
 " the following pattern will match trailing whitespace, except
@@ -166,23 +148,3 @@ au! BufRead,BufNewFile *.haml         setfiletype haml
 
 " different error highlighting
 hi Error ctermfg=210 ctermbg=239 gui=bold
-
-" highlight long lines
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-map <Leader>ll :2match OverLength /\%81v.\+/<cr>
-map <Leader>lo :2match<cr>
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ARROW KEYS ARE UNACCEPTABLE
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <Left> :echo "no!"<cr>
-map <Right> :echo "no!"<cr>
-map <Up> :echo "no!"<cr>
-map <Down> :echo "no!"<cr>
-
-map <Home> :echo "no!"<cr>
-map <End> :echo "no!"<cr>
-
-
-
