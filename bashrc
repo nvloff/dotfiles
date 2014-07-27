@@ -1,5 +1,4 @@
 # .bashrc
-
 # Source global definitions
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
@@ -17,5 +16,8 @@ then
 fi
 
 export TERM='xterm-256color'
-command -v rbenv >/dev/null 2>&1 && eval "$(rbenv init -)"
+source /usr/local/share/chruby/chruby.sh
 source ~/.bundle.bash
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"

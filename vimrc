@@ -11,6 +11,13 @@ call pathogen#runtime_append_all_bundles()
 
 syntax on               " mac os vim has this off by default
 
+set ttyfast
+set lazyredraw
+unlet! ruby_no_identifiers
+unlet! ruby_no_expensive
+"let ruby_no_identifiers = 1
+"let ruby_no_expensive = 1
+
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 set history=10000       " keep 10000 lines of command line history
@@ -98,6 +105,26 @@ function! InsertTabWrapper()
 endfunction
 inoremap <tab> <c-r>=InsertTabWrapper()<cr>
 inoremap <s-tab> <c-n>
+
+
+" Run a given vim command on the results of fuzzy selecting from a given shell
+" command. See usage below.
+function! SelectaCommand(choice_command, selecta_args, vim_command)
+  try
+    silent let selection = system(a:choice_command . " | selecta " . a:selecta_args)
+  catch /Vim:Interrupt/
+    " Swallow the ^C so that the redraw below happens; otherwise there will be
+    " leftovers from selecta on the screen
+    redraw!
+    return
+  endtry
+  redraw!
+  exec a:vim_command . " " . selection
+endfunction
+
+" Find all files in all non-dot directories starting in the working directory.
+" Fuzzy select one of those. Open the selected file with :e.
+nnoremap <leader>f :call SelectaCommand("find * -type f", "", ":e")<cr>
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
