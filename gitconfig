@@ -28,6 +28,7 @@
 
 [core]
   editor=vim
+  ignorecase=false
 
 [alias]
   a          = add

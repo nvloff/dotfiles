@@ -86,6 +86,8 @@ colorscheme zenburn
 "Handy stuff
 let mapleader = ","
 
+map <Leader>\| :Tabularize /\|<cr>
+
 "edit a file as root
 command! -bar -nargs=0 SudoW   :setl nomod|silent exe 'write !sudo tee %>/dev/null'|let &mod = v:shell_error
 
