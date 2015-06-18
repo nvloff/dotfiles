@@ -179,3 +179,16 @@ endif " has("autocmd")
 
 " different error highlighting
 hi Error ctermfg=210 ctermbg=239 gui=bold
+
+" RSpec.vim mappings
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
+map <Leader>a :call RunAllSpecs()<CR>
+
+let g:dispatch_compilers = {
+      \ 'bundle exec': '',
+      \ 'clear;': '',
+      \ 'zeus': ''}
+
+let g:rspec_command = "!dotenv bundle exec spring rspec {spec}"
