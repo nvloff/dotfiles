@@ -62,7 +62,6 @@
 
 [merge]
   tool = vimdiff
-  ff = false
   log = true
 
 [rebase]

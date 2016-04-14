@@ -16,8 +16,7 @@ then
 fi
 
 export TERM='xterm-256color'
-source /usr/local/share/chruby/chruby.sh
-source /usr/local/share/chruby/auto.sh
+eval "$(rbenv init -)"
 source ~/.bundle.bash
 
 ### Added by the Heroku Toolbelt
