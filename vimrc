@@ -191,4 +191,4 @@ let g:dispatch_compilers = {
       \ 'clear;': '',
       \ 'zeus': ''}
 
-let g:rspec_command = "!dotenv bundle exec rspec {spec}"
+let g:rspec_command = "!dotenv ./bin/rspec {spec}"
