@@ -5,7 +5,7 @@ set nocompatible
 if exists('*minpac#init')
   " minpac is loaded.
   call minpac#init()
-  call minpac#add('k-takata/minpac', {'type': 'opt'})
+  "call minpac#add('k-takata/minpac', {'type': 'opt'})
 
   call minpac#add('tpope/vim-rails')
   call minpac#add('tpope/vim-dispatch')
