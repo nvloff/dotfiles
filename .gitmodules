@@ -1,21 +1,9 @@
-[submodule "vim/bundle/rails"]
-	path = vim/bundle/rails
-	url = https://github.com/tpope/vim-rails.git
-[submodule "vim/bundle/ruby"]
-	path = vim/bundle/ruby
-	url = https://github.com/vim-ruby/vim-ruby.git
-[submodule "vim/bundle/fugitive"]
-	path = vim/bundle/fugitive
-	url = https://github.com/tpope/vim-fugitive.git
 [submodule "vim/bundle/zenburn"]
 	path = vim/bundle/zenburn
 	url = https://github.com/jnurmine/Zenburn.git
-[submodule "vim/bundle/rspec"]
-	path = vim/bundle/rspec
-	url = https://github.com/thoughtbot/vim-rspec
-[submodule "vim/bundle/dispatch"]
-	path = vim/bundle/dispatch
-	url = https://github.com/tpope/vim-dispatch
 [submodule "vim/bundle/vim-test"]
 	path = vim/bundle/vim-test
 	url = https://github.com/janko-m/vim-test.git
+[submodule "vim/pack/minpac/opt/minpac"]
+	path = vim/pack/minpac/opt/minpac
+	url = https://github.com/k-takata/minpac.git
