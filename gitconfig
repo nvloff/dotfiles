@@ -29,6 +29,7 @@
 [core]
   editor=vim
   ignorecase=false
+  filemode=true
 
 [alias]
   a          = add
@@ -37,7 +38,7 @@
   co         = checkout
   lol        = log --decorate --graph --abbrev-commit --oneline
   s          = status --short
-  updatesubm = submodule foreach git pull --rebase origin master
+  updatesubm = submodule foreach git pull --ff-only
   gre        = grep -C 2 -p --line-number
 
   # I ocasionally lol when using those, bringing some light in my empty existance

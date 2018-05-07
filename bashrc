@@ -14,13 +14,11 @@ then
     . `brew --prefix`/etc/bash_completion.d/git-prompt.sh
   fi
 else
-  source /usr/share/doc/git-core-doc/contrib/completion/git-completion.bash
-  source /usr/share/doc/git-core-doc/contrib/completion/git-prompt.sh
+  source /usr/share/doc/git/contrib/completion/git-completion.bash
+  source /usr/share/doc/git/contrib/completion/git-prompt.sh
 fi
 
 export TERM='xterm-256color'
 source ~/.bundle.bash
 eval "$(rbenv init -)"
-
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
+eval "$(exenv init -)"

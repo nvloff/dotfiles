@@ -170,6 +170,11 @@ else
 
 endif " has("autocmd")
 
+au FileType qf call AdjustWindowHeight(3, 20)
+function! AdjustWindowHeight(minheight, maxheight)
+  exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
+endfunction
+
 " highlight space errors
 :highlight ExtraWhitespace ctermbg=239
 " the following pattern will match trailing whitespace, except
@@ -180,15 +185,13 @@ endif " has("autocmd")
 " different error highlighting
 hi Error ctermfg=210 ctermbg=239 gui=bold
 
-" RSpec.vim mappings
-map <Leader>t :call RunCurrentSpecFile()<CR>
-map <Leader>s :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
+" these "Ctrl mappings" work well when Caps Lock is mapped to Ctrl
+nmap <silent> tt :TestNearest<CR>" t Ctrl+n
+nmap <silent> tf :TestFile<CR>    " t Ctrl+f
+nmap <silent> ts :TestSuite<CR>   " t Ctrl+s
+"nmap <silent> t<C-l> :TestLast<CR>    " t Ctrl+l
+"nmap <silent> t<C-g> :TestVisit<CR>   " t Ctrl+g
 
-let g:dispatch_compilers = {
-      \ 'bundle exec': '',
-      \ 'clear;': '',
-      \ 'zeus': ''}
-
-let g:rspec_command = "!dotenv ./bin/rspec {spec}"
+"let test#strategy = "dispatch_background"
+let test#strategy = "dispatch"
+"let g:test#preserve_screen = 1
