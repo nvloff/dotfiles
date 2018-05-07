@@ -74,7 +74,9 @@ set colorcolumn=80
 
 " Always display the status line
 set laststatus=2
-set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+if exists('g:loaded_fugitive')
+  set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+endif
 
 "Line Numbers
 set number
@@ -91,7 +93,7 @@ set t_Co=256
 let g:zenburn_high_Contrast=1
 let g:zenburn_alternate_Visual = 1
 let g:zenburn_alternate_Error = 1
-colorscheme zenburn
+silent! colorscheme zenburn
 
 " set spelling both Bulgarian and English
 :map <F5> :setlocal spell! spelllang=en_us,bg<cr>
