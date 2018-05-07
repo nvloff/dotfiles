@@ -1,4 +1,2 @@
-mutt/cache
-mutt/certificates
-vim/.netrwhist
-vim/pack/minpac/start/
+.vim/.netrwhist
+.vim/pack/minpac/start/
