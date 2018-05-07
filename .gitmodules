@@ -1,9 +1,3 @@
-[submodule "vim/bundle/zenburn"]
-	path = vim/bundle/zenburn
-	url = https://github.com/jnurmine/Zenburn.git
-[submodule "vim/bundle/vim-test"]
-	path = vim/bundle/vim-test
-	url = https://github.com/janko-m/vim-test.git
 [submodule "vim/pack/minpac/opt/minpac"]
 	path = vim/pack/minpac/opt/minpac
 	url = https://github.com/k-takata/minpac.git
