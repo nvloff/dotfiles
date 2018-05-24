@@ -208,4 +208,7 @@ nmap <silent> ts :TestSuite<CR>   " t Ctrl+s
 
 "let test#strategy = "dispatch_background"
 let test#strategy = "dispatch"
+if has('nvim')
+  let test#strategy = "neovim"
+end
 "let g:test#preserve_screen = 1
