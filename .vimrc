@@ -9,11 +9,15 @@ if exists('*minpac#init')
 
   call minpac#add('tpope/vim-rails')
   call minpac#add('tpope/vim-dispatch')
+  call minpac#add('radenling/vim-dispatch-neovim')
   call minpac#add('tpope/vim-fugitive')
   call minpac#add('vim-ruby/vim-ruby')
   call minpac#add('kchmck/vim-coffee-script')
   call minpac#add('janko-m/vim-test')
   call minpac#add('jnurmine/Zenburn')
+  call minpac#add('elixir-editors/vim-elixir')
+  call minpac#add('slashmili/alchemist.vim')
+  call minpac#add('w0rp/ale')
 endif
 
 command! PackUpdate packadd minpac | source $MYVIMRC | call minpac#update()
@@ -100,8 +104,6 @@ silent! colorscheme zenburn
 "Handy stuff
 let mapleader = ","
 
-map <Leader>\| :Tabularize /\|<cr>
-
 "edit a file as root
 command! -bar -nargs=0 SudoW   :setl nomod|silent exe 'write !sudo tee %>/dev/null'|let &mod = v:shell_error
 
@@ -121,26 +123,6 @@ function! InsertTabWrapper()
 endfunction
 inoremap <tab> <c-r>=InsertTabWrapper()<cr>
 inoremap <s-tab> <c-n>
-
-
-" Run a given vim command on the results of fuzzy selecting from a given shell
-" command. See usage below.
-function! SelectaCommand(choice_command, selecta_args, vim_command)
-  try
-    silent let selection = system(a:choice_command . " | selecta " . a:selecta_args)
-  catch /Vim:Interrupt/
-    " Swallow the ^C so that the redraw below happens; otherwise there will be
-    " leftovers from selecta on the screen
-    redraw!
-    return
-  endtry
-  redraw!
-  exec a:vim_command . " " . selection
-endfunction
-
-" Find all files in all non-dot directories starting in the working directory.
-" Fuzzy select one of those. Open the selected file with :e.
-nnoremap <leader>f :call SelectaCommand("find * -type f", "", ":e")<cr>
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
@@ -212,3 +194,22 @@ if has('nvim')
   let test#strategy = "neovim"
 end
 "let g:test#preserve_screen = 1
+
+
+" ALE
+"
+let g:ale_linters = {
+\ 'javascript': ['eslint'],
+\ 'ruby': ['rubocop'],
+\ }
+
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_enter = 1
+let g:ale_lint_on_filetype_changed = 0
+
+" Mappings in the style of unimpaired-next
+nmap <silent> [W <Plug>(ale_first)
+nmap <silent> [w <Plug>(ale_previous)
+nmap <silent> ]w <Plug>(ale_next)
+nmap <silent> ]W <Plug>(ale_last)
