@@ -26,6 +26,6 @@ copy_config() {
 }
 
 
-#main
+main
 copy_config
 
