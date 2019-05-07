@@ -29,5 +29,6 @@ fi
 
 export TERM='xterm-256color'
 source ~/.bundle.bash
-eval "$(rbenv init -)"
-eval "$(exenv init -)"
+
+[ -x "$(command -v exenv)" ] && eval "$(exenv init -)"
+[ -x "$(command -v rbenv)" ] && eval "$(rbenv init -)"
