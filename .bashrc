@@ -14,8 +14,17 @@ then
     . `brew --prefix`/etc/bash_completion.d/git-prompt.sh
   fi
 else
-  source /usr/share/doc/git/contrib/completion/git-completion.bash
-  source /usr/share/doc/git/contrib/completion/git-prompt.sh
+  sources=( \
+    "/usr/share/doc/git/contrib/completion/git-completion.bash" \
+    "/usr/share/doc/git/contrib/completion/git-prompt.sh" \
+    "/usr/share/bash-completion/completions/git" \
+    )
+  for f in "${sources[@]}"
+  do
+    if [ -f $f ]; then
+      source $f
+    fi
+  done
 fi
 
 export TERM='xterm-256color'
