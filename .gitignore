@@ -1,2 +1,2 @@
-.vim/.netrwhist
-.vim/pack/minpac/start/
+*.swp
+/nvim/plugin/packer_compiled.lua

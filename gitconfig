@@ -27,33 +27,18 @@
   ui = true
 
 [core]
-  editor=vim
+  editor=nvim
   ignorecase=false
   filemode=true
 
 [alias]
   a          = add
-  brt        = "!source ~/.githelpers && git_branch_by_time"
   ci         = commit -v
   co         = checkout
   lol        = log --decorate --graph --abbrev-commit --oneline
   s          = status --short
   updatesubm = submodule foreach git pull --ff-only
   gre        = grep -C 2 -p --line-number
-
-  # I ocasionally lol when using those, bringing some light in my empty existance
-  omgwtf     = blame
-  iddqd      = rebase -i
-  shipit     = push
-  isuck      = push -f
-  govnokod   = "!source ~/.githelpers && govnokod"
-
-[user]
-  name = Nikolai Vladimirov
-  email = nikolay@vladimiroff.com
-
-[github]
-  user = nvloff
 
 [push]
   default = tracking
@@ -72,11 +57,5 @@
   abbrevCommit = true
   decorate = short
 
-[sendemail]
-  smtpencryption = tls
-  smtpserver = smtp.gmail.com
-  smtpserverport = 587
-  chainreplyto = false
-[filter "media"]
-	clean = git-media-clean %f
-	smudge = git-media-smudge %f
+[include]
+  path= ~/.gitconfig.local
