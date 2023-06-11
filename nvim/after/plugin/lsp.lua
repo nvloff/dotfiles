@@ -37,6 +37,9 @@ local on_attach = function(_, bufnr)
         print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     end, '[W]orkspace [L]ist Folders')
 
+    nmap("<leader>vca", function() vim.lsp.buf.code_action() end)
+    nmap("<leader>vrn", function() vim.lsp.buf.rename() end)
+
     -- Create a command `:Format` local to the LSP buffer
     vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
         vim.lsp.buf.format({ async = false, timeout_ms = 10000 })
