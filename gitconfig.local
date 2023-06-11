@@ -1,0 +1,7 @@
+# [user]
+#  name = Nikolai Vladimirov
+#  email = <email>
+#  signingkey = <gpg --list-secret-keys --keyid-format=long>
+#
+# [github]
+#  user = <user>

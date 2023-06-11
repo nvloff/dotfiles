@@ -57,5 +57,8 @@
   abbrevCommit = true
   decorate = short
 
+[commit]
+  gpgsign=true
+
 [include]
   path= ~/.gitconfig.local
