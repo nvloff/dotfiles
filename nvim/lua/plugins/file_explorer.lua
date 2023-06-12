@@ -33,6 +33,10 @@ return {
 				local stat = vim.loop.fs_stat(vim.fn.argv(0))
 				if stat and stat.type == "directory" then
 					require("neo-tree")
+					require("neo-tree.command").execute({
+						toggle = true,
+						dir = require("lazyvim.util").get_root()
+					})
 				end
 			end
 		end,
@@ -40,7 +44,7 @@ return {
 			sources = { "filesystem", "buffers", "git_status", "document_symbols" },
 			open_files_do_not_replace_types = { "terminal", "Trouble", "qf", "Outline" },
 			filesystem = {
-				bind_to_cwd = false,
+				bind_to_cwd = true,
 				follow_current_file = true,
 				use_libuv_file_watcher = true,
 			},
