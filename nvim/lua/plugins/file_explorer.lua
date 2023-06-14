@@ -44,6 +44,14 @@ return {
 			sources = { "filesystem", "buffers", "git_status", "document_symbols" },
 			open_files_do_not_replace_types = { "terminal", "Trouble", "qf", "Outline" },
 			filesystem = {
+				filtered_items = {
+					visible = false,
+					hide_dotfiles = false,
+					hide_gitignored = false,
+					hide_by_name = {
+						".git"
+					},
+				},
 				bind_to_cwd = true,
 				follow_current_file = true,
 				use_libuv_file_watcher = true,
