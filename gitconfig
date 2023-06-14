@@ -42,6 +42,7 @@
 
 [push]
   default = tracking
+  autoSetupRemote = true
 
 [branch]
   autosetuprebase = always
