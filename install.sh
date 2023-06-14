@@ -4,12 +4,10 @@ set -e
 
 shopt -s extglob
 
-dotfiles_dir="$HOME/rcfiles"
-
-ln -vnsf "$PWD/bash" "$HOME/.bash"
-ln -vnsf "$PWD/bashrc" "$HOME/.bashrc"
-ln -vnsf "$PWD/bundle.bash" "$HOME/.bundle.bash"
-ln -vnsf "$PWD/profile" "$HOME/.profile"
+# ln -vnsf "$PWD/bash" "$HOME/.bash"
+# ln -vnsf "$PWD/bashrc" "$HOME/.bashrc"
+# ln -vnsf "$PWD/bundle.bash" "$HOME/.bundle.bash"
+# ln -vnsf "$PWD/profile" "$HOME/.profile"
 
 ln -vnsf "$PWD/gitconfig" "$HOME/.gitconfig"
 
