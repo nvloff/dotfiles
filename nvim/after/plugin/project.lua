@@ -7,9 +7,17 @@ vim.api.nvim_set_keymap(
 
 require('telescope').setup {
     defaults = {
-        file_ignore_patterns = {
-            "vendor",
-        },
+        vimgrep_arguments = {
+            'rg',
+            '--color=never',
+            '--no-heading',
+            '--with-filename',
+            '--line-number',
+            '--column',
+            '--smart-case',
+            '--glob',
+            '!vendor/*',
+        }
     },
     extensions = {
         project = {
@@ -45,7 +53,7 @@ require('telescope').setup {
 require('telescope').load_extension('repo')
 
 require('nvim-rooter').setup {
-  rooter_patterns = { '.git' },
-  trigger_patterns = { '*' },
-  manual = false,
+    rooter_patterns = { '.git' },
+    trigger_patterns = { '*' },
+    manual = false,
 }
