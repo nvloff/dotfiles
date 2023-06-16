@@ -10,23 +10,14 @@ return {
       {
         '<leader>rtn',
         function()
-          require('neotest').run.run()
+          require('neotest').run.run({extra_args={"-race"}})
         end,
         desc = 'Run the nearest test',
       },
       {
-        '<leader>rta',
-        function()
-          vim.ui.input({ prompt = 'Extra go test args: ' }, function(input)
-            require('neotest').run.run({ extra_args = vim.split(input, ' ') })
-          end)
-        end,
-        desc = 'Run the nearest test (args)',
-      },
-      {
         '<leader>rtf',
         function()
-          require('neotest').run.run(vim.fn.expand('%'))
+          require('neotest').run.run({vim.fn.expand('%'), extra_args = {"-race"}})
         end,
         desc = 'Run the test file',
       },
