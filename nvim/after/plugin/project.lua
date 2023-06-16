@@ -6,6 +6,11 @@ vim.api.nvim_set_keymap(
 )
 
 require('telescope').setup {
+    defaults = {
+        file_ignore_patterns = {
+            "vendor",
+        },
+    },
     extensions = {
         project = {
             base_dirs = {
@@ -25,6 +30,8 @@ require('telescope').setup {
             list = {
                 fd_opts = {
                     "--no-ignore-vcs",
+                    "--exlcude",
+                    "vendor"
                 },
                 search_dirs = {
                     "~/go/src",
