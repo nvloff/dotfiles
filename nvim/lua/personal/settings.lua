@@ -92,7 +92,7 @@ vim.opt.textwidth = 100
 vim.o.termguicolors = true
 
 -- https://github.com/catppuccin/nvim
-vim.cmd.colorscheme "catppuccin"
+vim.cmd.colorscheme "catppuccin-mocha"
 
 local opt = vim.opt
 opt.clipboard = "unnamedplus"  -- Sync with system clipboard
