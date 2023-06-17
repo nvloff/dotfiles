@@ -5,4 +5,5 @@ export PATH="$HOME/go/bin:$PATH"
 
 export GOPATH="$HOME/go"
 
+export RIPGREP_CONFIG_PATH="$HOME/rcfiles/ripgreprc"
 export FZF_DEFAULT_COMMAND='rg --files'
