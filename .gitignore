@@ -1,1 +1,2 @@
-bash/local.bash
+/bash/local.bash
+/nvim/lazy-lock.json
