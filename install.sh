@@ -8,7 +8,8 @@ shopt -s extglob
 # ln -vnsf "$PWD/bashrc" "$HOME/.bashrc"
 # ln -vnsf "$PWD/bundle.bash" "$HOME/.bundle.bash"
 # ln -vnsf "$PWD/profile" "$HOME/.profile"
+#
+# ln -vnsf "$PWD/gitconfig" "$HOME/.gitconfig"
 
-ln -vnsf "$PWD/gitconfig" "$HOME/.gitconfig"
-
-ln -vnsf "$PWD/nvim" "$HOME/.config/nvim"
+#ln -vnsf "$PWD/nvim" "$HOME/.config/nvim"
+ln -vnsf "$PWD/kitty" "$HOME/.config/kitty"
