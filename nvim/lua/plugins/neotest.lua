@@ -8,28 +8,28 @@ return {
     },
     keys = {
       {
-        '<leader>rtn',
+        '<leader>tt',
         function()
           require('neotest').run.run({extra_args={"-race"}})
         end,
         desc = 'Run the nearest test',
       },
       {
-        '<leader>rtf',
+        '<leader>tf',
         function()
           require('neotest').run.run({vim.fn.expand('%'), extra_args = {"-race"}})
         end,
         desc = 'Run the test file',
       },
       {
-        '<leader>rto',
+        '<leader>to',
         function()
           require('neotest').output_panel.toggle()
         end,
         desc = 'Toggle test output',
       },
       {
-        '<leader>rts',
+        '<leader>ts',
         function()
           require('neotest').summary.toggle()
         end,
