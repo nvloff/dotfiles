@@ -128,7 +128,7 @@ opt.updatetime = 200                                                -- Save swap
 opt.winminwidth = 5                                                 -- Minimum window width
 opt.wrap = false                                                    -- Disable line wrap
 
--- Enable
+-- spell check config
 opt.spelllang = { "en_gb" }
 opt.spell = false
 
