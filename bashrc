@@ -1,15 +1,13 @@
 # .bashrc
 
-source ~/.bash/env.bash
-source ~/.bash/local.bash
-
 # Source global definitions
 if [ -f /etc/bashrc ]; then
   . /etc/bashrc
 fi
 
-if type brew &> /dev/null
-then
+if [ -f /opt/homebrew/bin/brew ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+
   if [ -f `brew --prefix`/etc/bash_completion ]; then
     . `brew --prefix`/etc/bash_completion
   fi
@@ -36,4 +34,7 @@ else
 fi
 
 export TERM='xterm-256color'
+
+source ~/.bash/env.bash
+source ~/.bash/local.bash
 source ~/.bundle.bash
