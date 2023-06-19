@@ -236,12 +236,6 @@ return {
 					null_ls.builtins.diagnostics.actionlint,
 
 					-- formatting
-					null_ls.builtins.formatting.clang_format.with({
-						extra_args = {
-							"--style",
-							"{BasedOnStyle: llvm, IndentWidth: 4}",
-						},
-					}),
 					null_ls.builtins.formatting.stylua,
 					null_ls.builtins.formatting.jq,
 					null_ls.builtins.formatting.shfmt,
