@@ -86,8 +86,6 @@ vim.opt.colorcolumn = "100"
 -- 	this.
 vim.opt.textwidth = 100
 
-
-
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
