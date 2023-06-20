@@ -36,21 +36,27 @@ local function configure_keymaps(bufnr)
 
 	local keymap = require("utils.keymap")
 	-- LSP Code actions
-	keymap.set("n", "<leader>gD", vim.lsp.buf.declaration, { desc = "Declaration", buffer = bufnr })
-	keymap.set("n", "<leader>gd", vim.lsp.buf.definition, { desc = "Definition", buffer = bufnr })
-	keymap.set("n", "<leader>gt", vim.lsp.buf.type_definition, { desc = "Type definition", buffer = bufnr })
-	keymap.set("n", "<leader>gI", vim.lsp.buf.implementation, { desc = "Implementation", buffer = bufnr })
-	keymap.set("n", "<leader>gi", vim.lsp.buf.incoming_calls, { desc = "Incoming calls", buffer = bufnr })
-	keymap.set("n", "<leader>go", vim.lsp.buf.outgoing_calls, { desc = "Outgoing calls", buffer = bufnr })
-	keymap.set("n", "<leader>gr", vim.lsp.buf.references, { desc = "References", buffer = bufnr })
+	keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Definition", buffer = bufnr })
+	keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Declaration", buffer = bufnr })
+	keymap.set("n", "gr", vim.lsp.buf.references, { desc = "References", buffer = bufnr })
+	keymap.set("n", "gI", vim.lsp.buf.implementation, { desc = "Implementation", buffer = bufnr })
+	keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, { desc = "Type definition", buffer = bufnr })
+
 	keymap.set("n", "<leader>gs", vim.lsp.buf.document_symbol, { desc = "Document symbols", buffer = bufnr })
-	keymap.set("n", "<leader>gw", vim.lsp.buf.workspace_symbol, { desc = "Workspace symbols", buffer = bufnr })
+	keymap.set("n", "<leader>ws", vim.lsp.buf.workspace_symbol, { desc = "Workspace symbols", buffer = bufnr })
+
+	-- keymap.set("n", "<leader>gi", vim.lsp.buf.incoming_calls, { desc = "Incoming calls", buffer = bufnr })
+	-- keymap.set("n", "<leader>go", vim.lsp.buf.outgoing_calls, { desc = "Outgoing calls", buffer = bufnr })
+	--
 	keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Documentation", buffer = bufnr })
-	keymap.set("n", "<leader>ck", vim.lsp.buf.signature_help, { desc = "Signature help", buffer = bufnr })
-	keymap.set("i", "<c-k>", vim.lsp.buf.signature_help, { desc = "Signature help", buffer = bufnr })
-	keymap.set("n", "<leader>cr", vim.lsp.buf.rename, { desc = "Rename", buffer = bufnr })
-	keymap.set("n", "<C-l>", vim.lsp.buf.format, { desc = "Format", buffer = bufnr })
+
+	keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, { desc = "Signature help", buffer = bufnr })
+
+	keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename", buffer = bufnr })
 	keymap.set({ "v", "n" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action", buffer = bufnr })
+
+	keymap.set("n", "<C-l>", vim.lsp.buf.format, { desc = "Format", buffer = bufnr })
+
 	keymap.set("n", "<leader>cl", vim.lsp.codelens.refresh, { desc = "Refresh codelens", buffer = bufnr })
 	keymap.set("n", "<leader>rl", vim.lsp.codelens.run, { desc = "Run codelens", buffer = bufnr })
 

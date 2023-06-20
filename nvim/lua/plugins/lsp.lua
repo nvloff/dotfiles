@@ -152,13 +152,6 @@ local servers_config = {
 			filetypes = { "tiltfile", "starlark" },
 		}
 	end,
-	clangd = function()
-		return {
-			capabilities = {
-				offsetEncoding = { "utf-16" },
-			},
-		}
-	end,
 }
 
 return {
