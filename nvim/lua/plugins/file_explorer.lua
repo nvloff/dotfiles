@@ -2,6 +2,11 @@ return {
 	-- file explorer
 	{
 		"nvim-neo-tree/neo-tree.nvim",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+			"MunifTanjim/nui.nvim",
+		},
 		cmd = "Neotree",
 		keys = {
 			{
@@ -9,7 +14,7 @@ return {
 				function()
 					require("neo-tree.command").execute({
 						toggle = true,
-						dir = require("lazyvim.util").get_root()
+						dir = require("lazyvim.util").get_root(),
 					})
 				end,
 				desc = "Explorer NeoTree (root dir)",
@@ -22,7 +27,7 @@ return {
 				desc = "Explorer NeoTree (cwd)",
 			},
 			{ "<leader>e", "<leader>fe", desc = "Explorer NeoTree (root dir)", remap = true },
-			{ "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)",      remap = true },
+			{ "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
 		},
 		deactivate = function()
 			vim.cmd([[Neotree close]])
@@ -35,7 +40,7 @@ return {
 					require("neo-tree")
 					require("neo-tree.command").execute({
 						toggle = true,
-						dir = require("lazyvim.util").get_root()
+						dir = require("lazyvim.util").get_root(),
 					})
 				end
 			end
@@ -49,7 +54,7 @@ return {
 					hide_dotfiles = false,
 					hide_gitignored = false,
 					hide_by_name = {
-						".git"
+						".git",
 					},
 				},
 				bind_to_cwd = true,
