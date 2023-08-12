@@ -132,6 +132,7 @@ mason_lspconfig.setup_handlers {
 }
 
 local configs = require('lspconfig.configs')
+local lspconfig = require('lspconfig')
 local util = require('lspconfig.util')
 
 if not configs.helm_ls then
@@ -146,13 +147,13 @@ if not configs.helm_ls then
   }
 end
 
-mason_lspconfig.helm_ls.setup {
+lspconfig.helm_ls.setup {
   filetypes = {"helm"},
   cmd = {"helm_ls", "serve"},
   on_attach = on_attach,
 }
 
-mason_lspconfig.tilt_ls.setup{
+lspconfig.tilt_ls.setup{
   capabilities = capabilities,
   on_attach = on_attach,
   filetypes= {"tiltfile", "starlak"}
