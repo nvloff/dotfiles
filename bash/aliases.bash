@@ -1,5 +1,5 @@
 alias g='git'
 __git_complete g __git_main
 alias ls='ls -G'
-alias ll='ls -alsh'
+alias ll='ls -Alshp'
 alias vim='nvim'
