@@ -16,7 +16,7 @@ require('telescope').setup {
             '--column',
             '--smart-case',
             '--glob',
-            '!vendor/*',
+            '!**/vendor/*',
         }
     },
     extensions = {
