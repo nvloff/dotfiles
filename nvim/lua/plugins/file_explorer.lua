@@ -27,23 +27,13 @@ return {
 				desc = "Explorer NeoTree (cwd)",
 			},
 			{ "<leader>e", "<leader>fe", desc = "Explorer NeoTree (root dir)", remap = true },
-			{ "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
+			{ "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)",      remap = true },
 		},
 		deactivate = function()
 			vim.cmd([[Neotree close]])
 		end,
 		init = function()
 			vim.g.neo_tree_remove_legacy_commands = 1
-			if vim.fn.argc() == 1 then
-				local stat = vim.loop.fs_stat(vim.fn.argv(0))
-				if stat and stat.type == "directory" then
-					require("neo-tree")
-					require("neo-tree.command").execute({
-						toggle = true,
-						dir = require("lazyvim.util").get_root(),
-					})
-				end
-			end
 		end,
 		opts = {
 			sources = { "filesystem", "buffers", "git_status", "document_symbols" },

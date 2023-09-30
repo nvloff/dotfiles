@@ -138,8 +138,8 @@ local util = require('lspconfig.util')
 if not configs.helm_ls then
   configs.helm_ls = {
     default_config = {
-      cmd = {"helm_ls", "serve"},
-      filetypes = {'helm'},
+      cmd = { "helm_ls", "serve" },
+      filetypes = { 'helm' },
       root_dir = function(fname)
         return util.root_pattern('Chart.yaml')(fname)
       end,
@@ -148,13 +148,13 @@ if not configs.helm_ls then
 end
 
 lspconfig.helm_ls.setup {
-  filetypes = {"helm"},
-  cmd = {"helm_ls", "serve"},
+  filetypes = { "helm" },
+  cmd = { "helm_ls", "serve" },
   on_attach = on_attach,
 }
 
-lspconfig.tilt_ls.setup{
+lspconfig.tilt_ls.setup {
   capabilities = capabilities,
   on_attach = on_attach,
-  filetypes= {"tiltfile", "starlak"}
+  filetypes = { "tiltfile", "starlak" }
 }
