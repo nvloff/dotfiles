@@ -133,3 +133,9 @@ opt.spell = false
 --  The screen looks nicer with a status line if you have several
 --  windows, but it takes another screen line. |status-line|
 opt.laststatus = 3
+
+-- disable unused providers
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_node_provider = 0
