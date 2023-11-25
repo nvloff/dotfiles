@@ -67,11 +67,6 @@ M.git = {
   },
 }
 
-M.powerline = {
-  left_half_circle_thick = '', -- nf-ple-left_half_circle_thick
-  right_half_circle_thick = '', -- nf-ple-right_half_circle_thick
-}
-
 M.lsp = {
   error = M.ui.times,
   hint = M.ui.lightbulb,
@@ -100,21 +95,6 @@ M.lspconfig = {
   Info = M.lsp.info,
   Other = M.lsp.other,
   Warn = M.lsp.warn,
-}
-
-M.dap = {
-  DapBreakpoint = '', -- nf-cod-debug
-  DapBreakpointCondition = '', -- nf-cod-debug_breakpoint_conditional
-  DapBreakpointRejected = '', -- nf-cod-debug_breakpoint_unsupported
-  DapLogPoint = '', -- nf-cod-debug_breakpoint_log
-  DapStopped = '', -- nf-cod-debug_continue
-}
-
-M.nerdtree = {
-  error = M.lsp.error,
-  hint = M.lsp.hint,
-  info = M.lsp.info,
-  warning = M.lsp.warn,
 }
 
 M.telescope = {
