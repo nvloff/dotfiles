@@ -45,6 +45,8 @@ local on_attach = function(client, bufnr)
       vim.lsp.buf_detach_client(bufnr, client.id)
     end)
   end
+
+  vim.lsp.inlay_hint.enable()
 end
 
 -- Enable the following language servers
