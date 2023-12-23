@@ -53,45 +53,7 @@ end
 --  Add any additional override configuration in the following tables. They will be passed to
 --  the `settings` field of the server config. You must look up that documentation yourself.
 local servers = {
-  gopls = {
-    buildFlags = { '-tags=all,test_setup' },
-    codelenses = {
-      tidy = true,
-      vendor = true,
-      generate = true,
-      regenerate_cgo = true,
-      upgrade_dependency = true,
-      gc_details = true,
-      test = true,
-      run_vulncheck_exp = true,
-    },
-    analyses = {
-      useany = true,
-      nilness = true,
-      unusedparams = true,
-      unusedvariable = true,
-      unusedwrite = true,
-      shadow = true,
-    },
-    semanticTokens = true,
-    gofumpt = true,
-    staticcheck = true,
-    importShortcut = 'Both',
-    completionDocumentation = true,
-    linksInHover = true,
-    usePlaceholders = true,
-    experimentalPostfixCompletions = true,
-    hoverKind = 'FullDocumentation',
-    hints = {
-      assignVariableTypes = true,
-      compositeLiteralFields = true,
-      compositeLiteralTypes = true,
-      constantValues = true,
-      functionTypeParameters = true,
-      parameterNames = true,
-      rangeVariableTypes = true,
-    },
-  },
+  gopls = {},
   bashls = {},
   dockerls = {},
   marksman = {},
@@ -157,4 +119,49 @@ lspconfig.tilt_ls.setup {
   capabilities = capabilities,
   on_attach = on_attach,
   filetypes = { "tiltfile", "starlak" }
+}
+
+lspconfig.gopls.setup {
+  capabilities = capabilities,
+  on_attach = on_attach,
+  settings = {
+    gopls = {
+      buildFlags = { '-tags=all,integration' },
+      codelenses = {
+        tidy = true,
+        vendor = true,
+        generate = true,
+        regenerate_cgo = true,
+        upgrade_dependency = true,
+        gc_details = true,
+        test = true,
+        run_vulncheck_exp = true,
+      },
+      analyses = {
+        useany = true,
+        nilness = true,
+        unusedparams = true,
+        unusedvariable = true,
+        unusedwrite = true,
+      },
+      semanticTokens = true,
+      gofumpt = true,
+      staticcheck = true,
+      importShortcut = 'Both',
+      completionDocumentation = true,
+      linksInHover = true,
+      usePlaceholders = true,
+      experimentalPostfixCompletions = true,
+      hoverKind = 'FullDocumentation',
+      hints = {
+        assignVariableTypes = true,
+        compositeLiteralFields = true,
+        compositeLiteralTypes = true,
+        constantValues = true,
+        functionTypeParameters = true,
+        parameterNames = true,
+        rangeVariableTypes = true,
+      },
+    }
+  }
 }
