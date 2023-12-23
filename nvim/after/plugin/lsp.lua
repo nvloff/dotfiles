@@ -112,6 +112,7 @@ if not configs.helm_ls then
 end
 
 lspconfig.helm_ls.setup {
+  capabilities = capabilities,
   filetypes = { "helm" },
   cmd = { "helm_ls", "serve" },
   on_attach = on_attach,
@@ -120,7 +121,7 @@ lspconfig.helm_ls.setup {
 lspconfig.tilt_ls.setup {
   capabilities = capabilities,
   on_attach = on_attach,
-  filetypes = { "tiltfile", "starlak" }
+  filetypes = { "tiltfile" }
 }
 
 lspconfig.gopls.setup {

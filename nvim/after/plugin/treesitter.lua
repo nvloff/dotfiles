@@ -69,3 +69,6 @@ require('nvim-treesitter.configs').setup {
         },
     },
 }
+
+-- use starlark parser for Tiltfiles
+vim.treesitter.language.register('starlark', 'tiltfile')
