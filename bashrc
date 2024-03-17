@@ -8,16 +8,18 @@ fi
 if [ -f /opt/homebrew/bin/brew ]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 
-  if [ -f `brew --prefix`/etc/bash_completion ]; then
-    . `brew --prefix`/etc/bash_completion
+  brewPrefix=/opt/homebrew
+
+  if [ -f $brewPrefix/etc/bash_completion ]; then
+    . $brewPrefix/etc/bash_completion
   fi
 
-  if [ -f `brew --prefix`/etc/bash_completion.d/git-completion.bash ]; then
-    . `brew --prefix`/etc/bash_completion.d/git-completion.bash
+  if [ -f $brewPrefix/etc/bash_completion.d/git-completion.bash ]; then
+    . $brewPrefix/etc/bash_completion.d/git-completion.bash
   fi
 
-  if [ -f `brew --prefix`/etc/bash_completion.d/git-prompt.sh ]; then
-    . `brew --prefix`/etc/bash_completion.d/git-prompt.sh
+  if [ -f $brewPrefix/etc/bash_completion.d/git-prompt.sh ]; then
+    . $brewPrefix/etc/bash_completion.d/git-prompt.sh
   fi
 else
   sources=( \
@@ -27,8 +29,8 @@ else
   )
     for f in "${sources[@]}"
     do
-      if [ -f $f ]; then
-	source $f
+      if [ -f "$f" ]; then
+	source "$f"
       fi
     done
 fi
