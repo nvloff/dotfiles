@@ -68,6 +68,7 @@ local servers = {
       telemetry = { enable = false },
     },
   },
+  ruby_ls = {},
 }
 
 -- Setup neovim lua configuration
