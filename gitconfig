@@ -61,5 +61,8 @@
 [commit]
   gpgsign=true
 
+[diff]
+  renameLimit=100000
+
 [include]
   path= ~/.gitconfig.local
