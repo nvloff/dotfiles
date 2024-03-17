@@ -1,3 +1,4 @@
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 export PATH=$PATH:$HOME/local/bin:$HOME/bin
 export PATH="/usr/local/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
