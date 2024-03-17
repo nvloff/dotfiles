@@ -45,7 +45,6 @@ local on_attach = function(client, bufnr)
       vim.lsp.buf_detach_client(bufnr, client.id)
     end)
   end
-
 end
 
 -- Enable the following language servers
@@ -128,6 +127,7 @@ lspconfig.gopls.setup {
   capabilities = capabilities,
   on_attach = on_attach,
   settings = {
+    -- https://github.com/golang/tools/blob/master/gopls/doc/settings.md
     gopls = {
       buildFlags = { '-tags=all,integration' },
       codelenses = {
@@ -146,6 +146,7 @@ lspconfig.gopls.setup {
         unusedparams = true,
         unusedvariable = true,
         unusedwrite = true,
+        fieldalignment = true,
       },
       semanticTokens = true,
       gofumpt = true,
@@ -153,7 +154,7 @@ lspconfig.gopls.setup {
       importShortcut = 'Both',
       completionDocumentation = true,
       linksInHover = true,
-      usePlaceholders = true,
+      usePlaceholders = false,
       experimentalPostfixCompletions = true,
       hoverKind = 'FullDocumentation',
       hints = {
