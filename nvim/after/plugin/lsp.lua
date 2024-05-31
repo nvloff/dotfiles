@@ -67,7 +67,6 @@ local servers = {
       telemetry = { enable = false },
     },
   },
-  ruby_ls = {},
 }
 
 -- Setup neovim lua configuration
@@ -137,7 +136,6 @@ lspconfig.gopls.setup {
         regenerate_cgo = true,
         upgrade_dependency = true,
         gc_details = true,
-        test = true,
         run_vulncheck_exp = true,
       },
       analyses = {
@@ -147,6 +145,7 @@ lspconfig.gopls.setup {
         unusedvariable = true,
         unusedwrite = true,
         fieldalignment = true,
+        shadow = true,
       },
       semanticTokens = true,
       gofumpt = true,
