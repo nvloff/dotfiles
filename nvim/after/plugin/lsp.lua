@@ -19,6 +19,7 @@ local on_attach = function(client, bufnr)
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+  nmap('gi', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
 
   -- See `:help K` for why this keymap
