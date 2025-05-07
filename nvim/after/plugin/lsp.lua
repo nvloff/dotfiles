@@ -145,7 +145,6 @@ lspconfig.gopls.setup {
         unusedparams = true,
         unusedvariable = true,
         unusedwrite = true,
-        fieldalignment = true,
         shadow = false,
         loopclosure = false,
       },
