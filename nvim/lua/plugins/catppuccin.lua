@@ -13,7 +13,7 @@ return {
             transparent_background = true,
             integrations = {
                 mason = true,
-                cmp = true,
+                blink_cmp = true,
                 gitsigns = true,
                 indent_blankline = { enabled = true },
                 lsp_trouble = true,
