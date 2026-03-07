@@ -1,0 +1,48 @@
+# vim:ft=conf
+
+# Theme
+theme = catppuccin-mocha
+
+# Font
+font-family = JetBrains Mono Nerd Font
+font-size = 12
+
+# Cursor
+cursor-style = block
+cursor-style-blink = false
+
+# macOS
+macos-option-as-alt = true
+macos-titlebar-style = tabs
+
+# Shell integration
+shell-integration-features = no-title
+
+# Copy on select
+copy-on-select = true
+
+# Window
+window-padding-x = 4
+window-padding-y = 4
+
+# Keybindings
+keybind = cmd+enter=new_split:right
+keybind = cmd+t=new_tab
+
+# Jump to tabs
+keybind = cmd+1=goto_tab:1
+keybind = cmd+2=goto_tab:2
+keybind = cmd+3=goto_tab:3
+keybind = cmd+4=goto_tab:4
+keybind = cmd+5=goto_tab:5
+keybind = cmd+6=goto_tab:6
+keybind = cmd+7=goto_tab:7
+keybind = cmd+8=goto_tab:8
+keybind = cmd+9=goto_tab:9
+
+# Move tabs
+keybind = cmd+shift+comma=move_tab:-1
+keybind = cmd+shift+period=move_tab:1
+
+# cmd+w closes tab rather than window
+keybind = cmd+w=close_tab
