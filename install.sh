@@ -12,5 +12,4 @@ shopt -s extglob
 # ln -vnsf "$PWD/gitconfig" "$HOME/.gitconfig"
 
 #ln -vnsf "$PWD/nvim" "$HOME/.config/nvim"
-ln -vnsf "$PWD/kitty" "$HOME/.config/kitty"
 ln -vnsf "$PWD/ghostty" "$HOME/.config/ghostty"
