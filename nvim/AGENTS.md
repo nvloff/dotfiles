@@ -53,7 +53,7 @@ Ask, in order:
 ## Built-ins to reach for first
 
 - **Plugin management:** `vim.pack.add{ ... }`, `vim.pack.update{}`, `vim.pack.del{ ... }`. Commit `pack-lock.json` to version control.
-- **LSP:** `vim.lsp.config('name', { ... })` + `vim.lsp.enable({ 'name', ... })`. `:lsp` to inspect clients. No `nvim-lspconfig` needed.
+- **LSP:** `vim.lsp.config('name', { ... })` + `vim.lsp.enable({ 'name', ... })`. `:lsp` to inspect clients. `nvim-lspconfig` is fine to install as a pure data source — it ships `lsp/*.lua` server configs (cmd/filetypes/root_markers) that `vim.lsp.config` auto-discovers and merges from anywhere on `'runtimepath'` (see `:help lsp-config-merge`), no `require('lspconfig')` call needed. Only add your own `vim.lsp.config('name', { ... })` block for settings that differ from its defaults.
 - **Completion:** `vim.o.autocomplete = true` plus `vim.lsp.completion.enable(true, client_id, buf, { autotrigger = false })` in an `LspAttach` autocmd. Tune via `'complete'` and `'completeopt'` (e.g. `"menu,menuone,noselect,popup,fuzzy"`). Do not install nvim-cmp, blink.cmp, or similar.
 - **File navigation:** `netrw` (`:Explore`, `:Lex`). `:find` with a good `path` and `'wildmenu'`/`'wildmode'`. `:b` with wildmenu for buffers.
 - **Fuzzy finding:** `:find **/pattern` usually suffices. Skip telescope/fzf-lua unless there's a concrete, documented need.
@@ -113,7 +113,7 @@ If a specific option genuinely must live next to a plugin for correctness (e.g. 
 - Don't scatter plugin setup throughout `init.lua`. It goes at the bottom unless order is genuinely required — see "`init.lua` ordering".
 - Don't install plugins that thinly wrap built-ins:
   - No nvim-cmp / blink.cmp (use `'autocomplete'` + `vim.lsp.completion`).
-  - No nvim-lspconfig (use `vim.lsp.config` / `vim.lsp.enable`).
+  - No `require('lspconfig')` / `.setup{}` calls — that framework is deprecated in favor of `vim.lsp.config` / `vim.lsp.enable`. (Installing `nvim-lspconfig` itself, purely as `lsp/*.lua` config data, is fine — see the LSP built-in entry above.)
   - No Comment.nvim (use `gc`).
   - No mundo / undotree.vim (use `:Undotree`).
   - No lualine / heirline for a basic statusline (the 0.12 default is good).
