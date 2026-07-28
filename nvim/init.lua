@@ -63,6 +63,11 @@ vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
 
+-- netrw file explorer (must be set before netrw first loads)
+vim.g.netrw_banner = 0
+vim.g.netrw_liststyle = 3
+vim.g.netrw_winsize = 25
+
 -- [[ Filetypes ]]
 vim.filetype.add({
   pattern = {
@@ -75,6 +80,8 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+
+vim.keymap.set('n', '<leader>e', '<cmd>Lexplore<CR>', { desc = 'Toggle file explorer' })
 
 local yank_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
@@ -154,6 +161,7 @@ vim.pack.add({
   -- Data-only: supplies lsp/*.lua server configs that vim.lsp.config merges
   -- automatically via 'runtimepath'. Never call require('lspconfig').
   'https://github.com/neovim/nvim-lspconfig',
+  'https://github.com/folke/snacks.nvim',
 })
 require('mason').setup()
 require('lazydev').setup()
@@ -175,6 +183,24 @@ require('gitsigns').setup({
 vim.api.nvim_create_user_command('GitBlame', function()
   require('gitsigns').blame()
 end, { desc = 'Show git blame for current buffer (scroll-synced split)' })
+
+-- Only the picker module -- explorer/dashboard/etc. stay off, netrw already
+-- covers file browsing. frecency ranks recently/frequently opened files higher.
+require('snacks').setup({
+  picker = {
+    enabled = true,
+    matcher = { frecency = true },
+  },
+})
+vim.keymap.set('n', '<leader>?', function() Snacks.picker.recent() end, { desc = '[?] Find recently opened files' })
+vim.keymap.set('n', '<leader><space>', function() Snacks.picker.buffers() end, { desc = '[ ] Find existing buffers' })
+vim.keymap.set('n', '<leader>/', function() Snacks.picker.lines() end, { desc = '[/] Fuzzily search in current buffer' })
+vim.keymap.set('n', '<leader>sf', function() Snacks.picker.files() end, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>sh', function() Snacks.picker.help() end, { desc = '[S]earch [H]elp' })
+vim.keymap.set('n', '<leader>sw', function() Snacks.picker.grep_word() end, { desc = '[S]earch current [W]ord' })
+vim.keymap.set('n', '<leader>sd', function() Snacks.picker.diagnostics() end, { desc = '[S]earch [D]iagnostics' })
+vim.keymap.set('n', '<C-f>', function() Snacks.picker.grep() end, { desc = 'Find in files' })
+vim.keymap.set('n', '<C-p>', function() Snacks.picker.files() end, { desc = 'Find files' })
 
 -- Extend the built-in default statusline with the current branch (0.12 exposes
 -- the default as a real expression string, so we can read and prepend to it).
