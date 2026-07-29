@@ -192,6 +192,13 @@ vim.pack.add({
   -- below, a Neovim 0.12 built-in.
   'https://github.com/nvim-treesitter/nvim-treesitter',
   'https://github.com/junegunn/vim-easy-align',
+  -- In-buffer rendering while editing (headers/tables/code blocks styled
+  -- inline via extmarks -- file stays plain markdown underneath).
+  'https://github.com/MeanderingProgrammer/render-markdown.nvim',
+  -- Browser preview with Mermaid/KaTeX/GFM, for when in-buffer isn't enough.
+  -- Unmaintained iamcco/markdown-preview.nvim replaced by this active fork.
+  'https://github.com/selimacerbas/live-server.nvim',
+  'https://github.com/selimacerbas/markdown-preview.nvim',
 })
 require('mason').setup()
 require('lazydev').setup()
@@ -259,6 +266,17 @@ vim.api.nvim_create_autocmd('FileType', {
 -- ga*<Bar> (select rows, ga, *, |) aligns markdown tables -- vim-easy-align's
 -- own predefined "Table markdown" rule.
 vim.keymap.set({ 'n', 'x' }, 'ga', '<Plug>(EasyAlign)')
+
+require('render-markdown').setup({})
+
+require('markdown_preview').setup({
+  instance_mode = 'takeover',
+  open_browser = true,
+  default_theme = 'dark',
+})
+vim.keymap.set('n', '<leader>mps', '<cmd>MarkdownPreview<CR>', { desc = 'Markdown preview start' })
+vim.keymap.set('n', '<leader>mpS', '<cmd>MarkdownPreviewStop<CR>', { desc = 'Markdown preview stop' })
+vim.keymap.set('n', '<leader>mpr', '<cmd>MarkdownPreviewRefresh<CR>', { desc = 'Markdown preview refresh' })
 
 -- Extend the built-in default statusline with the current branch (0.12 exposes
 -- the default as a real expression string, so we can read and prepend to it).
