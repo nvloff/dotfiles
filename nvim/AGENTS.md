@@ -23,6 +23,16 @@ When diagnosing a plugin behaviour, compatibility question, or unexpected Neovim
 
 Prefer GitHub over generic web results. Cite the issue/PR/post URL in your response so the user can follow up.
 
+## Periodic plugin audit
+
+When asked to update plugins and re-validate the config (a recurring, user-triggered task — never automate or schedule this unattended, several steps below are judgment calls that need the user's sign-off):
+
+1. **Update.** Run `vim.pack.update()` to bump every plugin to its latest commit (rewrites `nvim-pack-lock.json`). Scope to specific plugins with `vim.pack.update({ 'name', ... })` if wanted.
+2. **See what moved.** `git diff nvim-pack-lock.json` shows exactly which plugins changed and their old → new `rev`. No need to ask the user what changed.
+3. **See what actually changed, per plugin.** Each plugin is a full (non-shallow) git clone under `~/.local/share/nvim/site/pack/core/opt/<plugin>/`. For every plugin whose rev moved, run `git -C <that-dir> log --oneline <old-rev>..<new-rev>` for the exact commit list, and diff `CHANGELOG.md` between the two revs if one exists. This is precise — don't guess or rely on memory of a plugin's history.
+4. **Re-validate relevance, not just correctness.** For each plugin in `init.lua` — updated or not — re-run the "Before adding a plugin" questions in reverse: is there now a built-in that covers this (check `:help news` for versions released since it was added)? Has a better-maintained alternative emerged (check via "Researching issues" above)? Is the plugin itself now unmaintained or deprecated? Surface findings as decisions for the user, the same way a new addition would be — don't silently swap or remove anything.
+5. **Test.** Every resulting edit to `init.lua` still goes through the full "Test every change" workflow below before being reported done.
+
 ## Test every change — non-negotiable
 
 **Never report a change as done without running it.** "It should work" is not acceptable. If the change was not executed, it is not done.
