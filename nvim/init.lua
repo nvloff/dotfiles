@@ -153,6 +153,19 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 -- [[ Plugins ]]
+
+-- Update parsers whenever nvim-treesitter itself is installed/updated (must be
+-- registered before vim.pack.add so it also fires on the very first install).
+-- Uses the Lua API (not the :TSUpdate command) since the plugin's commands
+-- aren't guaranteed to be sourced yet at this exact point in the install batch.
+vim.api.nvim_create_autocmd('PackChanged', {
+  callback = function(args)
+    if args.data.spec.name == 'nvim-treesitter' and (args.data.kind == 'install' or args.data.kind == 'update') then
+      require('nvim-treesitter').update()
+    end
+  end,
+})
+
 vim.pack.add({
   'https://github.com/catppuccin/nvim',
   'https://github.com/lewis6991/gitsigns.nvim',
@@ -162,6 +175,9 @@ vim.pack.add({
   -- automatically via 'runtimepath'. Never call require('lspconfig').
   'https://github.com/neovim/nvim-lspconfig',
   'https://github.com/folke/snacks.nvim',
+  -- Parser installer only -- highlighting itself is vim.treesitter.start()
+  -- below, a Neovim 0.12 built-in.
+  'https://github.com/nvim-treesitter/nvim-treesitter',
 })
 require('mason').setup()
 require('lazydev').setup()
@@ -201,6 +217,26 @@ vim.keymap.set('n', '<leader>sw', function() Snacks.picker.grep_word() end, { de
 vim.keymap.set('n', '<leader>sd', function() Snacks.picker.diagnostics() end, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<C-f>', function() Snacks.picker.grep() end, { desc = 'Find in files' })
 vim.keymap.set('n', '<C-p>', function() Snacks.picker.files() end, { desc = 'Find files' })
+
+-- c/lua/markdown/markdown_inline/query/vim/vimdoc ship inside Neovim itself;
+-- everything else here is fetched on demand.
+require('nvim-treesitter').install({ 'go', 'bash', 'json', 'yaml', 'terraform', 'dockerfile', 'starlark' })
+-- Tiltfiles and jsonc reuse another language's grammar wholesale.
+vim.treesitter.language.register('starlark', 'tiltfile')
+vim.treesitter.language.register('json', 'jsonc')
+
+-- Every filetype, not just the ones with a parser installed above: falls back
+-- to legacy regex 'syntax' highlighting when vim.treesitter.start() errors
+-- (no parser for that language) -- start() asserts rather than no-oping.
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = '*',
+  callback = function(args)
+    local ok = pcall(vim.treesitter.start, args.buf)
+    if not ok then
+      vim.bo[args.buf].syntax = 'on'
+    end
+  end,
+})
 
 -- Extend the built-in default statusline with the current branch (0.12 exposes
 -- the default as a real expression string, so we can read and prepend to it).
