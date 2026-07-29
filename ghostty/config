@@ -16,7 +16,7 @@ macos-option-as-alt = true
 macos-titlebar-style = tabs
 
 # Shell integration
-shell-integration-features = no-title
+shell-integration-features = no-title,ssh-env,ssh-terminfo
 
 # Copy on select
 copy-on-select = true

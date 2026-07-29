@@ -1,7 +1,5 @@
 # .zshrc - sourced for every interactive shell.
 
-export TERM='xterm-256color'
-
 # Completion
 typeset -U fpath
 fpath=("/opt/homebrew/share/zsh/site-functions" $fpath)
