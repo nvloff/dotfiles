@@ -69,10 +69,35 @@ vim.g.netrw_liststyle = 3
 vim.g.netrw_winsize = 25
 
 -- [[ Filetypes ]]
+-- A templates/*.{yaml,yml,tpl,txt} file counts as Helm only if its chart root
+-- (the templates/ dir's parent) has a sibling Chart.yaml.
+local function helm_if_chart_sibling(path)
+  local chart_root = path:match('^(.*)/templates/')
+  if chart_root and vim.uv.fs_stat(chart_root .. '/Chart.yaml') then
+    return 'helm'
+  end
+end
+
 vim.filetype.add({
   pattern = {
     ['.*/.*[T|t]iltfile.*'] = 'tiltfile',
+    ['.*/templates/.*%.ya?ml'] = helm_if_chart_sibling,
+    ['.*/templates/.*%.tpl'] = helm_if_chart_sibling,
+    ['.*/templates/.*%.txt'] = helm_if_chart_sibling,
+    ['.*/values.*%.ya?ml'] = 'yaml.helm-values',
+    ['.*/helmfile.*%.ya?ml'] = 'helm',
   },
+  extension = {
+    gotmpl = 'helm', -- helmfile templated values files
+  },
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'helm',
+  callback = function()
+    vim.bo.commentstring = '{{/* %s */}}'
+    vim.opt_local.conceallevel = 2 -- helm-ls.nvim's inline value hints need this
+  end,
 })
 
 -- [[ Keymaps and autocmds ]]
@@ -201,6 +226,9 @@ vim.pack.add({
   'https://github.com/selimacerbas/markdown-preview.nvim',
   -- Detects tabs/spaces/width per file, no setup call needed.
   'https://github.com/tpope/vim-sleuth',
+  -- Helm chart navigation: % across if/with/range blocks, current-block
+  -- highlighting, inline value hints. Recommended by helm_ls's own docs.
+  'https://github.com/qvalentin/helm-ls.nvim',
 })
 require('mason').setup()
 require('lazydev').setup()
@@ -247,10 +275,15 @@ vim.keymap.set('n', '<C-p>', function() Snacks.picker.files() end, { desc = 'Fin
 
 -- c/lua/markdown/markdown_inline/query/vim/vimdoc ship inside Neovim itself;
 -- everything else here is fetched on demand.
-require('nvim-treesitter').install({ 'go', 'bash', 'json', 'yaml', 'terraform', 'dockerfile', 'starlark' })
+require('nvim-treesitter').install({
+  'go', 'bash', 'json', 'yaml', 'terraform', 'dockerfile', 'starlark',
+  'helm', 'gotmpl', -- Go-template + Helm dialect grammars for {{ }} syntax.
+})
 -- Tiltfiles and jsonc reuse another language's grammar wholesale.
 vim.treesitter.language.register('starlark', 'tiltfile')
 vim.treesitter.language.register('json', 'jsonc')
+
+require('helm-ls').setup({})
 
 -- Every filetype, not just the ones with a parser installed above: falls back
 -- to legacy regex 'syntax' highlighting when vim.treesitter.start() errors
