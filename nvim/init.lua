@@ -199,6 +199,8 @@ vim.pack.add({
   -- Unmaintained iamcco/markdown-preview.nvim replaced by this active fork.
   'https://github.com/selimacerbas/live-server.nvim',
   'https://github.com/selimacerbas/markdown-preview.nvim',
+  -- Detects tabs/spaces/width per file, no setup call needed.
+  'https://github.com/tpope/vim-sleuth',
 })
 require('mason').setup()
 require('lazydev').setup()
