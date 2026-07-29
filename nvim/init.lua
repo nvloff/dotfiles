@@ -83,6 +83,19 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 
 vim.keymap.set('n', '<leader>e', '<cmd>Lexplore<CR>', { desc = 'Toggle file explorer' })
 
+-- ]d/[d/]D/[D and <C-w>d are already default keymaps (:help diagnostic-defaults);
+-- these two give a persistent, auto-refreshing list to match against.
+-- TODO: revisit after some real use -- not sure yet whether these actually
+-- get used over the built-in nav keys + <leader>sd picker, or are dead weight.
+vim.keymap.set('n', '<leader>xw', function()
+  vim.diagnostic.setqflist()
+  vim.cmd.copen()
+end, { desc = 'Workspace diagnostics (quickfix)' })
+vim.keymap.set('n', '<leader>xd', function()
+  vim.diagnostic.setloclist()
+  vim.cmd.lopen()
+end, { desc = 'Document diagnostics (loclist)' })
+
 local yank_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
   group = yank_group,
