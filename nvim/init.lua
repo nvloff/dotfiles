@@ -196,7 +196,7 @@ require('mason').setup()
 require('lazydev').setup()
 require('catppuccin').setup({
   transparent_background = true,
-  integrations = { gitsigns = true },
+  integrations = { gitsigns = true, snacks = true },
 })
 vim.cmd.colorscheme('catppuccin-mocha')
 
@@ -213,12 +213,16 @@ vim.api.nvim_create_user_command('GitBlame', function()
   require('gitsigns').blame()
 end, { desc = 'Show git blame for current buffer (scroll-synced split)' })
 
--- Only the picker module -- explorer/dashboard/etc. stay off, netrw already
+-- Only picker + indent -- explorer/dashboard/etc. stay off, netrw already
 -- covers file browsing. frecency ranks recently/frequently opened files higher.
 require('snacks').setup({
   picker = {
     enabled = true,
     matcher = { frecency = true },
+  },
+  indent = {
+    enabled = true,
+    char = '┊',
   },
 })
 vim.keymap.set('n', '<leader>?', function() Snacks.picker.recent() end, { desc = '[?] Find recently opened files' })
