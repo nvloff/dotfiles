@@ -213,6 +213,9 @@ vim.pack.add({
   -- automatically via 'runtimepath'. Never call require('lspconfig').
   'https://github.com/neovim/nvim-lspconfig',
   'https://github.com/folke/snacks.nvim',
+  -- Icon provider for the snacks.picker file list. Mocks nvim-web-devicons
+  -- for any third party that only knows that provider.
+  'https://github.com/nvim-mini/mini.icons',
   -- Parser installer only -- highlighting itself is vim.treesitter.start()
   -- below, a Neovim 0.12 built-in.
   'https://github.com/nvim-treesitter/nvim-treesitter',
@@ -232,6 +235,7 @@ vim.pack.add({
 })
 require('mason').setup()
 require('lazydev').setup()
+require('mini.icons').setup()
 require('catppuccin').setup({
   transparent_background = true,
   integrations = { gitsigns = true, snacks = true },
