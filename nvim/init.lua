@@ -191,6 +191,7 @@ vim.pack.add({
   -- Parser installer only -- highlighting itself is vim.treesitter.start()
   -- below, a Neovim 0.12 built-in.
   'https://github.com/nvim-treesitter/nvim-treesitter',
+  'https://github.com/junegunn/vim-easy-align',
 })
 require('mason').setup()
 require('lazydev').setup()
@@ -254,6 +255,10 @@ vim.api.nvim_create_autocmd('FileType', {
     end
   end,
 })
+
+-- ga*<Bar> (select rows, ga, *, |) aligns markdown tables -- vim-easy-align's
+-- own predefined "Table markdown" rule.
+vim.keymap.set({ 'n', 'x' }, 'ga', '<Plug>(EasyAlign)')
 
 -- Extend the built-in default statusline with the current branch (0.12 exposes
 -- the default as a real expression string, so we can read and prepend to it).
