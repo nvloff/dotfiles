@@ -1,5 +1,5 @@
 # https://egeek.me/2020/04/18/enabling-locate-on-osx/
-if which glocate > /dev/null; then
+if (( $+commands[glocate] )); then
   alias locate="glocate -d $HOME/locatedb"
 
   # Using cache_list requires `LOCATE_PATH` environment var to exist in session.
