@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# Dotfile linking
+brew install stow
+
 # Fonts (homebrew/cask-fonts was merged into homebrew/cask, no tap needed)
 brew install --cask font-jetbrains-mono-nerd-font
 
@@ -9,8 +12,7 @@ brew install --cask ghostty
 
 # Shell (zshenv, zprofile, zsh/locate.zsh)
 brew install findutils   # glocate, gupdatedb
-brew install fzf         # FZF_DEFAULT_COMMAND
-brew install ripgrep     # rg: FZF_DEFAULT_COMMAND, RIPGREP_CONFIG_PATH, nvim grepprg
+brew install ripgrep     # rg: RIPGREP_CONFIG_PATH, nvim grepprg
 brew install fd
 
 # git (gitconfig)
