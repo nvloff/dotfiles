@@ -15,17 +15,41 @@ This skill file lives with the rest of the user's Claude Code skills (e.g. under
 
 1. **Update.** Run `vim.pack.update()` to bump every plugin to its latest commit (rewrites `nvim-pack-lock.json`, which lives at the config root next to `init.lua`, tracked in git). Scope to specific plugins with `vim.pack.update({ 'name', ... })` if the user only wants some of them touched.
 
-   Run it in a normal (foreground) headless `nvim` invocation and watch the output — don't background/detach it expecting it to finish unattended. `vim.pack.update()` can prompt per-plugin if there are diverging local changes or a force-required update; only pass `vim.pack.update(nil, { force = true })` if the user has said they don't care about reviewing individual conflicts first.
+   **`vim.pack.update()` without `force` does *not* apply anything by itself.** It downloads, then opens a confirmation buffer in a new tabpage — the update is only applied on `:write` (a bare `:quit`/quitting the session discards it *silently*, no error, no warning). A naive headless call like `-c "lua vim.pack.update()" -c "qa"` looks like it worked (you'll see the download progress) but actually threw every update away. Don't do that.
+
+   Instead, run one headless invocation that captures the confirmation buffer for your own review *and* confirms it, in a single pass:
+   ```
+   nvim --headless -u init.lua \
+     -c "lua vim.pack.update()" \
+     -c "lua vim.fn.writefile(vim.api.nvim_buf_get_lines(0,0,-1,false), '/tmp/pack_confirm.txt')" \
+     -c "write" \
+     -c "qa"
+   ```
+   The `writefile` line dumps the confirmation buffer's contents to a plain file *before* confirming (bypassing its `bufwritecmd`, so it's a pure read) — read that file, it's your step-3 input, see below. The subsequent bare `write` then triggers the real confirm-and-apply. Only pass `vim.pack.update(nil, { force = true })` (skipping the confirmation buffer entirely) if the user has said they don't care about reviewing individual conflicts first.
+
+   After it returns, verify `git diff nvim-pack-lock.json` actually shows the revs you expect moved — don't just trust the download-progress output.
 
 2. **See what moved.** `git diff nvim-pack-lock.json` shows exactly which plugins changed and their old → new `rev`, in one place. No need to ask the user what changed — you can see it directly.
 
 3. **See what actually changed, per plugin.** Each plugin is a full (non-shallow) git clone under `~/.local/share/nvim/site/pack/core/opt/<plugin-name>/` (confirm with `git rev-parse --is-shallow-repository` if ever in doubt). For every plugin whose rev moved, work from human-written summaries first, not raw code:
-   - **Release notes**, if the plugin uses GitHub Releases/tags for the range — `gh release list`/`gh api repos/<owner>/<repo>/releases` (or the repo's Releases page) covering the old→new range. This is usually the highest-signal source: maintainer-written, calls out breaking changes and new features explicitly.
+   - **The confirmation buffer dump from step 1 (`/tmp/pack_confirm.txt`), first.** `vim.pack` already grouped the pending commits per plugin and marks breaking ones with `!` in the subject line (Conventional Commits style, e.g. `fix!: remove default_integrations`) — this costs nothing extra and, for short update windows (days, not a full release cycle), is often the *only* source that actually covers the range. Start here before reaching for anything below; only chase the other sources if this list doesn't make a change's relevance clear.
+   - **Release notes**, if the plugin uses GitHub Releases/tags for the range — `gh release list`/`gh api repos/<owner>/<repo>/releases` (or the repo's Releases page) covering the old→new range. High-signal *when a release actually lands inside the range* — for short/frequent audit windows it often doesn't (the range sits entirely between two releases), so don't spend time hunting if `gh release list` shows nothing landing between old and new rev; fall back to the confirmation-buffer commit list instead.
    - **`README.md` diff** between the two revs (`git -C <that-dir> diff <old-rev> <new-rev> -- README.md`) — catches new setup/config requirements, deprecation notices, or renamed options that a changelog might not mention.
    - **`CHANGELOG.md` diff** between the two revs, if the plugin keeps one.
-   - **`git log --oneline <old-rev>..<new-rev>`** — treat this as an index to start from (spot a commit that looks relevant, then go read *its* message/PR/issue in full) rather than something to interpret alone. Don't read raw code diffs of implementation files to infer what changed; that's slow and easy to misjudge — if the release notes/README/changelog/commit messages don't make a change's relevance clear, that's a sign it probably doesn't affect this config, not a cue to go dig through the diff yourself.
+   - **`git log --oneline <old-rev>..<new-rev>`** — treat this as an index to start from (spot a commit that looks relevant, then go read *its* message/PR/issue in full) rather than something to interpret alone. Don't read raw code diffs of implementation files to infer what changed; that's slow and easy to misjudge — if the confirmation-buffer list/release notes/README/changelog/commit messages don't make a change's relevance clear, that's a sign it probably doesn't affect this config, not a cue to go dig through the diff yourself.
+   - For anything marked breaking (`!` in the confirmation buffer, or called out in release notes), check whether this config actually uses the affected option/feature (`grep` `init.lua`/`servers.lua`) before treating it as actionable — a breaking change to an option you never set is a non-event.
 
-4. **Re-validate relevance, not just correctness.** For every plugin declared in `init.lua` — updated or not — ask the same questions you'd ask before adding it fresh, in reverse:
+4. **Re-validate relevance, not just correctness.** For every plugin declared in `init.lua` — updated or not — ask the same questions you'd ask before adding it fresh, in reverse.
+
+   **Triage all of them cheaply first**, one batched loop, before doing deep research on any single one:
+   ```
+   for repo in owner1/plugin1 owner2/plugin2 ...; do
+     gh api repos/$repo --jq '.full_name + " | archived=" + (.archived|tostring) + " | pushed_at=" + .pushed_at + " | stars=" + (.stargazers_count|tostring)'
+   done
+   ```
+   `archived=true` or a `pushed_at` that's stale relative to this audit's cadence is your signal to escalate — deep research is for the plugins this flags, not for all of them by default. A tiny, feature-complete utility plugin (e.g. an alignment or indent-detection plugin) going quiet for a year is normal and not itself a red flag; judge staleness relative to what the plugin does, not a fixed threshold.
+
+   For anything the triage flags (or that the user asks about specifically), go deeper:
    - Is there now a built-in that covers this? Check `:help news` for Neovim versions released since the plugin was added.
    - Has a better-maintained alternative emerged? Research the way this config's `AGENTS.md` describes under "Researching issues" (plugin GitHub repo issues/discussions first, r/neovim filtered to the last 12 months, neovim/neovim's own changelogs for built-in behavior).
    - Is the plugin itself now unmaintained, archived, or deprecated in favor of something else?
