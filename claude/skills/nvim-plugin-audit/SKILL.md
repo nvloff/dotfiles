@@ -1,17 +1,17 @@
 ---
 name: nvim-plugin-audit
-description: Update this Neovim config's plugins (vim.pack) and re-validate each one is still the right choice. Use for "update/upgrade my nvim plugins", "audit my nvim config", "are my plugins still maintained/relevant", or "revalidate my neovim setup". Not for one-off init.lua edits unrelated to plugins (keymaps, options) -- those are normal edits per AGENTS.md.
+description: Update this Neovim config's plugins (vim.pack) and re-validate each is still the right choice. Triggers: "update/upgrade my nvim plugins", "audit my nvim config", "are my plugins still maintained/relevant", "revalidate my neovim setup". Not for one-off init.lua edits unrelated to plugins (keymaps, options) -- normal edits per AGENTS.md.
 ---
 
 # Neovim plugin audit
 
-Config lives at `~/.config/nvim`, a stow symlink to `<repo>/nvim/.config/nvim` -- resolve with `readlink -f ~/.config/nvim` and run every command below from there. Uses `vim.pack` as its only plugin manager.
+Config: `~/.config/nvim`, a stow symlink to `<repo>/nvim/.config/nvim`. Resolve with `readlink -f ~/.config/nvim`, run every command below from there. Plugin manager: `vim.pack`.
 
-**Manual, user-triggered only.** Never automate or schedule this -- step 4 produces judgment calls (swap/drop a plugin, adopt a built-in) that need the user to see and confirm them live.
+**Manual, user-triggered only.** Never automate/schedule -- step 4's judgment calls (swap/drop a plugin, adopt a built-in) need live user confirmation.
 
 ## The process
 
-1. **Update.** `vim.pack.update()` downloads updates and opens a confirmation buffer -- it does **not** apply anything until `:write` (a bare `:quit` silently discards everything, no error). Run:
+1. **Update.** `vim.pack.update()` downloads updates and opens a confirmation buffer; nothing applies until `:write` (bare `:quit` discards silently, no error). Run:
    ```
    nvim --headless -u init.lua \
      -c "lua vim.pack.update()" \
@@ -19,33 +19,33 @@ Config lives at `~/.config/nvim`, a stow symlink to `<repo>/nvim/.config/nvim` -
      -c "write" \
      -c "qa"
    ```
-   `/tmp/pack_confirm.txt` is your step-3 input. Verify with `git diff nvim-pack-lock.json` afterward -- don't trust the download progress alone. Scope to specific plugins with `vim.pack.update({'name',...})`; use `force = true` only if the user says they don't want to review conflicts.
+   `/tmp/pack_confirm.txt` feeds step 3. Verify after with `git diff nvim-pack-lock.json` -- download progress isn't proof it applied. Scope with `vim.pack.update({'name',...})`; add `force = true` only if the user wants to skip review.
 
-2. **See what moved.** `git diff nvim-pack-lock.json` -- old → new `rev` per plugin, no need to ask the user.
+2. **See what moved.** `git diff nvim-pack-lock.json`: old → new `rev` per plugin.
 
-3. **See what changed, per plugin.** Plugins are full git clones under `~/.local/share/nvim/site/pack/core/opt/<name>/`. In priority order:
-   - `/tmp/pack_confirm.txt` from step 1 -- vim.pack's own grouped commit list, breaking changes marked `!` (Conventional Commits). Usually the only source that actually covers a short audit window; start here.
-   - `gh release list -R owner/repo` / `gh api repos/owner/repo/releases` -- only useful if a release actually lands inside the old→new range.
+3. **See what changed, per plugin.** Clones live under `~/.local/share/nvim/site/pack/core/opt/<name>/`. Sources, in priority order:
+   - `/tmp/pack_confirm.txt` (step 1) -- vim.pack's grouped commit list, breaking changes marked `!` (Conventional Commits). Often the only source covering a short audit window; start here.
+   - `gh release list -R owner/repo` -- only if a release lands inside the old→new range.
    - `README.md`/`CHANGELOG.md` diff between the two revs -- catches config/setup changes a changelog might miss.
-   - `git log --oneline <old>..<new>` as an index to find a specific commit worth reading in full, not something to interpret standalone.
-   - For anything marked breaking: `grep` `init.lua`/`servers.lua` for the affected option before treating it as actionable -- a breaking change to something you don't set is a non-event.
+   - `git log --oneline <old>..<new>` as an index to a commit worth reading in full, not something to interpret standalone.
+   - Any `!`-marked breaking change: `grep init.lua`/`servers.lua` for the affected option before flagging it -- unset options are non-events.
 
-4. **Re-validate relevance**, not just correctness, for every declared plugin (updated or not). Triage cheaply first, one batch:
+4. **Re-validate relevance**, not just correctness, for every declared plugin, updated or not. Triage in one batch first:
    ```
    for repo in owner1/plugin1 owner2/plugin2 ...; do
      gh api repos/$repo --jq '.full_name + " | archived=" + (.archived|tostring) + " | pushed_at=" + .pushed_at'
    done
    ```
-   `archived=true`, or staleness relative to what the plugin actually does (a tiny utility going quiet for a year is normal), is the signal to escalate. Only for flagged plugins, go deeper: check `:help news` for a built-in replacement, research per AGENTS.md's "Researching issues" section for a better-maintained alternative.
+   `archived=true`, or staleness relative to what the plugin does (a quiet utility plugin for a year is normal), signals escalation. For flagged plugins only, go deeper: `:help news` for a built-in replacement; AGENTS.md's "Researching issues" section for a better-maintained alternative.
 
-   Never silently swap or drop a plugin -- surface every finding as a decision for the user.
+   Never silently swap or drop a plugin -- surface findings as decisions for the user.
 
-5. **Test.** Every `init.lua`/`servers.lua` edit goes through AGENTS.md's "Test every change" workflow (both headless checks exit 0, then exercise the change) before reporting done.
+5. **Test.** Every `init.lua`/`servers.lua` edit: AGENTS.md's "Test every change" workflow (both headless checks exit 0, then exercise the change) before reporting done.
 
 ## Cleaning up
 
-Dropping a plugin from `vim.pack.add{...}` doesn't remove it from disk. Run `vim.pack.del({'plugin-name'})` too, or the stale clone triggers "Repaired corrupted lock data" warnings later.
+Removing a plugin from `vim.pack.add{...}` doesn't delete its clone. Run `vim.pack.del({'plugin-name'})` too, or the stale clone triggers "Repaired corrupted lock data" warnings later.
 
 ## Reporting back
 
-Report which plugins moved (rev + one-line summary of what changed), which you re-evaluated and kept, and which raised a question for the user. Once the user signs off and edits are tested, check `git status` and ask before committing -- never commit unasked, and don't take credit for auto-checkpoint commits you didn't make.
+Report: plugins moved (rev + one-line summary), plugins re-evaluated and kept, and open questions for the user. After sign-off and testing: check `git status`, ask before committing -- never commit unasked, and don't take credit for auto-checkpoint commits you didn't make.
