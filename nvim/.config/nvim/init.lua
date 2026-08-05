@@ -157,6 +157,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
     end
 
+    -- Off by default even when the server supports it (e.g. gopls' 'hints'
+    -- table in servers.lua only controls what it *offers*; Neovim still
+    -- needs telling to render them).
+    if client and client:supports_method('textDocument/inlayHint') then
+      vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+    end
+
     -- buffer = args.buf keeps these mappings scoped to this buffer only, so
     -- e.g. a plain-text buffer with no LSP client never gets a "gd" that does
     -- nothing.
