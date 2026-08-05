@@ -260,7 +260,12 @@ end, { desc = 'Show git blame for current buffer (scroll-synced split)' })
 require('snacks').setup({
   picker = {
     enabled = true,
-    matcher = { frecency = true },
+    matcher = { frecency = true, sort_empty = true },
+    -- 'autocomplete' (global, Nvim 0.12+) fires in any insert-mode buffer,
+    -- including the picker's live-filter prompt, where its popup steals
+    -- redraws from search-as-you-type. buftype = 'prompt' already excludes
+    -- nvim-cmp; native autocomplete needs this explicit opt-out too.
+    win = { input = { bo = { autocomplete = false } } },
   },
   indent = {
     enabled = true,
@@ -268,7 +273,8 @@ require('snacks').setup({
   },
 })
 vim.keymap.set('n', '<leader>?', function() Snacks.picker.recent() end, { desc = '[?] Find recently opened files' })
-vim.keymap.set('n', '<leader><space>', function() Snacks.picker.buffers() end, { desc = '[ ] Find existing buffers' })
+vim.keymap.set('n', '<leader><space>', function() Snacks.picker.smart() end, { desc = 'Smart find files (buffers + recent + files)' })
+vim.keymap.set('n', '<leader>,', function() Snacks.picker.buffers() end, { desc = '[ ] Find existing buffers' })
 vim.keymap.set('n', '<leader>/', function() Snacks.picker.lines() end, { desc = '[/] Fuzzily search in current buffer' })
 vim.keymap.set('n', '<leader>sf', function() Snacks.picker.files() end, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sh', function() Snacks.picker.help() end, { desc = '[S]earch [H]elp' })
