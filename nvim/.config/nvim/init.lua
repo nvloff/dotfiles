@@ -164,6 +164,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
     end
 
+    -- Same story for code lenses (the "run go generate", "tidy go.mod"
+    -- buttons gopls' codelenses settings enable server-side): off until
+    -- told to render. Refreshes itself on buffer changes; "grx" (built-in
+    -- default keymap) runs the lens under the cursor.
+    if client and client:supports_method('textDocument/codeLens') then
+      vim.lsp.codelens.enable(true, { bufnr = args.buf })
+    end
+
     -- buffer = args.buf keeps these mappings scoped to this buffer only, so
     -- e.g. a plain-text buffer with no LSP client never gets a "gd" that does
     -- nothing.
@@ -194,6 +202,20 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.api.nvim_buf_create_user_command(args.buf, 'Format', function()
       vim.lsp.buf.format()
     end, { desc = 'Format current buffer with LSP' })
+
+    -- Toggles compiler-optimization diagnostics (escape analysis, inlining,
+    -- bounds-check elimination, nil checks) for this package, shown as
+    -- regular diagnostics. Gated to gopls: servers.lua's 'hints'/'analyses'
+    -- tables control what other servers offer, but this command is gopls-
+    -- specific (gopls.gc_details), not part of the generic LSP spec.
+    if client and client.name == 'gopls' then
+      vim.api.nvim_buf_create_user_command(args.buf, 'GcDetails', function()
+        client:exec_cmd({
+          command = 'gopls.gc_details',
+          arguments = { vim.uri_from_bufnr(args.buf) },
+        }, { bufnr = args.buf })
+      end, { desc = 'Toggle compiler optimization diagnostics (gopls)' })
+    end
   end,
 })
 
@@ -295,6 +317,10 @@ vim.keymap.set('n', '<C-p>', function() Snacks.picker.files() end, { desc = 'Fin
 require('nvim-treesitter').install({
   'go', 'bash', 'json', 'yaml', 'terraform', 'dockerfile', 'starlark',
   'helm', 'gotmpl', -- Go-template + Helm dialect grammars for {{ }} syntax.
+  -- go.mod/go.sum/go.work are their own grammars, distinct from 'go' --
+  -- without these, files with filetype gomod/gosum/gowork get no highlighting
+  -- at all (Neovim ships no legacy syntax/gomod.vim to fall back to either).
+  'gomod', 'gosum', 'gowork',
 })
 -- Tiltfiles and jsonc reuse another language's grammar wholesale.
 vim.treesitter.language.register('starlark', 'tiltfile')

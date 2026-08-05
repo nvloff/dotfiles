@@ -18,27 +18,25 @@ vim.lsp.config('gopls', {
   settings = {
     gopls = {
       buildFlags = { '-tags=all,integration' },
-      codelenses = {
-        tidy = true,
-        vendor = true,
-        generate = true,
-        regenerate_cgo = true,
-        upgrade_dependency = true,
-        gc_details = true,
-        run_vulncheck_exp = true,
-      },
+      -- generate/regenerate_cgo/run_govulncheck/tidy/upgrade_dependency/vendor
+      -- are gopls' own defaults as of v0.23 -- nothing to override here.
+      -- gc_details is no longer a codelens; it's the gopls.gc_details
+      -- command, wired up as :GcDetails in the LspAttach autocmd below.
       analyses = {
-        useany = true,
-        nilness = true,
-        unusedparams = true,
-        unusedvariable = true,
-        unusedwrite = true,
-        shadow = false,
-        loopclosure = false,
+        -- Nearly every native analyzer defaults to true as of gopls v0.23
+        -- (useany/nilness/unusedparams/unusedvariable/unusedwrite among
+        -- them -- useany was also renamed to "any" since). These are the
+        -- only deviations from that.
+        shadow = false, -- noisy on code that intentionally reuses names
+        loopclosure = false, -- mostly moot post-Go 1.22 per-iteration vars
+        appendclipped = true, -- suggest slices.Concat over append chains
+        slicesdelete = true, -- suggest slices.Delete over append-based deletion
+        -- fieldalignment was removed in gopls v0.17 -- hover a struct field
+        -- for size/offset info instead (https://go.dev/issue/67762).
       },
       semanticTokens = true,
       gofumpt = true,
-      staticcheck = true,
+      staticcheck = true, -- enable *all* staticcheck.io analyzers, not just gopls' curated subset
       importShortcut = 'Both',
       completionDocumentation = true,
       linksInHover = true,
@@ -51,6 +49,7 @@ vim.lsp.config('gopls', {
         compositeLiteralTypes = true,
         constantValues = true,
         functionTypeParameters = true,
+        ignoredError = true, -- flag silently discarded errors, e.g. f.Close()
         parameterNames = true,
         rangeVariableTypes = true,
       },
