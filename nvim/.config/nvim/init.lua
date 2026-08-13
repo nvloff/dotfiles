@@ -32,7 +32,7 @@ opt.cursorline = true
 opt.expandtab = true
 opt.formatoptions = 'jcroqlnt'
 opt.grepformat = '%f:%l:%c:%m'
-opt.grepprg = 'rg --vimgrep'
+opt.grepprg = "rg --vimgrep -g '!vendor'" -- skip Go's committed vendor/ dir
 opt.inccommand = 'nosplit'
 opt.list = true
 opt.pumblend = 10
@@ -262,6 +262,13 @@ vim.pack.add({
   -- highlighting, inline value hints. Recommended by helm_ls's own docs.
   'https://github.com/qvalentin/helm-ls.nvim',
 })
+-- Align installed plugins to the committed lockfile revisions (no upstream
+-- fetch of newer versions). Run after pulling config on another machine.
+-- Opens a review buffer like any update -- :write to apply, :quit to discard.
+vim.api.nvim_create_user_command('PackSync', function()
+  vim.pack.update(nil, { target = 'lockfile' })
+end, { desc = 'Sync plugins to nvim-pack-lock.json revisions' })
+
 require('mason').setup()
 require('lazydev').setup()
 require('mini.icons').setup()
@@ -290,6 +297,10 @@ require('snacks').setup({
   picker = {
     enabled = true,
     matcher = { frecency = true, sort_empty = true },
+    -- Go vendors deps into a committed vendor/ dir, so rg/fd (which only honor
+    -- .gitignore) don't skip it. Top-level exclude propagates to every source
+    -- that shells out: files, grep, grep_word, smart. Passed as `-g !vendor`.
+    exclude = { 'vendor' },
     -- 'autocomplete' (global, Nvim 0.12+) fires in any insert-mode buffer,
     -- including the picker's live-filter prompt, where its popup steals
     -- redraws from search-as-you-type. buftype = 'prompt' already excludes
@@ -301,6 +312,9 @@ require('snacks').setup({
     char = '┊',
   },
 })
+-- Route vim.ui.select through the picker so LSP code-action menus, etc. use the
+-- same UI as everything else (also silences the snacks.picker health check).
+vim.ui.select = Snacks.picker.select
 vim.keymap.set('n', '<leader>?', function() Snacks.picker.recent() end, { desc = '[?] Find recently opened files' })
 vim.keymap.set('n', '<leader><space>', function() Snacks.picker.smart() end, { desc = 'Smart find files (buffers + recent + files)' })
 vim.keymap.set('n', '<leader>,', function() Snacks.picker.buffers() end, { desc = '[ ] Find existing buffers' })
@@ -316,6 +330,8 @@ vim.keymap.set('n', '<C-p>', function() Snacks.picker.files() end, { desc = 'Fin
 -- everything else here is fetched on demand.
 require('nvim-treesitter').install({
   'go', 'bash', 'json', 'yaml', 'terraform', 'dockerfile', 'starlark',
+  'regex', -- snacks.picker highlights search patterns with this grammar
+  'html', -- render-markdown's inline HTML rendering
   'helm', 'gotmpl', -- Go-template + Helm dialect grammars for {{ }} syntax.
   -- go.mod/go.sum/go.work are their own grammars, distinct from 'go' --
   -- without these, files with filetype gomod/gosum/gowork get no highlighting
@@ -345,7 +361,11 @@ vim.api.nvim_create_autocmd('FileType', {
 -- own predefined "Table markdown" rule.
 vim.keymap.set({ 'n', 'x' }, 'ga', '<Plug>(EasyAlign)')
 
-require('render-markdown').setup({})
+-- html rendering is on (needs the 'html' parser, installed above); latex stays
+-- off -- it also needs a LaTeX converter (tectonic/pdflatex) we don't install.
+require('render-markdown').setup({
+  latex = { enabled = false },
+})
 
 require('markdown_preview').setup({
   instance_mode = 'takeover',
