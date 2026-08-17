@@ -66,7 +66,7 @@ vim.lsp.config('yamlls', {
 
 -- bashls, dockerls, marksman, jsonls, terraformls, helm_ls, tilt_ls need no
 -- overrides -- nvim-lspconfig's defaults are used as-is.
-vim.lsp.enable({
+local servers = {
   'lua_ls',
   'gopls',
   'bashls',
@@ -77,6 +77,26 @@ vim.lsp.enable({
   'yamlls',
   'helm_ls',
   'tilt_ls',
+}
+vim.lsp.enable(servers)
+
+-- Install every server above through Mason on startup, so a fresh machine
+-- doesn't need a manual `:MasonInstall` pass. Mason package names
+-- occasionally differ from the lspconfig server name above; gopls and
+-- marksman happen to match.
+require('mason-tool-installer').setup({
+  ensure_installed = {
+    'lua-language-server',
+    'gopls',
+    'bash-language-server',
+    'dockerfile-language-server',
+    'marksman',
+    'json-lsp',
+    'terraform-ls',
+    'yaml-language-server',
+    'helm-ls',
+    'tilt',
+  },
 })
 
 -- Plain "helm" filetype is a Helm template (not a values file): helm_ls covers

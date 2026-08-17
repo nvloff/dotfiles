@@ -17,7 +17,7 @@ vim.o.smartcase = true
 vim.wo.signcolumn = 'yes'
 vim.o.updatetime = 200
 vim.o.timeout = true
-vim.o.timeoutlen = 300
+vim.o.timeoutlen = 600 -- room to finish a <leader>xy sequence without rushing
 
 vim.o.autocomplete = true
 
@@ -52,8 +52,7 @@ opt.undolevels = 10000
 opt.winminwidth = 5
 opt.wrap = false
 
-opt.spelllang = { 'en_gb' }
-opt.spell = false
+opt.spelllang = { 'en_gb', 'bg' } -- checked simultaneously once 'spell' is on
 
 opt.laststatus = 3
 
@@ -108,18 +107,8 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 
 vim.keymap.set('n', '<leader>e', '<cmd>Lexplore<CR>', { desc = 'Toggle file explorer' })
 
--- ]d/[d/]D/[D and <C-w>d are already default keymaps (:help diagnostic-defaults);
--- these two give a persistent, auto-refreshing list to match against.
--- TODO: revisit after some real use -- not sure yet whether these actually
--- get used over the built-in nav keys + <leader>sd picker, or are dead weight.
-vim.keymap.set('n', '<leader>xw', function()
-  vim.diagnostic.setqflist()
-  vim.cmd.copen()
-end, { desc = 'Workspace diagnostics (quickfix)' })
-vim.keymap.set('n', '<leader>xd', function()
-  vim.diagnostic.setloclist()
-  vim.cmd.lopen()
-end, { desc = 'Document diagnostics (loclist)' })
+-- 'spell' is window-local; spelllang above already covers en_gb + bg together.
+vim.keymap.set('n', '<F5>', '<cmd>setlocal spell!<CR>', { desc = 'Toggle spell checker' })
 
 local yank_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
@@ -187,14 +176,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
     nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
-    -- Multi-root workspace helpers -- mostly useful for servers like gopls
-    -- that can span more than one root_dir in a monorepo-style project.
-    nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-    nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-    nmap('<leader>wl', function()
-      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-    end, '[W]orkspace [L]ist Folders')
-
     -- gq/formatexpr already does LSP-backed formatting per-motion by default
     -- (:help lsp-defaults); these give a whole-buffer shortcut and a memorable
     -- :Format command on top of that.
@@ -237,6 +218,9 @@ vim.pack.add({
   'https://github.com/catppuccin/nvim',
   'https://github.com/lewis6991/gitsigns.nvim',
   'https://github.com/mason-org/mason.nvim',
+  -- ensure_installed for the servers below, so a fresh machine doesn't need
+  -- a manual :MasonInstall pass. See servers.lua.
+  'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim',
   'https://github.com/folke/lazydev.nvim',
   -- Data-only: supplies lsp/*.lua server configs that vim.lsp.config merges
   -- automatically via 'runtimepath'. Never call require('lspconfig').
@@ -287,9 +271,9 @@ require('gitsigns').setup({
     changedelete = { text = '~' },
   },
 })
-vim.api.nvim_create_user_command('GitBlame', function()
-  require('gitsigns').blame()
-end, { desc = 'Show git blame for current buffer (scroll-synced split)' })
+-- gitsigns' own :Gitsigns blame does the work (scroll-synced split); this is
+-- just a shorter way to reach it.
+vim.keymap.set('n', '<leader>gb', '<cmd>Gitsigns blame<CR>', { desc = 'Git blame current buffer' })
 
 -- Only picker + indent -- explorer/dashboard/etc. stay off, netrw already
 -- covers file browsing. frecency ranks recently/frequently opened files higher.
@@ -301,6 +285,10 @@ require('snacks').setup({
     -- .gitignore) don't skip it. Top-level exclude propagates to every source
     -- that shells out: files, grep, grep_word, smart. Passed as `-g !vendor`.
     exclude = { 'vendor' },
+    -- rg/fd skip dotfiles by default, which hides this very repo's
+    -- nvim/.config/nvim/init.lua from the files picker. .git and .gitignored
+    -- paths stay excluded either way; toggle per-search with <A-h>.
+    sources = { files = { hidden = true } },
     -- 'autocomplete' (global, Nvim 0.12+) fires in any insert-mode buffer,
     -- including the picker's live-filter prompt, where its popup steals
     -- redraws from search-as-you-type. buftype = 'prompt' already excludes
