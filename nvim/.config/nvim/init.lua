@@ -240,6 +240,9 @@ vim.pack.add({
   -- Unmaintained iamcco/markdown-preview.nvim replaced by this active fork.
   'https://github.com/selimacerbas/live-server.nvim',
   'https://github.com/selimacerbas/markdown-preview.nvim',
+  -- :GenTocGFM inserts a GitHub-anchor-style TOC at the cursor; :UpdateToc
+  -- refreshes it in place afterwards (also on save, enabled below).
+  'https://github.com/mzlogin/vim-markdown-toc',
   -- Detects tabs/spaces/width per file, no setup call needed.
   'https://github.com/tpope/vim-sleuth',
   -- Helm chart navigation: % across if/with/range blocks, current-block
@@ -363,6 +366,12 @@ require('markdown_preview').setup({
 vim.keymap.set('n', '<leader>mps', '<cmd>MarkdownPreview<CR>', { desc = 'Markdown preview start' })
 vim.keymap.set('n', '<leader>mpS', '<cmd>MarkdownPreviewStop<CR>', { desc = 'Markdown preview stop' })
 vim.keymap.set('n', '<leader>mpr', '<cmd>MarkdownPreviewRefresh<CR>', { desc = 'Markdown preview refresh' })
+
+-- Keep an inserted TOC in sync with headings automatically, not just on
+-- explicit :UpdateToc.
+vim.g.vmt_auto_update_on_save = 1
+vim.keymap.set('n', '<leader>mtg', '<cmd>GenTocGFM<CR>', { desc = 'Markdown: [G]enerate GFM toc at cursor' })
+vim.keymap.set('n', '<leader>mtu', '<cmd>UpdateToc<CR>', { desc = 'Markdown: [U]pdate toc' })
 
 -- Extend the built-in default statusline with the current branch (0.12 exposes
 -- the default as a real expression string, so we can read and prepend to it).
