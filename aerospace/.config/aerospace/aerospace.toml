@@ -2,12 +2,15 @@
 #
 # AeroSpace -- tiling window manager for macOS.
 #
-# Reset to AeroSpace's stock default-config.toml (verbatim, trimmed to 5
-# workspaces) plus exactly one customization: workspace-to-monitor-force-
-# assignment. This was a deliberate reset to isolate a workspace-switch
-# flicker bug (1-4 flickered, 5 didn't) by removing every other variable at
-# once -- add settings back one at a time from here, testing after each.
-# See README.md for the debugging context.
+# Base is AeroSpace's stock default-config.toml (trimmed to 5 workspaces),
+# kept deliberately close to stock after a workspace-switch flicker
+# investigation turned out to be a macOS Keyboard Shortcuts conflict
+# ("Switch to Desktop N" bound to the same alt+number keys as AeroSpace's
+# own bindings), not an AeroSpace or config bug -- see README.md. Customized
+# beyond stock: workspace-to-monitor-force-assignment, and on-window-detected
+# for app routing/layout below. No native-macOS-fullscreen tricks or other
+# workarounds for the (now-understood, unrelated) flicker -- everything here
+# is plain AeroSpace behavior.
 # Docs: https://nikitabobko.github.io/AeroSpace/guide
 
 config-version = 2
@@ -51,6 +54,40 @@ gaps.outer.right =      0
 3 = 'main'
 4 = 'main'
 5 = 'secondary'
+
+# --- Window layout -----------------------------------------------------
+# Workspace layout:
+#   1  main       Ghostty  -- always fullscreen
+#   2  main       Cursor   -- always fullscreen
+#   3  main       Firefox  -- the one exception, tiled, so it can split w/ another window
+#   4  main       everything else -- floating, close to plain macOS window management
+#   5  secondary  everything else -- same, floating, on the second monitor
+#
+# There's no "default to floating" config option (default-root-container-
+# layout only takes tiles|accordion -- it's the arrangement of windows
+# already tiling, not a floating/tiling switch). So instead: float
+# everything unconditionally first (AeroSpace's own documented pattern for
+# this), then the specific rules below pull out the exceptions. check-
+# further-callbacks is required on the first rule -- without it, since it
+# has no `if`, it would consume every window and nothing below it would run.
+[[on-window-detected]]
+check-further-callbacks = true
+run = 'layout floating'
+
+# Bundle ids below were looked up for the common macOS build of each app.
+# If a rule doesn't fire, confirm the id with:
+#   osascript -e 'id of app "<App Name>"'
+[[on-window-detected]]
+if = 'test %{app-bundle-id} = com.mitchellh.ghostty'
+run = ['move-node-to-workspace 1', 'fullscreen on']
+
+[[on-window-detected]]
+if = 'test %{app-bundle-id} = com.todesktop.230313mzl4w4u92' # Cursor -- verify, todesktop ids can vary
+run = ['move-node-to-workspace 2', 'fullscreen on']
+
+[[on-window-detected]]
+if = 'test %{app-bundle-id} = org.mozilla.firefox'
+run = ['move-node-to-workspace 3', 'layout tiling']
 
 [mode.main.binding]
     alt-slash = 'layout tiles horizontal vertical'
