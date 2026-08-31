@@ -32,4 +32,8 @@ bindkey -e
 source ~/.zsh/prompt.zsh
 source ~/.zsh/aliases.zsh
 source ~/.zsh/locate.zsh
-source ~/.zsh/local.zsh
+
+# Per-machine overrides -- gitignored (zsh/.zsh/local.zsh), seeded from
+# local.zsh.example by install.sh. Guarded because a from-scratch checkout
+# (before install.sh has run) won't have it yet.
+[[ -f ~/.zsh/local.zsh ]] && source ~/.zsh/local.zsh

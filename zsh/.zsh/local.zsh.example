@@ -1,0 +1,9 @@
+# Per-machine zsh overrides.
+#
+# install.sh copies this file to local.zsh (gitignored) the first time it
+# runs on a machine, then leaves it alone -- edit local.zsh directly, it's
+# yours and won't be tracked or touched again. .zshrc sources it last.
+#
+# Examples:
+# export SOME_WORK_ONLY_TOKEN=...
+# alias vpn='...'
