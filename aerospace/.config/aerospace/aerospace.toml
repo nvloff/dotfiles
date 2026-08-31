@@ -148,6 +148,10 @@ alt-shift-equal = 'resize smart +50'
 alt-slash = 'layout tiles horizontal vertical'
 alt-comma = 'layout accordion horizontal vertical'
 alt-f = 'fullscreen'
+# Real macOS fullscreen (its own Space), distinct from alt-f's tiling-frame
+# resize above -- handled entirely by WindowServer, so Ghostty's native tabs
+# switch cleanly inside it with no AeroSpace tiling to fight over the frame.
+alt-shift-f = 'macos-native-fullscreen'
 alt-t = 'layout floating tiling' # T, same key as Omarchy's floating/tiling toggle
 alt-w = 'close'                  # W, same key as Omarchy's close-window
 

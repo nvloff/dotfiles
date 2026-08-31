@@ -55,7 +55,15 @@ work and you're an nvim user.
 **Layout**
 - `alt-slash` -- toggle tiles horizontal/vertical
 - `alt-comma` -- toggle accordion horizontal/vertical
-- `alt-f` -- fullscreen (same key as Omarchy's `SUPER-f`)
+- `alt-f` -- fullscreen within the tiling grid (same key as Omarchy's
+  `SUPER-f`). Note: this is a per-window tiling-frame resize, not real macOS
+  fullscreen -- if the window uses native macOS tabs (e.g. Ghostty), each tab
+  is a separate window to AeroSpace, so this state does *not* carry over
+  between tabs and you'll see it "reset" when you switch tabs.
+- `alt-shift-f` -- real macOS fullscreen (`macos-native-fullscreen`, its own
+  Space). Handled entirely by WindowServer, so native-tabbed apps like
+  Ghostty switch tabs cleanly here with no tiling to fight over the frame --
+  use this one specifically if `alt-f` "jumps" on tab switch.
 - `alt-t` -- float/tile the focused window (same key as Omarchy's `SUPER-t`)
 - `alt-w` -- close the focused window (same key as Omarchy's `SUPER-w`)
 
