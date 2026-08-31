@@ -1,60 +1,50 @@
 # vim:ft=toml
 #
 # AeroSpace -- tiling window manager for macOS.
-# Portable across a single-monitor laptop and a two-monitor desk: the
-# workspace-to-monitor assignment below degrades gracefully to one screen.
-# See README.md in this directory for a quick-start guide.
+#
+# Reset to AeroSpace's stock default-config.toml (verbatim, trimmed to 5
+# workspaces) plus exactly one customization: workspace-to-monitor-force-
+# assignment. This was a deliberate reset to isolate a workspace-switch
+# flicker bug (1-4 flickered, 5 didn't) by removing every other variable at
+# once -- add settings back one at a time from here, testing after each.
+# See README.md for the debugging context.
 # Docs: https://nikitabobko.github.io/AeroSpace/guide
 
-# v2 requires persistent-workspaces to be listed explicitly (v1 inferred it
-# from your keybindings). Workspaces 6-10 are still bound to switch-to keys
-# below (matching Omarchy's SUPER+[1-0]) but aren't part of the active
-# layout -- left non-persistent on purpose, they're plain scratch space.
 config-version = 2
+after-startup-command = []
+start-at-login = false
+auto-reload-config = false
 
-# Start AeroSpace at login
-start-at-login = true
-
-# Keep the window tree tidy: flatten single-child containers and avoid
-# nesting two containers with the same orientation
 enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = true
 
-key-mapping.preset = 'qwerty'
-
-# New windows split the container based on its current aspect ratio
+accordion-padding = 30
 default-root-container-layout = 'tiles'
 default-root-container-orientation = 'auto'
-accordion-padding = 30
 
-# Recenter the mouse when focus moves to another monitor
-# TEMPORARILY DISABLED for testing the 1-4 workspace-switch flicker -- this
-# is the only setting in the file that reacts to monitor/focus state
-# independent of any specific window, and there's a known AeroSpace bug
-# (github.com/nikitabobko/AeroSpace/issues/576) about macOS's own monitor
-# focus disagreeing with AeroSpace's when a monitor/workspace is empty,
-# which matches "flickers with no windows open." If disabling this doesn't
-# fix it, re-enable it (uncomment below) -- it wasn't the cause.
-# on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
-# Keep workspaces 1-5 alive even when empty -- these are the active layout
-# (see below); without this, v2's default is an empty list and an empty
-# workspace disappears the moment you leave it.
+automatically-unhide-macos-hidden-apps = false
+
+# Trimmed to the 5 workspaces actually in use (stock default lists 1-9, A-Z).
 persistent-workspaces = ['1', '2', '3', '4', '5']
 
-[gaps]
-inner.horizontal = 8
-inner.vertical = 8
-outer.left = 8
-outer.bottom = 8
-outer.top = 8
-outer.right = 8
+on-mode-changed = []
 
-# --- Monitors -------------------------------------------------------------
-# 'main' / 'secondary' resolve automatically to whatever is actually
-# connected. On a single-monitor machine there is no 'secondary', so these
-# lines are simply ignored and every workspace lives on the one screen --
-# nothing to change when moving between laptop-only and a two-monitor desk.
+focus-follows-mouse.enabled = false
+
+key-mapping.preset = 'qwerty'
+
+gaps.inner.horizontal = 0
+gaps.inner.vertical =   0
+gaps.outer.left =       0
+gaps.outer.bottom =     0
+gaps.outer.top =        0
+gaps.outer.right =      0
+
+# --- The one customization: 4 workspaces on the main monitor, 1 on the
+# secondary. 'main'/'secondary' resolve automatically to whatever's
+# connected -- on a single-monitor machine, workspace 5's line is a no-op.
 [workspace-to-monitor-force-assignment]
 1 = 'main'
 2 = 'main'
@@ -62,145 +52,47 @@ outer.right = 8
 4 = 'main'
 5 = 'secondary'
 
-# --- Window layout -----------------------------------------------------
-# Workspace layout:
-#   1  main       Ghostty  -- always fullscreen (AeroSpace's own, not native --
-#                             native macOS fullscreen creates a real Space
-#                             that alt-1/alt-2 can't navigate into, breaking
-#                             direct workspace addressing. Use alt-shift-f to
-#                             go native fullscreen manually if ever wanted,
-#                             e.g. to avoid the native-tabs jump -- see
-#                             README's "Why alt-f vs alt-shift-f")
-#   2  main       Cursor   -- same, always fullscreen (AeroSpace's own)
-#   3  main       Firefox  -- the one exception, tiled, so it can split w/ another window
-#   4  main       everything else -- floating, close to plain macOS window management
-#   5  secondary  everything else -- same, floating, on the second monitor
-#
-# There's no "default to floating" config option (default-root-container-
-# layout only takes tiles|accordion -- it's the arrangement of windows
-# already tiling, not a floating/tiling switch). So instead: float
-# everything unconditionally first (this is AeroSpace's own documented
-# pattern for this exact situation), then the specific rules below pull out
-# the one exception (Firefox) back into tiling. check-further-callbacks is
-# required here for the same reason it's required on any no-`if` rule --
-# without it, this single rule would consume every window and none of the
-# rules below it would ever run.
-#
-# Slack/Outlook/Zoom/Office apps are deliberately NOT pinned anywhere --
-# open them wherever's convenient (usually 4 or 5) and they'll float there
-# like everything else. Move anything with alt-shift-<N>.
-[[on-window-detected]]
-check-further-callbacks = true
-run = 'layout floating'
-
-# Bundle ids below were looked up for the common macOS build of each app.
-# If a rule doesn't fire, confirm the id with:
-#   osascript -e 'id of app "<App Name>"'
-# `if = 'test %{app-bundle-id} = ...'` is the current syntax; the older
-# `if.app-id = '...'` shorthand is soft-deprecated (still works, but
-# AeroSpace recommends this form going forward).
-
-[[on-window-detected]]
-if = 'test %{app-bundle-id} = com.mitchellh.ghostty'
-run = ['move-node-to-workspace 1', 'fullscreen on']
-
-[[on-window-detected]]
-if = 'test %{app-bundle-id} = com.todesktop.230313mzl4w4u92' # Cursor -- verify, todesktop ids can vary
-run = ['move-node-to-workspace 2', 'fullscreen on']
-
-# The one window that actually tiles -- pulled back out of the floating
-# default from the blanket rule above.
-[[on-window-detected]]
-if = 'test %{app-bundle-id} = org.mozilla.firefox'
-run = ['move-node-to-workspace 3', 'layout tiling']
-
-# --- Main bindings ----------------------------------------------------
 [mode.main.binding]
+    alt-slash = 'layout tiles horizontal vertical'
+    alt-comma = 'layout accordion horizontal vertical'
 
-# Launch terminal
-alt-enter = 'exec-and-forget open -na Ghostty'
+    alt-h = 'focus left'
+    alt-j = 'focus down'
+    alt-k = 'focus up'
+    alt-l = 'focus right'
 
-# Focus windows -- vim-style, plus arrows to match Omarchy/Hyprland's
-# defaults (SUPER+arrows) so the muscle memory carries over between machines
-alt-h = 'focus left'
-alt-j = 'focus down'
-alt-k = 'focus up'
-alt-l = 'focus right'
-alt-left = 'focus left'
-alt-down = 'focus down'
-alt-up = 'focus up'
-alt-right = 'focus right'
+    alt-shift-h = 'move left'
+    alt-shift-j = 'move down'
+    alt-shift-k = 'move up'
+    alt-shift-l = 'move right'
 
-# Move windows within the current workspace -- same hjkl/arrows pairing
-alt-shift-h = 'move left'
-alt-shift-j = 'move down'
-alt-shift-k = 'move up'
-alt-shift-l = 'move right'
-alt-shift-left = 'move left'
-alt-shift-down = 'move down'
-alt-shift-up = 'move up'
-alt-shift-right = 'move right'
+    alt-minus = 'resize smart -50'
+    alt-equal = 'resize smart +50'
 
-# Resize the focused window
-alt-shift-minus = 'resize smart -50'
-alt-shift-equal = 'resize smart +50'
+    alt-1 = 'workspace 1'
+    alt-2 = 'workspace 2'
+    alt-3 = 'workspace 3'
+    alt-4 = 'workspace 4'
+    alt-5 = 'workspace 5'
 
-# Layouts (each key alternates between the two args on repeated presses)
-alt-slash = 'layout tiles horizontal vertical'
-alt-comma = 'layout accordion horizontal vertical'
-alt-f = 'fullscreen'
-# Real macOS fullscreen (its own Space), distinct from alt-f's tiling-frame
-# resize above -- handled entirely by WindowServer, so Ghostty's native tabs
-# switch cleanly inside it with no AeroSpace tiling to fight over the frame.
-alt-shift-f = 'macos-native-fullscreen'
-alt-t = 'layout floating tiling' # T, same key as Omarchy's floating/tiling toggle
-alt-w = 'close'                  # W, same key as Omarchy's close-window
+    alt-shift-1 = 'move-node-to-workspace 1'
+    alt-shift-2 = 'move-node-to-workspace 2'
+    alt-shift-3 = 'move-node-to-workspace 3'
+    alt-shift-4 = 'move-node-to-workspace 4'
+    alt-shift-5 = 'move-node-to-workspace 5'
 
-# Move focus to another monitor
-alt-cmd-h = 'focus-monitor left'
-alt-cmd-l = 'focus-monitor right'
+    alt-tab = 'workspace-back-and-forth'
+    alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
-# Cycle monitors -- same chord as Omarchy (ctrl-alt-tab), which doesn't use
-# its own main mod for this either
-ctrl-alt-tab = 'focus-monitor next'
-ctrl-alt-shift-tab = 'focus-monitor prev'
-
-# Send the focused window to another monitor
-alt-cmd-shift-h = 'move-node-to-monitor left'
-alt-cmd-shift-l = 'move-node-to-monitor right'
-
-# Send the whole current workspace to the other monitor
-alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
-
-# Workspaces (1-9, 0 as a 10th -- matches Omarchy's SUPER+[1-0])
-alt-1 = 'workspace 1'
-alt-2 = 'workspace 2'
-alt-3 = 'workspace 3'
-alt-4 = 'workspace 4'
-alt-5 = 'workspace 5'
-alt-6 = 'workspace 6'
-alt-7 = 'workspace 7'
-alt-8 = 'workspace 8'
-alt-9 = 'workspace 9'
-alt-0 = 'workspace 10'
-alt-tab = 'workspace-back-and-forth'
-
-# Move the focused window to a workspace and follow it there
-alt-shift-1 = ['move-node-to-workspace 1', 'workspace 1']
-alt-shift-2 = ['move-node-to-workspace 2', 'workspace 2']
-alt-shift-3 = ['move-node-to-workspace 3', 'workspace 3']
-alt-shift-4 = ['move-node-to-workspace 4', 'workspace 4']
-alt-shift-5 = ['move-node-to-workspace 5', 'workspace 5']
-alt-shift-6 = ['move-node-to-workspace 6', 'workspace 6']
-alt-shift-7 = ['move-node-to-workspace 7', 'workspace 7']
-alt-shift-8 = ['move-node-to-workspace 8', 'workspace 8']
-alt-shift-9 = ['move-node-to-workspace 9', 'workspace 9']
-alt-shift-0 = ['move-node-to-workspace 10', 'workspace 10']
-
-# Enter service mode (reload config, flatten tree, close others)
-alt-shift-semicolon = 'mode service'
+    alt-shift-semicolon = 'mode service'
 
 [mode.service.binding]
-esc = ['reload-config', 'mode main']
-r = ['flatten-workspace-tree', 'mode main']
-backspace = ['close-all-windows-but-current', 'mode main']
+    esc = ['reload-config', 'mode main']
+    r = ['flatten-workspace-tree', 'mode main']
+    f = ['layout floating tiling', 'mode main']
+    backspace = ['close-all-windows-but-current', 'mode main']
+
+    alt-shift-h = ['join-with left', 'mode main']
+    alt-shift-j = ['join-with down', 'mode main']
+    alt-shift-k = ['join-with up', 'mode main']
+    alt-shift-l = ['join-with right', 'mode main']
