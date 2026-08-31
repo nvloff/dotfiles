@@ -39,24 +39,37 @@ and anything dynamic goes through shell commands (`exec-and-forget ...`).
 
 ## Keybindings (mod = `alt`)
 
-**Focus / move**
-- `alt-h/j/k/l` -- focus left/down/up/right
-- `alt-shift-h/j/k/l` -- move the focused window
-- `alt-shift--` / `alt-shift-=` -- shrink/grow the focused window
+Bound to match [Omarchy's default Hyprland bindings](https://github.com/basecamp/omarchy/blob/master/default/hypr/bindings/tiling-v2.conf)
+key-for-key wherever the two window managers have an equivalent command --
+`alt` stands in for Hyprland's `SUPER` throughout (see "Why `alt`, not `cmd`"
+below). hjkl is kept alongside arrows since this config predates the Omarchy
+work and you're an nvim user.
+
+**Focus / move** -- `hjkl` or arrows, both work
+- `alt-h/j/k/l` or `alt-left/down/up/right` -- focus left/down/up/right
+- `alt-shift-h/j/k/l` or `alt-shift-left/down/up/right` -- move the focused window
+- `alt-shift--` / `alt-shift-=` -- shrink/grow the focused window (Omarchy
+  binds this to the bracket keys instead; kept the more common minus/equals
+  convention here)
 
 **Layout**
 - `alt-slash` -- toggle tiles horizontal/vertical
 - `alt-comma` -- toggle accordion horizontal/vertical
-- `alt-f` -- fullscreen
-- `alt-shift-space` -- float/tile the focused window
+- `alt-f` -- fullscreen (same key as Omarchy's `SUPER-f`)
+- `alt-t` -- float/tile the focused window (same key as Omarchy's `SUPER-t`)
+- `alt-w` -- close the focused window (same key as Omarchy's `SUPER-w`)
 
 **Workspaces**
-- `alt-1..9` -- switch to workspace N
-- `alt-shift-1..9` -- send the focused window to workspace N and follow it
+- `alt-1..9`, `alt-0` for a 10th -- switch to workspace N (same numbers as
+  Omarchy's `SUPER-[1-0]`)
+- `alt-shift-1..9`/`alt-shift-0` -- send the focused window to workspace N
+  and follow it
 - `alt-tab` -- jump back to the previous workspace
 
 **Monitors** (only matters when a second screen is attached)
 - `alt-cmd-h/l` -- move focus to the monitor left/right
+- `ctrl-alt-tab` / `ctrl-alt-shift-tab` -- cycle to the next/previous
+  monitor (same chord as Omarchy -- it doesn't use `SUPER` for this either)
 - `alt-cmd-shift-h/l` -- send the focused window to the monitor left/right
 - `alt-shift-tab` -- send the whole current workspace to the other monitor
 
@@ -66,6 +79,22 @@ and anything dynamic goes through shell commands (`exec-and-forget ...`).
   - `esc` -- reload config
   - `r` -- flatten the workspace tree (fix a stuck layout)
   - `backspace` -- close every window but the current one
+
+**No AeroSpace equivalent, left out rather than faked**: Hyprland's window
+grouping (`SUPER-g`, tabs multiple windows into one slot) and scratchpad
+(`SUPER-s`, a special always-on-top floating workspace) -- AeroSpace has no
+matching concept for either.
+
+### Why `alt`, not `cmd`
+
+Omarchy's mod key is `SUPER` -- physically the same key as macOS's `Cmd`.
+Binding the WM to `cmd` directly would be the literal match, but `Cmd` is
+already claimed everywhere by app shortcuts (`Cmd-w` closes a tab in every
+browser, `Cmd-1..9` switches tabs, `Cmd-t` opens one, etc.) -- rebinding
+those at the WM level would fight your apps constantly. `alt` avoids that
+collision entirely, at the cost of the mod key itself not matching. Every
+other key in this file is chosen to match Omarchy exactly, so the muscle
+memory difference is just "which modifier," not "which key."
 
 ## Portability: laptop vs. work desk
 

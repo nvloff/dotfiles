@@ -47,6 +47,7 @@ outer.right = 8
 7 = 'secondary'
 8 = 'secondary'
 9 = 'secondary'
+10 = 'secondary'
 
 # --- Floating windows -------------------------------------------------
 # Utility windows that should never be tiled. Add more `[[on-window-detected]]`
@@ -108,17 +109,26 @@ run = 'move-node-to-workspace 7'
 # Launch terminal
 alt-enter = 'exec-and-forget open -na Ghostty'
 
-# Focus windows -- vim-style
+# Focus windows -- vim-style, plus arrows to match Omarchy/Hyprland's
+# defaults (SUPER+arrows) so the muscle memory carries over between machines
 alt-h = 'focus left'
 alt-j = 'focus down'
 alt-k = 'focus up'
 alt-l = 'focus right'
+alt-left = 'focus left'
+alt-down = 'focus down'
+alt-up = 'focus up'
+alt-right = 'focus right'
 
-# Move windows within the current workspace
+# Move windows within the current workspace -- same hjkl/arrows pairing
 alt-shift-h = 'move left'
 alt-shift-j = 'move down'
 alt-shift-k = 'move up'
 alt-shift-l = 'move right'
+alt-shift-left = 'move left'
+alt-shift-down = 'move down'
+alt-shift-up = 'move up'
+alt-shift-right = 'move right'
 
 # Resize the focused window
 alt-shift-minus = 'resize smart -50'
@@ -128,11 +138,17 @@ alt-shift-equal = 'resize smart +50'
 alt-slash = 'layout tiles horizontal vertical'
 alt-comma = 'layout accordion horizontal vertical'
 alt-f = 'fullscreen'
-alt-shift-space = 'layout floating tiling'
+alt-t = 'layout floating tiling' # T, same key as Omarchy's floating/tiling toggle
+alt-w = 'close'                  # W, same key as Omarchy's close-window
 
 # Move focus to another monitor
 alt-cmd-h = 'focus-monitor left'
 alt-cmd-l = 'focus-monitor right'
+
+# Cycle monitors -- same chord as Omarchy (ctrl-alt-tab), which doesn't use
+# its own main mod for this either
+ctrl-alt-tab = 'focus-monitor next'
+ctrl-alt-shift-tab = 'focus-monitor prev'
 
 # Send the focused window to another monitor
 alt-cmd-shift-h = 'move-node-to-monitor left'
@@ -141,7 +157,7 @@ alt-cmd-shift-l = 'move-node-to-monitor right'
 # Send the whole current workspace to the other monitor
 alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
-# Workspaces (1-9)
+# Workspaces (1-9, 0 as a 10th -- matches Omarchy's SUPER+[1-0])
 alt-1 = 'workspace 1'
 alt-2 = 'workspace 2'
 alt-3 = 'workspace 3'
@@ -151,6 +167,7 @@ alt-6 = 'workspace 6'
 alt-7 = 'workspace 7'
 alt-8 = 'workspace 8'
 alt-9 = 'workspace 9'
+alt-0 = 'workspace 10'
 alt-tab = 'workspace-back-and-forth'
 
 # Move the focused window to a workspace and follow it there
@@ -163,6 +180,7 @@ alt-shift-6 = ['move-node-to-workspace 6', 'workspace 6']
 alt-shift-7 = ['move-node-to-workspace 7', 'workspace 7']
 alt-shift-8 = ['move-node-to-workspace 8', 'workspace 8']
 alt-shift-9 = ['move-node-to-workspace 9', 'workspace 9']
+alt-shift-0 = ['move-node-to-workspace 10', 'workspace 10']
 
 # Enter service mode (reload config, flatten tree, close others)
 alt-shift-semicolon = 'mode service'
