@@ -1,0 +1,173 @@
+# vim:ft=toml
+#
+# AeroSpace -- tiling window manager for macOS.
+# Portable across a single-monitor laptop and a two-monitor desk: the
+# workspace-to-monitor assignment below degrades gracefully to one screen.
+# See README.md in this directory for a quick-start guide.
+# Docs: https://nikitabobko.github.io/AeroSpace/guide
+
+# Start AeroSpace at login
+start-at-login = true
+
+# Keep the window tree tidy: flatten single-child containers and avoid
+# nesting two containers with the same orientation
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+key-mapping.preset = 'qwerty'
+
+# New windows split the container based on its current aspect ratio
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+accordion-padding = 30
+
+# Recenter the mouse when focus moves to another monitor
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+[gaps]
+inner.horizontal = 8
+inner.vertical = 8
+outer.left = 8
+outer.bottom = 8
+outer.top = 8
+outer.right = 8
+
+# --- Monitors -------------------------------------------------------------
+# 'main' / 'secondary' resolve automatically to whatever is actually
+# connected. On a single-monitor machine there is no 'secondary', so these
+# lines are simply ignored and every workspace lives on the one screen --
+# nothing to change when moving between laptop-only and a two-monitor desk.
+[workspace-to-monitor-force-assignment]
+1 = 'main'
+2 = 'main'
+3 = 'main'
+4 = 'main'
+5 = 'main'
+6 = 'secondary'
+7 = 'secondary'
+8 = 'secondary'
+9 = 'secondary'
+
+# --- Floating windows -------------------------------------------------
+# Utility windows that should never be tiled. Add more `[[on-window-detected]]`
+# blocks here as you find apps that misbehave when tiled.
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.ActivityMonitor'
+run = 'layout floating'
+
+# --- App -> workspace routing ------------------------------------------
+# Pins recurring apps to a fixed spot so they land on the right monitor
+# every time they launch (workspaces 1-5 = main, 6-9 = secondary, per the
+# assignment above). Office apps (Word/Excel/PowerPoint) are deliberately
+# left unpinned -- they open wherever you currently are, and you place
+# them yourself with alt-shift-<N>.
+#
+# Bundle ids below were looked up for the common macOS build of each app.
+# If a rule doesn't fire, confirm the id with:
+#   osascript -e 'id of app "<App Name>"'
+
+[[on-window-detected]]
+if.app-id = 'com.mitchellh.ghostty'
+run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+if.app-id = 'com.todesktop.230313mzl4w4u92' # Cursor -- verify, todesktop ids can vary
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+if.app-id = 'org.mozilla.firefox'
+run = 'move-node-to-workspace 3'
+
+# Zoom: the in-call window (title contains "Meeting") goes to main; its
+# home/start window and everything else goes to the secondary monitor.
+# Order matters -- the more specific rule must come first.
+[[on-window-detected]]
+if.app-id = 'us.zoom.xos'
+if.window-title-regex-substring = 'Meeting'
+run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
+if.app-id = 'us.zoom.xos'
+run = 'move-node-to-workspace 8'
+
+[[on-window-detected]]
+if.app-id = 'com.tinyspeck.slackmacgap'
+run = 'move-node-to-workspace 6'
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.Outlook'
+run = 'move-node-to-workspace 7'
+
+# --- Main bindings ----------------------------------------------------
+[mode.main.binding]
+
+# Launch terminal
+alt-enter = 'exec-and-forget open -na Ghostty'
+
+# Focus windows -- vim-style
+alt-h = 'focus left'
+alt-j = 'focus down'
+alt-k = 'focus up'
+alt-l = 'focus right'
+
+# Move windows within the current workspace
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right'
+
+# Resize the focused window
+alt-shift-minus = 'resize smart -50'
+alt-shift-equal = 'resize smart +50'
+
+# Layouts (each key alternates between the two args on repeated presses)
+alt-slash = 'layout tiles horizontal vertical'
+alt-comma = 'layout accordion horizontal vertical'
+alt-f = 'fullscreen'
+alt-shift-space = 'layout floating tiling'
+
+# Move focus to another monitor
+alt-cmd-h = 'focus-monitor left'
+alt-cmd-l = 'focus-monitor right'
+
+# Send the focused window to another monitor
+alt-cmd-shift-h = 'move-node-to-monitor left'
+alt-cmd-shift-l = 'move-node-to-monitor right'
+
+# Send the whole current workspace to the other monitor
+alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+
+# Workspaces (1-9)
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-5 = 'workspace 5'
+alt-6 = 'workspace 6'
+alt-7 = 'workspace 7'
+alt-8 = 'workspace 8'
+alt-9 = 'workspace 9'
+alt-tab = 'workspace-back-and-forth'
+
+# Move the focused window to a workspace and follow it there
+alt-shift-1 = ['move-node-to-workspace 1', 'workspace 1']
+alt-shift-2 = ['move-node-to-workspace 2', 'workspace 2']
+alt-shift-3 = ['move-node-to-workspace 3', 'workspace 3']
+alt-shift-4 = ['move-node-to-workspace 4', 'workspace 4']
+alt-shift-5 = ['move-node-to-workspace 5', 'workspace 5']
+alt-shift-6 = ['move-node-to-workspace 6', 'workspace 6']
+alt-shift-7 = ['move-node-to-workspace 7', 'workspace 7']
+alt-shift-8 = ['move-node-to-workspace 8', 'workspace 8']
+alt-shift-9 = ['move-node-to-workspace 9', 'workspace 9']
+
+# Enter service mode (reload config, flatten tree, close others)
+alt-shift-semicolon = 'mode service'
+
+[mode.service.binding]
+esc = ['reload-config', 'mode main']
+r = ['flatten-workspace-tree', 'mode main']
+backspace = ['close-all-windows-but-current', 'mode main']

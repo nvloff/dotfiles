@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-stow -v zsh git nvim ghostty
+stow -v zsh git nvim ghostty aerospace
 
 # Claude Code skills: tracked under claude/skills/ (not .claude/, so nothing
 # named .claude ends up in git) -- symlink each into place at install time.
