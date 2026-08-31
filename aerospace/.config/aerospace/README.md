@@ -18,8 +18,9 @@ symlink the config.
 1. Launch AeroSpace from Spotlight/Applications. macOS will ask for
    **Accessibility** permission (System Settings → Privacy & Security →
    Accessibility) -- required, since that's how it moves/resizes windows.
-2. It immediately starts tiling every window on every workspace. There's no
-   "enable tiling mode" step like in some other WMs.
+2. It manages every window immediately -- no "enable" step. Most things
+   float by default here (see "Work layout" below); Firefox is the one
+   exception that tiles.
 3. `start-at-login = true` is already set in the config, so it survives a
    reboot without extra setup.
 
@@ -136,15 +137,15 @@ Workspaces 6-10 still exist and are bound (`alt-6`..`alt-0`, matching
 Omarchy's `SUPER-[1-0]`) but aren't part of the active layout -- plain
 scratch space, not persistent, no monitor assignment.
 
-**The floating-by-default behavior on 4/5 is a script, not a built-in
-feature** -- AeroSpace has no "this workspace defaults to floating" setting,
-so [scripts/autofloat.sh](scripts/autofloat.sh) looks up each new window's
-workspace after the fact and floats it if that's 4 or 5. It's marked
-EXPERIMENTAL in that file for a reason: parts of it rely on AeroSpace
-behavior that isn't fully documented. If something doesn't float when it
-should, check `/tmp/aerospace-autofloat.log` first -- it logs every window it
-sees and what it decided to do. Worst case if something's wrong with it: a
-window just stays tiled, same as if the script didn't exist.
+**Floating is the actual default now, tiling is the exception.** AeroSpace
+has no "this workspace defaults to floating" setting (`default-root-
+container-layout` only takes `tiles|accordion` -- that's the arrangement of
+windows that are already tiling, not a floating/tiling switch). So instead
+[aerospace.toml](aerospace.toml)'s first `on-window-detected` rule floats
+*every* window unconditionally, and only Firefox gets explicitly pulled back
+into tiling afterward -- this is AeroSpace's own documented pattern for
+exactly this situation, not a workaround. Workspaces 4/5 don't need any
+rule of their own; they just inherit the default.
 
 If an app doesn't route where expected (workspaces 1-3), its bundle id is
 probably slightly different than assumed. Check it with:
@@ -153,14 +154,16 @@ probably slightly different than assumed. Check it with:
 osascript -e 'id of app "App Name"'
 ```
 
-and update the matching `if.app-id` in [aerospace.toml](aerospace.toml). The
-Cursor entry in particular is flagged as unverified (todesktop-packaged apps
-can vary) -- confirm it on first use.
+and update the matching `if = 'test %{app-bundle-id} = ...'` line in
+[aerospace.toml](aerospace.toml). The Cursor entry in particular is flagged
+as unverified (todesktop-packaged apps can vary) -- confirm it on first use.
 
 ## Customizing further
 
-- **New floating-window rule**: add another `[[on-window-detected]]` block
-  in [aerospace.toml](aerospace.toml). Find an app's bundle id with:
+- **New app that should tile instead of float**: add another
+  `[[on-window-detected]]` block after the blanket floating rule in
+  [aerospace.toml](aerospace.toml), following the Firefox one as a template
+  (`run = [..., 'layout tiling']`). Find an app's bundle id with:
   ```bash
   osascript -e 'id of app "Finder"'
   ```
