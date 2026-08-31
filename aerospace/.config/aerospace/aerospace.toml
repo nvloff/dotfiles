@@ -6,6 +6,11 @@
 # See README.md in this directory for a quick-start guide.
 # Docs: https://nikitabobko.github.io/AeroSpace/guide
 
+# v2 requires persistent-workspaces to be listed explicitly (v1 inferred it
+# from your keybindings -- see workspaces 1-10 below, which is exactly what
+# gets listed here to keep that same behavior).
+config-version = 2
+
 # Start AeroSpace at login
 start-at-login = true
 
@@ -23,6 +28,11 @@ accordion-padding = 30
 
 # Recenter the mouse when focus moves to another monitor
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+# Keep workspaces 1-10 alive even when empty (matches every workspace bound
+# below) -- without this, v2's default is an empty list and an empty
+# workspace disappears the moment you leave it.
+persistent-workspaces = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 
 [gaps]
 inner.horizontal = 8
