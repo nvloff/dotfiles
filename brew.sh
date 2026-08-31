@@ -13,8 +13,7 @@ brew install --cask ghostty
 # Window manager (aerospace/config)
 brew install --cask nikitabobko/tap/aerospace
 
-# Shell (zshenv, zprofile, zsh/locate.zsh)
-brew install findutils   # glocate, gupdatedb
+# Shell (zshenv, zprofile)
 brew install ripgrep     # rg: RIPGREP_CONFIG_PATH, nvim grepprg
 brew install fd
 

@@ -2,7 +2,9 @@
 
 # Completion
 typeset -U fpath
-fpath=("/opt/homebrew/share/zsh/site-functions" $fpath)
+for dir in /opt/homebrew/share/zsh/site-functions /usr/share/zsh/site-functions /usr/share/zsh/vendor-completions; do
+  [[ -d "$dir" ]] && fpath=("$dir" $fpath)
+done
 autoload -Uz compinit
 if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
   compinit -u
@@ -31,7 +33,6 @@ bindkey -e
 
 source ~/.zsh/prompt.zsh
 source ~/.zsh/aliases.zsh
-source ~/.zsh/locate.zsh
 
 # Per-machine overrides -- gitignored (zsh/.zsh/local.zsh), seeded from
 # local.zsh.example by install.sh. Guarded because a from-scratch checkout

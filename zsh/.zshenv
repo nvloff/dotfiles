@@ -4,3 +4,8 @@
 
 export GOPATH="$HOME/go"
 export RIPGREP_CONFIG_PATH="$HOME/rcfiles/ripgreprc"
+
+# Needed for gpg to find a pinentry TTY (git's commit.gpgsign/tag.gpgsign) --
+# same requirement on every OS, not macOS-specific despite living next to
+# other Mac-only bits historically.
+export GPG_TTY="$TTY"
