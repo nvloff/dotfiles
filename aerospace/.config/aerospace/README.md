@@ -57,14 +57,22 @@ work and you're an nvim user.
 - `alt-slash` -- toggle tiles horizontal/vertical
 - `alt-comma` -- toggle accordion horizontal/vertical
 - `alt-f` -- fullscreen within the tiling grid (same key as Omarchy's
-  `SUPER-f`). Note: this is a per-window tiling-frame resize, not real macOS
-  fullscreen -- if the window uses native macOS tabs (e.g. Ghostty), each tab
-  is a separate window to AeroSpace, so this state does *not* carry over
-  between tabs and you'll see it "reset" when you switch tabs.
+  `SUPER-f`). This is AeroSpace's own fullscreen, not real macOS fullscreen --
+  it stays inside the normal workspace, so `alt-1`..`alt-0` can still
+  navigate to it directly. This is what workspaces 1/2 use automatically
+  (see "Work layout" below). Caveat: if the window uses native macOS tabs
+  (e.g. Ghostty), each tab is a separate window to AeroSpace, so this state
+  does *not* carry over between tabs and you'll see it "reset" when you
+  switch tabs -- use splits (`alt-enter`) instead of tabs to avoid this.
 - `alt-shift-f` -- real macOS fullscreen (`macos-native-fullscreen`, its own
-  Space). Handled entirely by WindowServer, so native-tabbed apps like
-  Ghostty switch tabs cleanly here with no tiling to fight over the frame --
-  use this one specifically if `alt-f` "jumps" on tab switch.
+  Space). Handled entirely by WindowServer, so native-tabbed apps switch
+  tabs cleanly here with no tiling to fight over the frame -- but it comes
+  at a real cost: AeroSpace's workspaces don't control macOS Spaces, so
+  `alt-1`..`alt-0` **cannot navigate into a native-fullscreen window** --
+  you'd need Cmd-Tab or Mission Control instead. That's exactly why
+  workspaces 1/2 use `alt-f`'s fullscreen automatically, not this one --
+  direct workspace addressing wins over clean tab-switching. Reach for this
+  one manually only when you specifically need it.
 - `alt-t` -- float/tile the focused window (same key as Omarchy's `SUPER-t`)
 - `alt-w` -- close the focused window (same key as Omarchy's `SUPER-w`)
 
@@ -120,18 +128,22 @@ the same file works everywhere:
 
 | Workspace | Monitor   | Contents                                        |
 |-----------|-----------|--------------------------------------------------|
-| 1         | main      | Ghostty -- always real macOS fullscreen           |
-| 2         | main      | Cursor -- always real macOS fullscreen            |
+| 1         | main      | Ghostty -- always fullscreen (AeroSpace's own)    |
+| 2         | main      | Cursor -- always fullscreen (AeroSpace's own)     |
 | 3         | main      | Firefox -- normal tiling, can still split w/ another window |
 | 4         | main      | Everything else -- floats, close to plain macOS window management |
 | 5         | secondary | Everything else -- same, floating, second monitor |
 
-Workspaces 1 and 2 use `macos-native-fullscreen on` (not AeroSpace's own
-`fullscreen`) -- see the keybindings section above for why that distinction
-matters. Slack/Outlook/Zoom/Office apps are deliberately **not** pinned
-anymore -- open them wherever's convenient (usually 4 or 5) and they'll float
-there automatically; move anything with `alt-shift-<N>` if you want it
-somewhere else.
+Workspaces 1 and 2 use `fullscreen on` -- AeroSpace's own fullscreen, not
+`macos-native-fullscreen` -- specifically so `alt-1`/`alt-2` keep working as
+direct addresses to them. See the keybindings section above ("Why `alt-f`,
+not `alt-shift-f`" for these) for the full reasoning: native fullscreen
+creates a real macOS Space that AeroSpace's own workspace-switching cannot
+navigate into, which would make `alt-1`/`alt-2` silently show whatever's
+actually frontmost on the real desktop (e.g. Finder) instead. Slack/Outlook/
+Zoom/Office apps are deliberately **not** pinned anymore -- open them
+wherever's convenient (usually 4 or 5) and they'll float there automatically;
+move anything with `alt-shift-<N>` if you want it somewhere else.
 
 Workspaces 6-10 still exist and are bound (`alt-6`..`alt-0`, matching
 Omarchy's `SUPER-[1-0]`) but aren't part of the active layout -- plain

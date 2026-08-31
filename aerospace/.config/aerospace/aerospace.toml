@@ -57,8 +57,14 @@ outer.right = 8
 
 # --- Window layout -----------------------------------------------------
 # Workspace layout:
-#   1  main       Ghostty  -- always real macOS fullscreen
-#   2  main       Cursor   -- always real macOS fullscreen
+#   1  main       Ghostty  -- always fullscreen (AeroSpace's own, not native --
+#                             native macOS fullscreen creates a real Space
+#                             that alt-1/alt-2 can't navigate into, breaking
+#                             direct workspace addressing. Use alt-shift-f to
+#                             go native fullscreen manually if ever wanted,
+#                             e.g. to avoid the native-tabs jump -- see
+#                             README's "Why alt-f vs alt-shift-f")
+#   2  main       Cursor   -- same, always fullscreen (AeroSpace's own)
 #   3  main       Firefox  -- the one exception, tiled, so it can split w/ another window
 #   4  main       everything else -- floating, close to plain macOS window management
 #   5  secondary  everything else -- same, floating, on the second monitor
@@ -89,11 +95,11 @@ run = 'layout floating'
 
 [[on-window-detected]]
 if = 'test %{app-bundle-id} = com.mitchellh.ghostty'
-run = ['move-node-to-workspace 1', 'macos-native-fullscreen on']
+run = ['move-node-to-workspace 1', 'fullscreen on']
 
 [[on-window-detected]]
 if = 'test %{app-bundle-id} = com.todesktop.230313mzl4w4u92' # Cursor -- verify, todesktop ids can vary
-run = ['move-node-to-workspace 2', 'macos-native-fullscreen on']
+run = ['move-node-to-workspace 2', 'fullscreen on']
 
 # The one window that actually tiles -- pulled back out of the floating
 # default from the blanket rule above.
