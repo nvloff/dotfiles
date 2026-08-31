@@ -46,3 +46,10 @@ keybind = cmd+shift+period=move_tab:1
 
 # cmd+w closes tab rather than window
 keybind = cmd+w=close_tab
+
+# Manual escape hatch for a known Ghostty bug where macOS Secure Input can
+# get stuck on from an earlier password prompt (github.com/ghostty-org/
+# ghostty/discussions/10480) -- while stuck, AeroSpace's alt-based hotkeys
+# stop working entirely because Secure Input routes every keystroke
+# exclusively to Ghostty. This forces it back off without losing the session.
+keybind = cmd+shift+i=toggle_secure_input

@@ -106,43 +106,48 @@ memory difference is just "which modifier," not "which key."
 
 ## Portability: laptop vs. work desk
 
-`workspace-to-monitor-force-assignment` pins workspaces 1-5 to the `main`
-monitor and 6-9 to `secondary`. Those are AeroSpace's built-in aliases, not
-hardware IDs, so the same file works everywhere:
+`workspace-to-monitor-force-assignment` pins workspaces 1-4 to `main` and 5
+to `secondary`. Those are AeroSpace's built-in aliases, not hardware IDs, so
+the same file works everywhere:
 
-- **Single screen** (this machine): `secondary` doesn't exist, so those
-  lines are no-ops -- everything just stays on the one monitor.
-- **Two screens** (work): workspaces 6-9 automatically live on the second
+- **Single screen** (this machine): `secondary` doesn't exist, so workspace
+  5's line is a no-op -- it just stays on the one monitor along with 1-4.
+- **Two screens** (work): workspace 5 automatically lives on the second
   monitor as soon as it's connected. No config change needed either way.
 
-## Work layout: apps auto-route to a monitor
+## Work layout
 
-`aerospace.toml` pins a set of recurring apps to a fixed workspace, so they
-always land on the same monitor when launched -- no manual dragging:
+| Workspace | Monitor   | Contents                                        |
+|-----------|-----------|--------------------------------------------------|
+| 1         | main      | Ghostty -- always real macOS fullscreen           |
+| 2         | main      | Cursor -- always real macOS fullscreen            |
+| 3         | main      | Firefox -- normal tiling, can still split w/ another window |
+| 4         | main      | Everything else -- floats, close to plain macOS window management |
+| 5         | secondary | Everything else -- same, floating, second monitor |
 
-| Workspace | Monitor   | App                                  |
-|-----------|-----------|---------------------------------------|
-| 1         | main      | Ghostty                               |
-| 2         | main      | Cursor                                |
-| 3         | main      | Firefox                               |
-| 4         | main      | Zoom -- in-call window (title has "Meeting") |
-| 5         | main      | *(free -- Word/Excel/PowerPoint, etc.)* |
-| 6         | secondary | Slack                                 |
-| 7         | secondary | Outlook                               |
-| 8         | secondary | Zoom -- home/start window, everything else |
-| 9         | secondary | *(free)*                              |
+Workspaces 1 and 2 use `macos-native-fullscreen on` (not AeroSpace's own
+`fullscreen`) -- see the keybindings section above for why that distinction
+matters. Slack/Outlook/Zoom/Office apps are deliberately **not** pinned
+anymore -- open them wherever's convenient (usually 4 or 5) and they'll float
+there automatically; move anything with `alt-shift-<N>` if you want it
+somewhere else.
 
-Office apps (Word/Excel/PowerPoint) are intentionally **not** pinned -- a new
-document just opens on whichever workspace you're currently on, and you move
-it yourself with `alt-shift-<N>` once it's open. Same for anything else you
-want to place case by case.
+Workspaces 6-10 still exist and are bound (`alt-6`..`alt-0`, matching
+Omarchy's `SUPER-[1-0]`) but aren't part of the active layout -- plain
+scratch space, not persistent, no monitor assignment.
 
-On this single-monitor machine, workspaces 6-9 still exist and hold Slack/
-Outlook/Zoom's home window -- switch to them with `alt-6`..`alt-9` -- they
-just share the one screen instead of living on a second monitor.
+**The floating-by-default behavior on 4/5 is a script, not a built-in
+feature** -- AeroSpace has no "this workspace defaults to floating" setting,
+so [scripts/autofloat.sh](scripts/autofloat.sh) looks up each new window's
+workspace after the fact and floats it if that's 4 or 5. It's marked
+EXPERIMENTAL in that file for a reason: parts of it rely on AeroSpace
+behavior that isn't fully documented. If something doesn't float when it
+should, check `/tmp/aerospace-autofloat.log` first -- it logs every window it
+sees and what it decided to do. Worst case if something's wrong with it: a
+window just stays tiled, same as if the script didn't exist.
 
-If an app doesn't route where expected, its bundle id is probably slightly
-different than assumed. Check it with:
+If an app doesn't route where expected (workspaces 1-3), its bundle id is
+probably slightly different than assumed. Check it with:
 
 ```bash
 osascript -e 'id of app "App Name"'

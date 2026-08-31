@@ -7,8 +7,9 @@
 # Docs: https://nikitabobko.github.io/AeroSpace/guide
 
 # v2 requires persistent-workspaces to be listed explicitly (v1 inferred it
-# from your keybindings -- see workspaces 1-10 below, which is exactly what
-# gets listed here to keep that same behavior).
+# from your keybindings). Workspaces 6-10 are still bound to switch-to keys
+# below (matching Omarchy's SUPER+[1-0]) but aren't part of the active
+# layout -- left non-persistent on purpose, they're plain scratch space.
 config-version = 2
 
 # Start AeroSpace at login
@@ -29,10 +30,10 @@ accordion-padding = 30
 # Recenter the mouse when focus moves to another monitor
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
-# Keep workspaces 1-10 alive even when empty (matches every workspace bound
-# below) -- without this, v2's default is an empty list and an empty
+# Keep workspaces 1-5 alive even when empty -- these are the active layout
+# (see below); without this, v2's default is an empty list and an empty
 # workspace disappears the moment you leave it.
-persistent-workspaces = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+persistent-workspaces = ['1', '2', '3', '4', '5']
 
 [gaps]
 inner.horizontal = 8
@@ -52,12 +53,7 @@ outer.right = 8
 2 = 'main'
 3 = 'main'
 4 = 'main'
-5 = 'main'
-6 = 'secondary'
-7 = 'secondary'
-8 = 'secondary'
-9 = 'secondary'
-10 = 'secondary'
+5 = 'secondary'
 
 # --- Floating windows -------------------------------------------------
 # Utility windows that should never be tiled. Add more `[[on-window-detected]]`
@@ -71,11 +67,16 @@ if.app-id = 'com.apple.ActivityMonitor'
 run = 'layout floating'
 
 # --- App -> workspace routing ------------------------------------------
-# Pins recurring apps to a fixed spot so they land on the right monitor
-# every time they launch (workspaces 1-5 = main, 6-9 = secondary, per the
-# assignment above). Office apps (Word/Excel/PowerPoint) are deliberately
-# left unpinned -- they open wherever you currently are, and you place
-# them yourself with alt-shift-<N>.
+# Workspace layout:
+#   1  main       Ghostty  -- always real macOS fullscreen
+#   2  main       Cursor   -- always real macOS fullscreen
+#   3  main       Firefox  -- normal tiling, so it can still split w/ another window
+#   4  main       everything else -- floating, close to plain macOS window management
+#   5  secondary  everything else -- same, floating, on the second monitor
+#
+# Slack/Outlook/Zoom are deliberately NOT pinned anymore -- use them ad hoc
+# on workspace 4/5, wherever makes sense at the time. Office apps were
+# already unpinned for the same reason. Move anything with alt-shift-<N>.
 #
 # Bundle ids below were looked up for the common macOS build of each app.
 # If a rule doesn't fire, confirm the id with:
@@ -83,35 +84,25 @@ run = 'layout floating'
 
 [[on-window-detected]]
 if.app-id = 'com.mitchellh.ghostty'
-run = 'move-node-to-workspace 1'
+run = ['move-node-to-workspace 1', 'macos-native-fullscreen on']
 
 [[on-window-detected]]
 if.app-id = 'com.todesktop.230313mzl4w4u92' # Cursor -- verify, todesktop ids can vary
-run = 'move-node-to-workspace 2'
+run = ['move-node-to-workspace 2', 'macos-native-fullscreen on']
 
 [[on-window-detected]]
 if.app-id = 'org.mozilla.firefox'
 run = 'move-node-to-workspace 3'
 
-# Zoom: the in-call window (title contains "Meeting") goes to main; its
-# home/start window and everything else goes to the secondary monitor.
-# Order matters -- the more specific rule must come first.
+# Catch-all: floats any window that lands on workspace 4 or 5 by default
+# (i.e. everything not explicitly routed above). Must stay LAST -- it has no
+# `if`, so it matches every window, and would otherwise short-circuit the
+# specific rules above it. See scripts/autofloat.sh for why this needs a
+# script instead of a plain config option, and it's marked EXPERIMENTAL
+# there for a reason -- check /tmp/aerospace-autofloat.log if it's not
+# floating things as expected.
 [[on-window-detected]]
-if.app-id = 'us.zoom.xos'
-if.window-title-regex-substring = 'Meeting'
-run = 'move-node-to-workspace 4'
-
-[[on-window-detected]]
-if.app-id = 'us.zoom.xos'
-run = 'move-node-to-workspace 8'
-
-[[on-window-detected]]
-if.app-id = 'com.tinyspeck.slackmacgap'
-run = 'move-node-to-workspace 6'
-
-[[on-window-detected]]
-if.app-id = 'com.microsoft.Outlook'
-run = 'move-node-to-workspace 7'
+run = 'exec-and-forget /bin/sh ~/.config/aerospace/scripts/autofloat.sh'
 
 # --- Main bindings ----------------------------------------------------
 [mode.main.binding]
