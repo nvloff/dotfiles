@@ -59,20 +59,21 @@ work and you're an nvim user.
 - `alt-f` -- fullscreen within the tiling grid (same key as Omarchy's
   `SUPER-f`). This is AeroSpace's own fullscreen, not real macOS fullscreen --
   it stays inside the normal workspace, so `alt-1`..`alt-0` can still
-  navigate to it directly. This is what workspaces 1/2 use automatically
-  (see "Work layout" below). Caveat: if the window uses native macOS tabs
-  (e.g. Ghostty), each tab is a separate window to AeroSpace, so this state
-  does *not* carry over between tabs and you'll see it "reset" when you
-  switch tabs -- use splits (`alt-enter`) instead of tabs to avoid this.
+  navigate to it directly. Workspace 2 (Cursor) uses this automatically (see
+  "Work layout" below). Caveat: if the window uses native macOS tabs (e.g.
+  Ghostty), each tab is a separate window to AeroSpace, so this state does
+  *not* carry over between tabs and you'll see it "reset" when you switch
+  tabs -- use splits (`alt-enter`) instead of tabs to avoid this.
 - `alt-shift-f` -- real macOS fullscreen (`macos-native-fullscreen`, its own
   Space). Handled entirely by WindowServer, so native-tabbed apps switch
   tabs cleanly here with no tiling to fight over the frame -- but it comes
   at a real cost: AeroSpace's workspaces don't control macOS Spaces, so
-  `alt-1`..`alt-0` **cannot navigate into a native-fullscreen window** --
-  you'd need Cmd-Tab or Mission Control instead. That's exactly why
-  workspaces 1/2 use `alt-f`'s fullscreen automatically, not this one --
-  direct workspace addressing wins over clean tab-switching. Reach for this
-  one manually only when you specifically need it.
+  `alt-1`..`alt-0` **cannot navigate into a native-fullscreen window** on
+  their own -- you'd need Cmd-Tab or Mission Control instead. Workspace 1
+  (Ghostty) uses this automatically anyway, paired with an extra trick on
+  `alt-1` to route around that limitation -- see "Work layout" below, it's
+  marked EXPERIMENTAL there for a reason. Reach for this one manually
+  elsewhere only when you specifically need it.
 - `alt-t` -- float/tile the focused window (same key as Omarchy's `SUPER-t`)
 - `alt-w` -- close the focused window (same key as Omarchy's `SUPER-w`)
 
@@ -128,20 +129,40 @@ the same file works everywhere:
 
 | Workspace | Monitor   | Contents                                        |
 |-----------|-----------|--------------------------------------------------|
-| 1         | main      | Ghostty -- always fullscreen (AeroSpace's own)    |
+| 1         | main      | Ghostty -- always real macOS fullscreen (EXPERIMENTAL, see below) |
 | 2         | main      | Cursor -- always fullscreen (AeroSpace's own)     |
 | 3         | main      | Firefox -- normal tiling, can still split w/ another window |
 | 4         | main      | Everything else -- floats, close to plain macOS window management |
 | 5         | secondary | Everything else -- same, floating, second monitor |
 
-Workspaces 1 and 2 use `fullscreen on` -- AeroSpace's own fullscreen, not
-`macos-native-fullscreen` -- specifically so `alt-1`/`alt-2` keep working as
-direct addresses to them. See the keybindings section above ("Why `alt-f`,
-not `alt-shift-f`" for these) for the full reasoning: native fullscreen
-creates a real macOS Space that AeroSpace's own workspace-switching cannot
-navigate into, which would make `alt-1`/`alt-2` silently show whatever's
-actually frontmost on the real desktop (e.g. Finder) instead. Slack/Outlook/
-Zoom/Office apps are deliberately **not** pinned anymore -- open them
+**Workspace 1 (Ghostty) is a live experiment.** It uses real
+`macos-native-fullscreen`, which normally makes `alt-1` unable to reach it at
+all (AeroSpace's workspaces don't control macOS Spaces -- see the
+keybindings section above). To route around that, `alt-1` additionally runs
+`open -b com.mitchellh.ghostty`, leaning on a real, documented macOS
+mechanism: System Settings -> Desktop & Dock -> Mission Control -> "**Switch
+to a Space with open windows for the application**" -- when that's on
+(Apple's default), activating an app by *any* means, including `open -b`,
+switches you to its fullscreen Space, the same way Cmd-Tab already does for
+you. **What's unverified**: chaining that specifically onto an AeroSpace
+keybind to solve this exact problem isn't a known recipe from anyone else --
+it's built from how the two mechanisms are documented to work individually.
+If `alt-1` stops reliably reaching Ghostty, check that Mission Control
+setting first; if it's on and this still doesn't work, revert Ghostty's
+`on-window-detected` rule to `fullscreen on` (AeroSpace's own, like
+workspace 2) and drop the `exec-and-forget` half of `alt-1`.
+
+**Workspace 2 (Cursor) intentionally was NOT switched to native fullscreen.**
+Cursor is Electron-based, and separately hits a real, currently-unfixed
+AeroSpace bug: Chromium/Electron apps periodically call a macOS API in the
+background that fights AeroSpace's workspace-hiding mechanism, causing
+`alt-2` to flicker/bounce and land on an empty desktop instead of Cursor.
+This happens regardless of native vs. AeroSpace fullscreen -- confirmed by
+testing -- so switching Cursor to native fullscreen would add complexity
+with no possible upside. Cmd-Tab remains the reliable way to reach Cursor;
+there is no known AeroSpace-side fix for this as of AeroSpace 0.21.3-Beta.
+
+Slack/Outlook/Zoom/Office apps are deliberately **not** pinned anymore -- open them
 wherever's convenient (usually 4 or 5) and they'll float there automatically;
 move anything with `alt-shift-<N>` if you want it somewhere else.
 

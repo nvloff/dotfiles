@@ -28,7 +28,14 @@ default-root-container-orientation = 'auto'
 accordion-padding = 30
 
 # Recenter the mouse when focus moves to another monitor
-on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+# TEMPORARILY DISABLED for testing the 1-4 workspace-switch flicker -- this
+# is the only setting in the file that reacts to monitor/focus state
+# independent of any specific window, and there's a known AeroSpace bug
+# (github.com/nikitabobko/AeroSpace/issues/576) about macOS's own monitor
+# focus disagreeing with AeroSpace's when a monitor/workspace is empty,
+# which matches "flickers with no windows open." If disabling this doesn't
+# fix it, re-enable it (uncomment below) -- it wasn't the cause.
+# on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
 # Keep workspaces 1-5 alive even when empty -- these are the active layout
 # (see below); without this, v2's default is an empty list and an empty
