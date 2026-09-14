@@ -29,8 +29,8 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
 automatically-unhide-macos-hidden-apps = false
 
-# Trimmed to the 5 workspaces actually in use (stock default lists 1-9, A-Z).
-persistent-workspaces = ['1', '2', '3', '4', '5']
+# Trimmed to the 6 workspaces actually in use (stock default lists 1-9, A-Z).
+persistent-workspaces = ['1', '2', '3', '4', '5', '6']
 
 on-mode-changed = []
 
@@ -45,15 +45,16 @@ gaps.outer.bottom =     0
 gaps.outer.top =        0
 gaps.outer.right =      0
 
-# --- The one customization: 4 workspaces on the main monitor, 1 on the
+# --- The one customization: 4 workspaces on the main monitor, 2 on the
 # secondary. 'main'/'secondary' resolve automatically to whatever's
-# connected -- on a single-monitor machine, workspace 5's line is a no-op.
+# connected -- on a single-monitor machine, workspace 5/6's lines are no-ops.
 [workspace-to-monitor-force-assignment]
 1 = 'main'
 2 = 'main'
 3 = 'main'
 4 = 'main'
 5 = 'secondary'
+6 = 'secondary'
 
 # --- Window layout -----------------------------------------------------
 # Workspace layout:
@@ -62,6 +63,7 @@ gaps.outer.right =      0
 #   3  main       Firefox  -- the one exception, tiled, so it can split w/ another window
 #   4  main       everything else -- floating, close to plain macOS window management
 #   5  secondary  everything else -- same, floating, on the second monitor
+#   6  secondary  Outlook  -- floating, on the second monitor
 #
 # There's no "default to floating" config option (default-root-container-
 # layout only takes tiles|accordion -- it's the arrangement of windows
@@ -89,6 +91,10 @@ run = ['move-node-to-workspace 2', 'fullscreen on']
 if = 'test %{app-bundle-id} = org.mozilla.firefox'
 run = ['move-node-to-workspace 3', 'layout tiling']
 
+[[on-window-detected]]
+if = 'test %{app-bundle-id} = com.microsoft.Outlook'
+run = 'move-node-to-workspace 6'
+
 [mode.main.binding]
     alt-slash = 'layout tiles horizontal vertical'
     alt-comma = 'layout accordion horizontal vertical'
@@ -111,12 +117,14 @@ run = ['move-node-to-workspace 3', 'layout tiling']
     alt-3 = 'workspace 3'
     alt-4 = 'workspace 4'
     alt-5 = 'workspace 5'
+    alt-6 = 'workspace 6'
 
     alt-shift-1 = 'move-node-to-workspace 1'
     alt-shift-2 = 'move-node-to-workspace 2'
     alt-shift-3 = 'move-node-to-workspace 3'
     alt-shift-4 = 'move-node-to-workspace 4'
     alt-shift-5 = 'move-node-to-workspace 5'
+    alt-shift-6 = 'move-node-to-workspace 6'
 
     alt-tab = 'workspace-back-and-forth'
     alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
