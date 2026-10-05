@@ -226,8 +226,7 @@ vim.pack.add({
   -- automatically via 'runtimepath'. Never call require('lspconfig').
   'https://github.com/neovim/nvim-lspconfig',
   'https://github.com/folke/snacks.nvim',
-  -- Icon provider for the snacks.picker file list. Mocks nvim-web-devicons
-  -- for any third party that only knows that provider.
+  -- Icon provider for the snacks.picker file list, which picks it up directly.
   'https://github.com/nvim-mini/mini.icons',
   -- Parser installer only -- highlighting itself is vim.treesitter.start()
   -- below, a Neovim 0.12 built-in.
@@ -237,9 +236,11 @@ vim.pack.add({
   -- inline via extmarks -- file stays plain markdown underneath).
   'https://github.com/MeanderingProgrammer/render-markdown.nvim',
   -- Browser preview with Mermaid/KaTeX/GFM, for when in-buffer isn't enough.
-  -- Unmaintained iamcco/markdown-preview.nvim replaced by this active fork.
-  'https://github.com/selimacerbas/live-server.nvim',
-  'https://github.com/selimacerbas/markdown-preview.nvim',
+  -- Unmaintained iamcco/markdown-preview.nvim replaced by this active fork,
+  -- renamed upstream at v2.0.0: live-server.nvim -> kitehost.nvim (the pure-Lua
+  -- HTTP server) and markdown-preview.nvim -> mdkite.nvim, which requires it.
+  'https://github.com/selimacerbas/kitehost.nvim',
+  'https://github.com/selimacerbas/mdkite.nvim',
   -- :GenTocGFM inserts a GitHub-anchor-style TOC at the cursor; :UpdateToc
   -- refreshes it in place afterwards (also on save, enabled below).
   'https://github.com/mzlogin/vim-markdown-toc',
@@ -358,14 +359,14 @@ require('render-markdown').setup({
   latex = { enabled = false },
 })
 
-require('markdown_preview').setup({
+require('mdkite').setup({
   instance_mode = 'takeover',
   open_browser = true,
   default_theme = 'dark',
 })
-vim.keymap.set('n', '<leader>mps', '<cmd>MarkdownPreview<CR>', { desc = 'Markdown preview start' })
-vim.keymap.set('n', '<leader>mpS', '<cmd>MarkdownPreviewStop<CR>', { desc = 'Markdown preview stop' })
-vim.keymap.set('n', '<leader>mpr', '<cmd>MarkdownPreviewRefresh<CR>', { desc = 'Markdown preview refresh' })
+vim.keymap.set('n', '<leader>mps', '<cmd>MdKite start<CR>', { desc = 'Markdown preview start' })
+vim.keymap.set('n', '<leader>mpS', '<cmd>MdKite stop<CR>', { desc = 'Markdown preview stop' })
+vim.keymap.set('n', '<leader>mpr', '<cmd>MdKite refresh<CR>', { desc = 'Markdown preview refresh' })
 
 -- Keep an inserted TOC in sync with headings automatically, not just on
 -- explicit :UpdateToc.
