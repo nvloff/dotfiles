@@ -368,6 +368,17 @@ vim.keymap.set('n', '<leader>mps', '<cmd>MdKite start<CR>', { desc = 'Markdown p
 vim.keymap.set('n', '<leader>mpS', '<cmd>MdKite stop<CR>', { desc = 'Markdown preview stop' })
 vim.keymap.set('n', '<leader>mpr', '<cmd>MdKite refresh<CR>', { desc = 'Markdown preview refresh' })
 
+-- Muscle-memory aliases for the pre-2.0.0 command names. mdkite forwards these
+-- itself through 2.x, but warns once a session and drops them in 3.0.0. Defined
+-- via vim.schedule so they land after the plugin's own definitions (plugin/
+-- scripts are sourced after this file): no deprecation warning now, and the
+-- names keep working once 3.0.0 removes the plugin's forwarding.
+vim.schedule(function()
+  vim.api.nvim_create_user_command('MarkdownPreview', 'MdKite start', { desc = 'Markdown preview start' })
+  vim.api.nvim_create_user_command('MarkdownPreviewStop', 'MdKite stop', { desc = 'Markdown preview stop' })
+  vim.api.nvim_create_user_command('MarkdownPreviewRefresh', 'MdKite refresh', { desc = 'Markdown preview refresh' })
+end)
+
 -- Keep an inserted TOC in sync with headings automatically, not just on
 -- explicit :UpdateToc.
 vim.g.vmt_auto_update_on_save = 1
