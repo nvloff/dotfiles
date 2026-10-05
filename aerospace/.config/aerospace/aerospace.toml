@@ -2,7 +2,7 @@
 #
 # AeroSpace -- tiling window manager for macOS.
 #
-# Base is AeroSpace's stock default-config.toml (trimmed to 5 workspaces),
+# Base is AeroSpace's stock default-config.toml (trimmed to 6 workspaces),
 # kept deliberately close to stock after a workspace-switch flicker
 # investigation turned out to be a macOS Keyboard Shortcuts conflict
 # ("Switch to Desktop N" bound to the same alt+number keys as AeroSpace's
@@ -45,7 +45,7 @@ gaps.outer.bottom =     0
 gaps.outer.top =        0
 gaps.outer.right =      0
 
-# --- The one customization: 4 workspaces on the main monitor, 2 on the
+# --- Monitor assignment: 4 workspaces on the main monitor, 2 on the
 # secondary. 'main'/'secondary' resolve automatically to whatever's
 # connected -- on a single-monitor machine, workspace 5/6's lines are no-ops.
 [workspace-to-monitor-force-assignment]
@@ -59,9 +59,9 @@ gaps.outer.right =      0
 # --- Window layout -----------------------------------------------------
 # Workspace layout:
 #   1  main       Ghostty  -- always fullscreen
-#   2  main       Cursor   -- always fullscreen
+#   2  main       everything else -- floating
 #   3  main       Firefox  -- the one exception, tiled, so it can split w/ another window
-#   4  main       everything else -- floating, close to plain macOS window management
+#   4  main       everything else -- same
 #   5  secondary  everything else -- same, floating, on the second monitor
 #   6  secondary  Outlook  -- floating, on the second monitor
 #
@@ -76,16 +76,12 @@ gaps.outer.right =      0
 check-further-callbacks = true
 run = 'layout floating'
 
-# Bundle ids below were looked up for the common macOS build of each app.
-# If a rule doesn't fire, confirm the id with:
+# Bundle ids below are verified on this machine. If a rule doesn't fire
+# (e.g. different build on another machine), confirm the id with:
 #   osascript -e 'id of app "<App Name>"'
 [[on-window-detected]]
 if = 'test %{app-bundle-id} = com.mitchellh.ghostty'
 run = ['move-node-to-workspace 1', 'fullscreen on']
-
-[[on-window-detected]]
-if = 'test %{app-bundle-id} = com.todesktop.230313mzl4w4u92' # Cursor -- verify, todesktop ids can vary
-run = ['move-node-to-workspace 2', 'fullscreen on']
 
 [[on-window-detected]]
 if = 'test %{app-bundle-id} = org.mozilla.firefox'
